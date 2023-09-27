@@ -1,7 +1,26 @@
-<h1 class="text-3xl font-bold underline">
-    Hello world!
-</h1>
-<button class="btn w-64 rounded-full">Button</button>
-<div class="mockup-code">
-    <pre data-prefix="$"><code>npm i daisyui</code></pre>
-  </div>
+<script>
+	import App from './components/App.svelte';
+	import Auth from './components/Auth.svelte';
+
+	let logged = false;
+
+	function toggleLogged() {
+		logged = !logged;
+	}
+</script>
+
+<main class="flex h-screen justify-center items-center flex-col">
+	{#if logged}
+		<App />
+	{:else}
+		<Auth />
+	{/if}
+
+	<button class="btn" on:click={toggleLogged}>
+		{#if logged}
+			Log out
+		{:else}
+			Log in
+		{/if}
+	</button>
+</main>

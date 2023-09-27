@@ -1,0 +1,1 @@
+<h1 class="text-5xl mb-3">Authentication</h1>
