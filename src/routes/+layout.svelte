@@ -1,5 +1,26 @@
 <script>
 	import '../app.css';
+	import { goto } from '$app/navigation';
+	import { loggedIn } from '$lib/stores';
+
+	function toggleLoggedIn() {
+		loggedIn.update((a) => !a);
+	}
+
+	$: if ($loggedIn) {
+		goto('/');
+	} else {
+		goto('/auth');
+	}
 </script>
 
-<slot />
+<main class="flex h-screen justify-center items-center flex-col">
+	<slot />
+	<button class="btn" on:click={toggleLoggedIn}>
+		{#if $loggedIn}
+			Log out
+		{:else}
+			Log in
+		{/if}
+	</button>
+</main>
