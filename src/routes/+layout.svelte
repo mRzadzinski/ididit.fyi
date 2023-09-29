@@ -2,9 +2,7 @@
 	import '../app.css';
 	import { goto } from '$app/navigation';
 	import { loggedIn } from '$lib/stores';
-	import initializeFirebase from '$lib/firebase/firebase';
-
-	initializeFirebase();
+	import { firebaseApp } from '$lib/firebase/firebase';
 
 	function toggleLoggedIn() {
 		loggedIn.update((a) => !a);
