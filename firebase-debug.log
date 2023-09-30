@@ -100,3 +100,924 @@
 
 Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
  
+[debug] [2023-09-29T17:14:16.179Z] Received signal SIGHUP 1
+[info]  
+[info] i  emulators: Received SIGHUP for the first time. Starting a clean shutdown. 
+[info] i  emulators: Please wait for a clean shutdown or send the SIGHUP signal again to stop right now. 
+[info] i  emulators: Shutting down emulators. {"metadata":{"emulator":{"name":"hub"},"message":"Shutting down emulators."}}
+[info] i  ui: Stopping Emulator UI {"metadata":{"emulator":{"name":"ui"},"message":"Stopping Emulator UI"}}
+[warn] ⚠  Emulator UI has exited upon receiving signal: SIGINT 
+[debug] [2023-09-29T17:14:16.324Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.326Z] Received signal SIGHUP 2
+[info]  
+[debug] [2023-09-29T17:14:16.327Z] Skipping clean onExit() and cleanShutdown()
+[warn] ⚠  emulators: Received SIGHUP 2 times. You have forced the Emulator Suite to exit without waiting for 1 subprocess to finish. These processes may still be running on your machine:  
+[info] 
+┌─────────────┬────────────────┬───────┐
+│ Emulator    │ Host:Port      │ PID   │
+├─────────────┼────────────────┼───────┤
+│ Emulator UI │ 127.0.0.1:4000 │ 49224 │
+└─────────────┴────────────────┴───────┘
+
+To force them to exit run:
+
+[info] kill 49224
+
+[debug] [2023-09-29T17:14:16.332Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.333Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.334Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.335Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.335Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.337Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.339Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.340Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.342Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.342Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.343Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.343Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.344Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.344Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.346Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.347Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.348Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.350Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.351Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.352Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.352Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.353Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.354Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.354Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.355Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.355Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.358Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.359Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.359Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.360Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.361Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.361Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.362Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.363Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.364Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.364Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.365Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.366Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.366Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.367Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.367Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.369Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.370Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.370Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.371Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.372Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.376Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.377Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.378Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.378Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.379Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.380Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.381Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.382Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.383Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.384Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[info] i  hosting: Stopping Hosting Emulator {"metadata":{"emulator":{"name":"hosting"},"message":"Stopping Hosting Emulator"}}
+[info] i  auth: Stopping Authentication Emulator {"metadata":{"emulator":{"name":"auth"},"message":"Stopping Authentication Emulator"}}
+[info] i  hub: Stopping emulator hub {"metadata":{"emulator":{"name":"hub"},"message":"Stopping emulator hub"}}
+[debug] [2023-09-29T17:14:16.480Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.481Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.484Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.485Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.485Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.487Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.491Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.491Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.492Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.495Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.496Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-09-29T17:14:16.496Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at WriteStream.Socket._writeGeneric (node:net:817:11)
+    at WriteStream.Socket._write (node:net:829:8)
+    at writeOrBuffer (node:internal/streams/writable:389:12)
+    at _write (node:internal/streams/writable:330:10)
+    at WriteStream.Writable.write (node:internal/streams/writable:334:10)
+    at Console.log (/Users/Coding/Library/pnpm/global/5/.pnpm/winston@3.10.0/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/Users/Coding/Library/pnpm/global/5/.pnpm/winston-transport@4.5.0/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/Users/Coding/Library/pnpm/global/5/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
