@@ -8,6 +8,9 @@ dependencies:
   firebase:
     specifier: ^10.4.0
     version: 10.4.0
+  svelte-icons:
+    specifier: ^2.1.0
+    version: 2.1.0
 
 devDependencies:
   '@playwright/test':
@@ -3194,6 +3197,10 @@ packages:
     dependencies:
       svelte: 4.2.1
     dev: true
+
+  /svelte-icons@2.1.0:
+    resolution: {integrity: sha512-rHPQjweEc9fGSnvM0/4gA3pDHwyZyYsC5KhttCZRhSMJfLttJST5Uq0B16Czhw+HQ+HbSOk8kLigMlPs7gZtfg==}
+    dev: false
 
   /svelte-preprocess@5.0.4(postcss@8.4.30)(svelte@4.2.1)(typescript@5.2.2):
     resolution: {integrity: sha512-ABia2QegosxOGsVlsSBJvoWeXy1wUKSfF7SWJdTjLAbx/Y3SrVevvvbFNQqrSJw89+lNSsM58SipmZJ5SRi5iw==}
