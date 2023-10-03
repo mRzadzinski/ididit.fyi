@@ -7,11 +7,13 @@ describe('Test LogSignForm__SvelteComponent_ component', () => {
 	it('Renders correct form elements', () => {
 		const { rerender } = render(LogSignForm__SvelteComponent_, { signUp: false });
 
+		const form = screen.getByRole('form')
 		const header = screen.getByRole('heading');
 		const emailInput = screen.getByLabelText('Email');
 		const passwordInput = screen.getByLabelText('Password');
 		let buttons = screen.getAllByRole('button');
 
+		expect(form).toBeInTheDocument();
 		expect(header).toBeInTheDocument();
 		expect(emailInput).toBeInTheDocument();
 		expect(passwordInput).toBeInTheDocument();
