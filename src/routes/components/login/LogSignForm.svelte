@@ -21,6 +21,7 @@
 		<button
 			class="btn btn-xs btn-link p-0 no-underline label-text no-animation normal-case opacity-90 font-medium"
 			class:invisible={signUp}
+			hidden={signUp}
 		>
 			Forgot password?
 		</button>
