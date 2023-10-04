@@ -20,7 +20,7 @@ if (!getApps().length) {
 const analytics = getAnalytics(firebaseApp);
 
 // Authentication
-const auth = getAuth(firebaseApp);
-connectAuthEmulator(auth, 'http://127.0.0.1:9099');
+const firebaseAuth = getAuth(firebaseApp);
+connectAuthEmulator(firebaseAuth, 'http://127.0.0.1:9099');
 
-export { firebaseApp, auth };
+export { firebaseApp, firebaseAuth };

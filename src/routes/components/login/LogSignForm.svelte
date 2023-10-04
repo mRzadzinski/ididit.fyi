@@ -1,9 +1,21 @@
 <script lang="ts">
+	import { signUpWithEmail, loginWithEmail } from '$lib/firebase/auth/emailAuth';
+	import ErrorMessage from '../ErrorMessage.svelte';
+	import { signUpError, loginError } from '$lib/stores/firebaseAuthStore';
+
 	export let signUp: boolean;
 	let email: string;
 	let password: string = '';
 
-	const onSubmit = () => {};
+	const onSubmit = async () => {
+		if (signUp) {
+			const result = await signUpWithEmail(email, password);
+			signUpError.set(result.replace('Firebase: ', ''));
+		} else {
+			const result = await loginWithEmail(email, password);
+			loginError.set(result.replace('Firebase: ', ''));
+		}
+	};
 </script>
 
 <form on:submit|preventDefault={onSubmit} aria-label="form">
@@ -43,11 +55,18 @@
 				class="btn btn-xs btn-link p-0 no-underline label-text no-animation normal-case opacity-90 font-medium"
 				class:invisible={signUp}
 				hidden={signUp}
+				style:display={$signUpError.length > 0 ? 'none' : 'block'}
+				type="button"
 			>
 				Forgot password?
 			</button>
 		</span>
 	</div>
+	{#if $signUpError.length > 0}
+		<ErrorMessage message={$signUpError} />
+	{:else if $loginError.length > 0}
+		<ErrorMessage message={$loginError} />
+	{/if}
 	<div class="form-control mt-6">
 		<button class="btn btn-primary w-36" type="submit">
 			{signUp ? 'Sign up' : 'Login'}

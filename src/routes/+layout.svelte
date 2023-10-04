@@ -1,14 +1,10 @@
 <script>
 	import '../app.css';
 	import { goto } from '$app/navigation';
-	import { loggedIn } from '$lib/stores/stores';
+	import { authUser } from '$lib/stores/firebaseAuthStore';
 	import { firebaseApp } from '$lib/firebase/firebase';
 
-	function toggleLoggedIn() {
-		loggedIn.update((a) => !a);
-	}
-
-	$: if ($loggedIn) {
+	$: if ($authUser) {
 		goto('/');
 	} else {
 		goto('/login');
