@@ -2,6 +2,7 @@
 	import LogSignForm from '../components/login/LogSignForm.svelte';
 	import ToggleSignUp from '../components/login/ToggleSignUp.svelte';
 	import LoginProviders from '../components/login/LoginProviders.svelte';
+	import { user } from '$lib/stores/firebaseAuthStore';
 
 	let signUp = false;
 
@@ -10,11 +11,13 @@
 	}
 </script>
 
-<div class="prose prose-sm card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-	<div class="card-body">
-		<LogSignForm {signUp} />
-		<div class="divider">OR</div>
-		<LoginProviders />
-		<ToggleSignUp {signUp} {toggleSignUp} />
+{#if $user !== undefined && $user === null}
+	<div class="prose prose-sm card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+		<div class="card-body">
+			<LogSignForm {signUp} />
+			<div class="divider">OR</div>
+			<LoginProviders />
+			<ToggleSignUp {signUp} {toggleSignUp} />
+		</div>
 	</div>
-</div>
+{/if}

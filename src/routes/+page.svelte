@@ -1,8 +1,10 @@
 <script>
 	import { logout } from '$lib/firebase/auth/logout';
 	import { logoutError } from '$lib/stores/firebaseAuthStore';
+	import { user } from '$lib/stores/firebaseAuthStore';
 </script>
 
+{#if $user !== undefined && $user !== null}
 <h1 class="text-5xl mb-3">App</h1>
 <button
 	on:click={async () => {
@@ -11,3 +13,4 @@
 	}}
 	class="btn">Logout</button
 >
+{/if}

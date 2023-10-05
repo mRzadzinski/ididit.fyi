@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
 	import { firebaseApp } from '$lib/firebase/firebase';
-	import '../app.css';
-	import { goto } from '$app/navigation';
 	import { user } from '$lib/stores/firebaseAuthStore';
+	import { goto } from '$app/navigation';
+	import '../app.css';
 
 	$: if ($user) {
 		goto('/');

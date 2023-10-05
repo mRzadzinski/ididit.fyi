@@ -1,5 +1,4 @@
 import { getApps, initializeApp } from 'firebase/app';
-import { getAnalytics } from 'firebase/analytics';
 import { getAuth, connectAuthEmulator, onAuthStateChanged } from 'firebase/auth';
 import { user } from '$lib/stores/firebaseAuthStore';
 
@@ -18,19 +17,11 @@ if (!getApps().length) {
 	firebaseApp = initializeApp(firebaseConfig);
 }
 
-const analytics = getAnalytics(firebaseApp);
-
 // Authentication
 const auth = getAuth(firebaseApp);
 connectAuthEmulator(auth, 'http://127.0.0.1:9099');
 onAuthStateChanged(auth, (currentUser) => {
-	if (currentUser) {
-		console.log('user logged');
-	} else {
-		console.log('no user');
-	}
 	user.set(currentUser);
-	user.subscribe((value) => console.log(value));
 });
 
 export { firebaseApp, auth };
