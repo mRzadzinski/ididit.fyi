@@ -1,10 +1,10 @@
 <script>
+	import { firebaseApp } from '$lib/firebase/firebase';
 	import '../app.css';
 	import { goto } from '$app/navigation';
-	import { authUser } from '$lib/stores/firebaseAuthStore';
-	import { firebaseApp } from '$lib/firebase/firebase';
+	import { user } from '$lib/stores/firebaseAuthStore';
 
-	$: if ($authUser) {
+	$: if ($user) {
 		goto('/');
 	} else {
 		goto('/login');

@@ -1,15 +1,10 @@
-import { firebaseAuth } from '$lib/firebase/firebase';
+import { auth } from '$lib/firebase/firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { authUser } from '$lib/stores/firebaseAuthStore';
 
 export async function signUpWithEmail(email: string, password: string) {
 	let errorMsg = '';
 	try {
-		const userCredential = await createUserWithEmailAndPassword(firebaseAuth, email, password);
-		authUser.set({
-			uid: userCredential.user.uid,
-			email: userCredential.user.email || ''
-		});
+		await createUserWithEmailAndPassword(auth, email, password);
 	} catch (error) {
 		if (
 			typeof error === 'object' &&
@@ -24,13 +19,8 @@ export async function signUpWithEmail(email: string, password: string) {
 
 export async function loginWithEmail(email: string, password: string) {
 	let errorMsg = '';
-	console.log(firebaseAuth.currentUser);
 	try {
-		const userCredential = await signInWithEmailAndPassword(firebaseAuth, email, password);
-		authUser.set({
-			uid: userCredential.user.uid,
-			email: userCredential.user.email || ''
-		});
+		await signInWithEmailAndPassword(auth, email, password);
 	} catch (error) {
 		if (
 			typeof error === 'object' &&

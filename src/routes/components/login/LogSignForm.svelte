@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { signUpWithEmail, loginWithEmail } from '$lib/firebase/auth/emailAuth';
-	import ErrorMessage from '../ErrorMessage.svelte';
 	import { signUpError, loginError } from '$lib/stores/firebaseAuthStore';
+	import ErrorMessage from '../ErrorMessage.svelte';
 
 	export let signUp: boolean;
 	let email: string;

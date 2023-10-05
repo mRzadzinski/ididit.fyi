@@ -1,12 +1,10 @@
-import { firebaseAuth } from '$lib/firebase/firebase';
+import { auth } from '$lib/firebase/firebase';
 import { signOut } from 'firebase/auth';
-import { authUser } from '$lib/stores/firebaseAuthStore';
 
 export async function logout() {
 	let errorMsg = '';
 	try {
-		await signOut(firebaseAuth);
-		authUser.set(null);
+		await signOut(auth);
 	} catch (error) {
 		if (
 			typeof error === 'object' &&
