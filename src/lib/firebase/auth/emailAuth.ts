@@ -1,10 +1,16 @@
 import { auth } from '$lib/firebase/firebase';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import {
+	createUserWithEmailAndPassword,
+	sendEmailVerification,
+	signInWithEmailAndPassword
+} from 'firebase/auth';
 
 export async function signUpWithEmail(email: string, password: string) {
 	let errorMsg = '';
 	try {
-		await createUserWithEmailAndPassword(auth, email, password);
+		await createUserWithEmailAndPassword(auth, email, password)
+		.then(async (cred) => await sendEmailVerification(cred.user));
+	
 	} catch (error) {
 		if (
 			typeof error === 'object' &&

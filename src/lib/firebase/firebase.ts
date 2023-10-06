@@ -19,8 +19,10 @@ if (!getApps().length) {
 
 // Authentication
 const auth = getAuth(firebaseApp);
+console.log(auth);
 connectAuthEmulator(auth, 'http://127.0.0.1:9099');
 onAuthStateChanged(auth, (currentUser) => {
+	// if (auth.currentUser?.emailVerified === true) {}
 	user.set(currentUser);
 });
 
