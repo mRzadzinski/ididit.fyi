@@ -1,14 +1,17 @@
-import { auth } from '$lib/firebase/firebase';
-import {
-	signInWithEmailAndPassword
-} from 'firebase/auth';
+import { auth, redirectEmailSignInLink } from '$lib/firebase/firebase';
+import { sendSignInLinkToEmail, signInWithEmailAndPassword } from 'firebase/auth';
+import { signUpError, signInError } from '$lib/stores/firebaseErrors';
 
-export async function loginWithEmailLink(email: string) {
-	let errorMsg = '';
+const actionCodeSettings = {
+	url: redirectEmailSignInLink,
+	handleCodeInApp: true
+};
+
+export async function sendEmailLink(email: string) {
 	try {
-		// await createUserWithEmailAndPassword(auth, email, password)
-		// .then(async (cred) => await sendEmailVerification(cred.user));
-	
+		await sendSignInLinkToEmail(auth, email, actionCodeSettings);
+		window.localStorage.setItem('emailForSignIn', email);
+		signUpError.set('');
 	} catch (error) {
 		if (
 			typeof error === 'object' &&
@@ -16,15 +19,14 @@ export async function loginWithEmailLink(email: string) {
 			'message' in error &&
 			typeof error.message === 'string'
 		)
-			errorMsg = error.message;
+			signUpError.set(error.message.replace('Firebase: ', ''));
 	}
-	return errorMsg;
 }
 
-export async function loginWithPassword(email: string, password: string) {
-	let errorMsg = '';
+export async function signInWithPassword(email: string, password: string) {
 	try {
 		await signInWithEmailAndPassword(auth, email, password);
+		signInError.set('');
 	} catch (error) {
 		if (
 			typeof error === 'object' &&
@@ -32,7 +34,6 @@ export async function loginWithPassword(email: string, password: string) {
 			'message' in error &&
 			typeof error.message === 'string'
 		)
-			errorMsg = error.message;
+			signInError.set(error.message.replace('Firebase: ', ''));
 	}
-	return errorMsg;
 }

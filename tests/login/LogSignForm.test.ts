@@ -1,4 +1,4 @@
-import LogSignForm__SvelteComponent_ from '../../src/routes/components/login/LogSignForm.svelte';
+import LogSignForm__SvelteComponent_ from '../../src/components/auth/SignUpSignInForm.svelte';
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/svelte';
 import '@testing-library/jest-dom';

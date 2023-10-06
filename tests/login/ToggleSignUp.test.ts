@@ -1,4 +1,4 @@
-import ToggleSignUp__SvelteComponent_ from '../../src/routes/components/login/ToggleSignUp.svelte';
+import ToggleSignUp__SvelteComponent_ from '../../src/components/auth/ToggleSignUp.svelte';
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
