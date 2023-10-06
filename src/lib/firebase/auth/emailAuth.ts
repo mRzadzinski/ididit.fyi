@@ -1,15 +1,13 @@
 import { auth } from '$lib/firebase/firebase';
 import {
-	createUserWithEmailAndPassword,
-	sendEmailVerification,
 	signInWithEmailAndPassword
 } from 'firebase/auth';
 
-export async function signUpWithEmail(email: string, password: string) {
+export async function loginWithEmailLink(email: string) {
 	let errorMsg = '';
 	try {
-		await createUserWithEmailAndPassword(auth, email, password)
-		.then(async (cred) => await sendEmailVerification(cred.user));
+		// await createUserWithEmailAndPassword(auth, email, password)
+		// .then(async (cred) => await sendEmailVerification(cred.user));
 	
 	} catch (error) {
 		if (
@@ -23,7 +21,7 @@ export async function signUpWithEmail(email: string, password: string) {
 	return errorMsg;
 }
 
-export async function loginWithEmail(email: string, password: string) {
+export async function loginWithPassword(email: string, password: string) {
 	let errorMsg = '';
 	try {
 		await signInWithEmailAndPassword(auth, email, password);

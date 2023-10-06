@@ -5,18 +5,23 @@
 	import { user } from '$lib/stores/firebaseAuthStore';
 
 	let signUp = false;
+	let passwordLogin = false;
 
 	function toggleSignUp() {
 		signUp = !signUp;
+	}
+
+	function toggleEmailLogin() {
+		passwordLogin = !passwordLogin;
 	}
 </script>
 
 {#if $user === undefined || $user === null}
 	<div class="prose prose-sm card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
 		<div class="card-body">
-			<LogSignForm {signUp} />
+			<LogSignForm {signUp} {passwordLogin} />
 			<div class="divider">OR</div>
-			<LoginProviders />
+			<LoginProviders {signUp} {passwordLogin} {toggleEmailLogin} />
 			<ToggleSignUp {signUp} {toggleSignUp} />
 		</div>
 	</div>

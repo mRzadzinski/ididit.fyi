@@ -1,20 +1,21 @@
 <script lang="ts">
-	import { signUpWithEmail, loginWithEmail } from '$lib/firebase/auth/emailAuth';
+	import { loginWithEmailLink, loginWithPassword } from '$lib/firebase/auth/emailAuth';
 	import { signUpError, loginError } from '$lib/stores/firebaseAuthStore';
 	import ErrorMessage from '../ErrorMessage.svelte';
 
 	export let signUp: boolean;
+	export let passwordLogin: boolean;
 	let email: string;
 	let password: string = '';
 
 	const onSubmit = async () => {
-		if (signUp) {
-			const result = await signUpWithEmail(email, password);
-			signUpError.set(result.replace('Firebase: ', ''));
-		} else {
-			const result = await loginWithEmail(email, password);
-			loginError.set(result.replace('Firebase: ', ''));
-		}
+		// if (signUp) {
+		// 	const result = await signUpWithEmail(email, password);
+		// 	signUpError.set(result.replace('Firebase: ', ''));
+		// } else {
+		// 	const result = await loginWithEmail(email, password);
+		// 	loginError.set(result.replace('Firebase: ', ''));
+		// }
 	};
 </script>
 
@@ -35,7 +36,7 @@
 			class="input input-bordered"
 		/>
 	</div>
-	<div class="form-control">
+	<div class="form-control" style:display={signUp || passwordLogin ? 'none' : 'flex'}>
 		<label for="password-input" class="label">
 			<span class="label-text">Password</span>
 		</label>
@@ -54,8 +55,6 @@
 			<button
 				class="btn btn-xs btn-link p-0 no-underline label-text no-animation normal-case opacity-90 font-medium"
 				class:invisible={signUp}
-				hidden={signUp}
-				style:display={$signUpError.length > 0 ? 'none' : 'block'}
 				type="button"
 			>
 				Forgot password?
