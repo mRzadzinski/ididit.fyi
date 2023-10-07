@@ -4,7 +4,7 @@ import { user } from '$lib/stores/firebaseStores';
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyD6o7Yq4_ORCXQqbCLo-w1MbR08EcDjeTo',
-	authDomain: 'ididit-fyi.firebaseapp.com',
+	authDomain: 'www.ididit.fyi',
 	projectId: 'ididit-fyi',
 	storageBucket: 'ididit-fyi.appspot.com',
 	messagingSenderId: '756131332156',
