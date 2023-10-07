@@ -2,6 +2,7 @@
 	import SignUpSignInForm from '../../components/auth/SignUpSignInForm.svelte';
 	import ToggleSignUp from '../../components/auth/ToggleSignUp.svelte';
 	import LoginProviders from '../../components/auth/LoginProviders.svelte';
+	import { signInError, signUpError } from '$lib/stores/firebaseErrors';
 	import { user } from '$lib/stores/firebaseStores';
 	import { goto } from '$app/navigation';
 
@@ -14,14 +15,18 @@
 
 	function toggleSignUp() {
 		signUp = !signUp;
+		signUpError.set('');
+		signInError.set('');
 	}
 
 	function toggleEmailSignIn() {
 		emailLinkSignIn = !emailLinkSignIn;
+		signUpError.set('');
+		signInError.set('');
 	}
 </script>
 
-<SignUpSignInForm {signUp} {emailLinkSignIn} />
+<SignUpSignInForm {signUp} {emailLinkSignIn} {toggleEmailSignIn} />
 <div class="divider">OR</div>
 <LoginProviders {signUp} {emailLinkSignIn} {toggleEmailSignIn} />
 <ToggleSignUp {signUp} {toggleSignUp} />

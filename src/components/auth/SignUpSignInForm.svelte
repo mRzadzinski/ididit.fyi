@@ -1,18 +1,26 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { sendEmailLink, signInWithPassword } from '$lib/firebase/auth/emailAuth';
 	import { signUpError, signInError } from '$lib/stores/firebaseErrors';
 	import ErrorMessage from '../ErrorMessage.svelte';
 
 	export let signUp: boolean;
 	export let emailLinkSignIn: boolean;
+	export let toggleEmailSignIn: () => void;
 	let email: string;
-	let password: string = '';
+	let password = '';
+	let inProgress = false;
 
 	const onSubmit = async () => {
 		if (signUp || emailLinkSignIn) {
+			inProgress = true;
 			await sendEmailLink(email);
+			goto('/auth/link-sent');
+			inProgress = false;
 		} else {
+			inProgress = true;
 			await signInWithPassword(email, password);
+			inProgress = false;
 		}
 	};
 </script>
@@ -54,6 +62,7 @@
 				class="btn btn-xs btn-link p-0 no-underline label-text no-animation normal-case opacity-90 font-medium"
 				class:invisible={signUp}
 				type="button"
+				on:click={toggleEmailSignIn}
 			>
 				Forgot password?
 			</button>
@@ -66,6 +75,9 @@
 	{/if}
 	<div class="form-control mt-6">
 		<button class="btn btn-primary w-36" type="submit">
+			{#if inProgress}
+				<span class="loading loading-spinner" />
+			{/if}
 			{signUp ? 'Sign up' : 'Sign in'}
 		</button>
 	</div>
