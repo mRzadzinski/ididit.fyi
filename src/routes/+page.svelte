@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { logout } from '$lib/firebase/auth/signOut';
 	import { signOutError } from '$lib/stores/firebaseErrors';
-	import { user } from '$lib/stores/firebaseAuthStore';
+	import { user } from '$lib/stores/firebaseStores';
 	import { goto } from '$app/navigation';
 
 	$: if ($user === null) {

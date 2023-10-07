@@ -1,6 +1,6 @@
 import { getApps, initializeApp } from 'firebase/app';
 import { getAuth, connectAuthEmulator, onAuthStateChanged } from 'firebase/auth';
-import { user } from '$lib/stores/firebaseAuthStore';
+import { user } from '$lib/stores/firebaseStores';
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyD6o7Yq4_ORCXQqbCLo-w1MbR08EcDjeTo',
@@ -27,7 +27,6 @@ onAuthStateChanged(auth, (currentUser) => {
 	// if (auth.currentUser?.emailVerified === true) {}
 	if (currentUser) {
 		console.log('signed in');
-		console.log(currentUser.email)
 	} else {
 		console.log('no user');
 	}

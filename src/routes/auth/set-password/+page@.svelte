@@ -2,7 +2,7 @@
 	import { auth } from '$lib/firebase/firebase';
 	import { updatePassword } from 'firebase/auth';
 	import { updatePasswordError } from '$lib/stores/firebaseErrors';
-	import { user } from '$lib/stores/firebaseAuthStore';
+	import { user } from '$lib/stores/firebaseStores';
 	import ErrorMessage from '../../../components/ErrorMessage.svelte';
 	import { goto } from '$app/navigation';
 
@@ -68,6 +68,7 @@
 								placeholder="password"
 								minlength="12"
 								maxlength="128"
+								autocomplete="new-password"
 								class="input input-bordered"
 							/>
 						</div>
@@ -83,6 +84,7 @@
 								placeholder="confirm password"
 								minlength="12"
 								maxlength="128"
+								autocomplete="new-password"
 								class="input input-bordered"
 							/>
 						</div>
@@ -98,6 +100,16 @@
 									<span class="loading loading-spinner" />
 								{/if}
 								Save
+							</button>
+						</div>
+						<div class="mt-7 w-full">
+							<button
+								on:click={() => {
+									goto('/')
+								}}
+								class="btn btn-xs btn-link p-0 no-underline label-text no-animation normal-case opacity-90 font-medium"
+							>
+								Do it later in settings
 							</button>
 						</div>
 					</form>

@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { auth } from '$lib/firebase/firebase';
-	import { isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
+	import { getAdditionalUserInfo, isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
 	import WarningMessage from '../../../components/WarningMessage.svelte';
 	import ErrorMessage from '../../../components/ErrorMessage.svelte';
 	import { signInError } from '$lib/stores/firebaseErrors';
+	import { firstSignIn } from '$lib/stores/firebaseStores';
 	import { goto } from '$app/navigation';
 
 	let inputValue: string;
@@ -25,14 +26,20 @@
 					window.localStorage.removeItem('emailForSignIn');
 				} else {
 					wrongLink = true;
-					console.log('wrongLink');
 					return;
 				}
 			}
 			if (email) {
-				await timeout(2000);
-				console.log('timeout done');
-				await signInWithEmailLink(auth, email);
+				await timeout(1500);
+				const user = await signInWithEmailLink(auth, email);
+				firstSignIn.set(getAdditionalUserInfo(user)?.isNewUser);
+				signInError.set('');
+
+				if ($firstSignIn) {
+					goto('/auth/set-password');
+				} else {
+					goto('/');
+				}
 			}
 		} catch (error) {
 			if (
@@ -48,26 +55,19 @@
 
 	$: if ($signInError) {
 		wrongLink = true;
-		console.log($signInError);
 	}
 </script>
 
 {#if wrongLink}
 	<WarningMessage message="Link inactive. Go to sign in page." />
-{:else if email || !linkEvaluated}
-	<h1>Signing in...</h1>
-{:else if !email && linkEvaluated}
-	<h1>Enter your email</h1>
-{/if}
-
-{#if wrongLink}
 	{#if inProgress}
 		<span class="loading loading-spinner" />
 	{:else}
 		<button
 			on:click={() => {
 				inProgress = true;
-				goto('auth');
+				goto('/auth');
+				signInError.set('');
 			}}
 			class="btn btn-active btn-neutral"
 		>
@@ -75,10 +75,12 @@
 		</button>
 	{/if}
 {:else if email || !linkEvaluated}
+	<h1>Signing in...</h1>
 	<div class="w-full flex justify-center">
 		<span class="loading loading-spinner loading-lg" />
 	</div>
 {:else if !email && linkEvaluated}
+	<h1>Enter your email</h1>
 	<form on:submit|preventDefault={() => {}} aria-label="form">
 		<div class="form-control">
 			<label for="email-input" class="label">

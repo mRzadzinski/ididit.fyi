@@ -2,6 +2,12 @@
 	import SignUpSignInForm from '../../components/auth/SignUpSignInForm.svelte';
 	import ToggleSignUp from '../../components/auth/ToggleSignUp.svelte';
 	import LoginProviders from '../../components/auth/LoginProviders.svelte';
+	import { user } from '$lib/stores/firebaseStores';
+	import { goto } from '$app/navigation';
+
+	$: if ($user) {
+		goto('/');
+	}
 
 	let signUp = false;
 	let emailLinkSignIn = false;
