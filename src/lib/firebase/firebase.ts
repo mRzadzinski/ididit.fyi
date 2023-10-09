@@ -4,7 +4,7 @@ import { user } from '$lib/stores/firebaseStores';
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyD6o7Yq4_ORCXQqbCLo-w1MbR08EcDjeTo',
-	authDomain: 'www.ididit.fyi/auth/set-password/',
+	authDomain: 'www.ididit.fyi',
 	projectId: 'ididit-fyi',
 	storageBucket: 'ididit-fyi.appspot.com',
 	messagingSenderId: '756131332156',
@@ -21,7 +21,7 @@ if (!getApps().length) {
 const auth = getAuth(firebaseApp);
 // connectAuthEmulator(auth, 'http://127.0.0.1:9099');
 // const redirectEmailSignInLink = 'http://127.0.0.1:5000/auth/sign-in-with-link/';
-const redirectEmailSignInLink = 'https://www.ididit.fyi/auth/sign-in-with-link/'
+const redirectEmailSignInLink = 'https://www.ididit.fyi/auth/sign-in-with-link/';
 
 onAuthStateChanged(auth, (currentUser) => {
 	if (currentUser) {
