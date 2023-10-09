@@ -55,6 +55,17 @@
 					{:else}
 					<form on:submit|preventDefault={async () => await setPassword()} aria-label="form">
 						<h1>Set password</h1>
+						<label for="email-input" class="label">
+							<span class="label-text">Email</span>
+						</label>
+						<input
+						value={$user.email}
+						id="email-input"
+						type="email"
+						placeholder="email"
+						disabled
+							class="input input-bordered w-full"
+						/>
 						<div class="form-control">
 							<label for="password-input" class="label">
 								<span class="label-text">Password</span>
