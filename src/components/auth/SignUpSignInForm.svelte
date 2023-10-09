@@ -15,7 +15,9 @@
 		if (signUp || emailLinkSignIn) {
 			inProgress = true;
 			await sendEmailLink(email);
-			goto('/auth/link-sent');
+			if ($signUpError === '') {
+				goto('/auth/link-sent');
+			}
 			inProgress = false;
 		} else {
 			inProgress = true;

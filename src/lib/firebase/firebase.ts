@@ -19,12 +19,11 @@ if (!getApps().length) {
 
 // Authentication
 const auth = getAuth(firebaseApp);
-connectAuthEmulator(auth, 'http://127.0.0.1:9099');
-const redirectEmailSignInLink = 'http://127.0.0.1:5000/auth/sign-in-with-link/';
-// const redirectEmailSignInLink = 'https://www.ididit.fyi/auth/sign-in-with-link/'
+// connectAuthEmulator(auth, 'http://127.0.0.1:9099');
+// const redirectEmailSignInLink = 'http://127.0.0.1:5000/auth/sign-in-with-link/';
+const redirectEmailSignInLink = 'https://www.ididit.fyi/auth/sign-in-with-link/'
 
 onAuthStateChanged(auth, (currentUser) => {
-	// if (auth.currentUser?.emailVerified === true) {}
 	if (currentUser) {
 		console.log('signed in');
 	} else {
