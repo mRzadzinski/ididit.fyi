@@ -1,13 +1,13 @@
 <script>
 	import { firstSignIn, user } from '$lib/stores/firebaseStores';
-	import { checkGoogleSignInStatus, signInWithGoogle } from '$lib/firebase/auth/googleAuth';
+	import { checkXSignInStatus, signInWithX } from '$lib/firebase/auth/xAuth';
 	import { goto } from '$app/navigation';
 	import SignInWithProvider from '../../../components/auth/SignInWithProvider.svelte';
 
 	$: if ($user === null) {
-		signInWithGoogle();
+		signInWithX();
 	} else if ($user) {
-		checkGoogleSignInStatus();
+		checkXSignInStatus();
 	}
 
 	$: if ($firstSignIn === false && $firstSignIn !== undefined) {
@@ -17,4 +17,4 @@
 	}
 </script>
 
-<SignInWithProvider providerName='Google' />
+<SignInWithProvider providerName="X" />

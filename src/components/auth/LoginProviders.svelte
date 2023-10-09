@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Google from '~icons/bi/google';
-	import Apple from '~icons/bi/apple';
-	import Email from '~icons/mi/email';
+	import X from '~icons/simple-icons/x';
+	import Email from '~icons/ic/round-link';
 	import Password from '~icons/ic/baseline-lock';
 	import { signInWithGoogle } from '$lib/firebase/auth/googleAuth';
 	import { goto } from '$app/navigation';
@@ -27,21 +27,21 @@
 					style="font-size: 2.3rem; color: {iconsColor}; cursor: pointer; margin-top: -.15rem"
 				/>
 			{:else}
-				<Email style="font-size: 2.3rem; color: {iconsColor}; cursor: pointer;" />
+				<Email
+					style="font-size: 2.7rem; color: {iconsColor}; cursor: pointer; margin-top: -.23rem;"
+				/>
 			{/if}
 		</div>
 	{/if}
 	<div
 		class="tooltip tooltip-bottom"
-		data-tip={signUp ? 'Sign up with Apple' : 'Sign in with Apple'}
+		data-tip={signUp ? 'Sign up with X (Twitter)' : 'Sign in with X (Twitter)'}
 		role="button"
 		tabindex="0"
-		on:click={() => {}}
-		on:keydown={() => {}}
+		on:click={() => goto('/auth/sign-in-with-x')}
+		on:keydown={() => goto('/auth/sign-in-with-x')}
 	>
-		<Apple
-			style="font-size: 2.1rem; color: {iconsColor}; margin-top: -.2rem; cursor: pointer; opacity: .8"
-		/>
+		<X style="font-size: 1.8rem; color: {iconsColor}; cursor: pointer; margin-top: .2rem" />
 	</div>
 	<div
 		class="tooltip tooltip-bottom"
