@@ -3,6 +3,8 @@
 	import Apple from '~icons/bi/apple';
 	import Email from '~icons/mi/email';
 	import Password from '~icons/ic/baseline-lock';
+	import { signInWithGoogle } from '$lib/firebase/auth/googleAuth';
+	import { goto } from '$app/navigation';
 
 	export let signUp: boolean;
 	export let emailLinkSignIn: boolean;
@@ -29,7 +31,14 @@
 			{/if}
 		</div>
 	{/if}
-	<div class="tooltip tooltip-bottom" data-tip={signUp ? 'Sign up with Apple' : 'Sign in with Apple'}>
+	<div
+		class="tooltip tooltip-bottom"
+		data-tip={signUp ? 'Sign up with Apple' : 'Sign in with Apple'}
+		role="button"
+		tabindex="0"
+		on:click={() => {}}
+		on:keydown={() => {}}
+	>
 		<Apple
 			style="font-size: 2.1rem; color: {iconsColor}; margin-top: -.2rem; cursor: pointer; opacity: .8"
 		/>
@@ -37,6 +46,10 @@
 	<div
 		class="tooltip tooltip-bottom"
 		data-tip={signUp ? 'Sign up with Google' : 'Sign in with Google'}
+		role="button"
+		tabindex="0"
+		on:click={() => goto('/auth/sign-in-with-google')}
+		on:keydown={() => goto('/auth/sign-in-with-google')}
 	>
 		<Google style="font-size: 1.8rem; color: {iconsColor}; cursor: pointer; margin-top: .2rem" />
 	</div>

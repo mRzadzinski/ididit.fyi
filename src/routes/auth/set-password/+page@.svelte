@@ -2,8 +2,8 @@
 	import { auth } from '$lib/firebase/firebase';
 	import { updatePassword } from 'firebase/auth';
 	import { updatePasswordError } from '$lib/stores/firebaseErrors';
-	import { user } from '$lib/stores/firebaseStores';
 	import ErrorMessage from '../../../components/ErrorMessage.svelte';
+	import { user } from '$lib/stores/firebaseStores';
 	import { goto } from '$app/navigation';
 
 	let password: string;
@@ -18,9 +18,7 @@
 	async function setPassword() {
 		let authUser = auth.currentUser;
 		try {
-			console.log('hello1');
 			if (password === passwordConfirm && password.length >= 12) {
-				console.log('hello2');
 				if (authUser !== null) {
 					inProgress = true;
 					await updatePassword(authUser, password);
@@ -46,7 +44,8 @@
 		<div class="prose prose-sm card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
 			<div class="card-body">
 				{#if passwordUpdated}
-					<h1>New password saved</h1>
+					<h1 class="mb-2">New password saved</h1>
+					<p class="mt-0 mb-5">You can now sign in with email and password</p>
 					<button class="btn btn-primary w-36" type="submit" on:click={() => goto('/')}>
 						{#if inProgress}
 							<span class="loading loading-spinner" />

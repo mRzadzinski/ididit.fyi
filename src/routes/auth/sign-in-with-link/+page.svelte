@@ -13,9 +13,9 @@
 	let wrongLink = false;
 	let inProgress = false;
 
-	function timeout(ms: number) {
-		return new Promise((resolve) => setTimeout(resolve, ms));
-	}
+	// function timeout(ms: number) {
+	// 	return new Promise((resolve) => setTimeout(resolve, ms));
+	// }
 
 	async function confirmSignIn() {
 		try {
@@ -30,7 +30,7 @@
 				}
 			}
 			if (email) {
-				await timeout(1500);
+				// await timeout(1500);
 				const user = await signInWithEmailLink(auth, email);
 				firstSignIn.set(getAdditionalUserInfo(user)?.isNewUser);
 				signInError.set('');
