@@ -1,9 +1,7 @@
 <script lang="ts">
-	import Google from '~icons/bi/google';
-	import X from '~icons/simple-icons/x';
+	import Google from '~icons/fa6-brands/google';
 	import Email from '~icons/ic/round-link';
 	import Password from '~icons/ic/baseline-lock';
-	import { signInWithGoogle } from '$lib/firebase/auth/googleAuth';
 	import { goto } from '$app/navigation';
 
 	export let signUp: boolean;
@@ -33,16 +31,6 @@
 			{/if}
 		</div>
 	{/if}
-	<div
-		class="tooltip tooltip-bottom"
-		data-tip={signUp ? 'Sign up with X (Twitter)' : 'Sign in with X (Twitter)'}
-		role="button"
-		tabindex="0"
-		on:click={() => goto('/auth/sign-in-with-x')}
-		on:keydown={() => goto('/auth/sign-in-with-x')}
-	>
-		<X style="font-size: 1.8rem; color: {iconsColor}; cursor: pointer; margin-top: .2rem" />
-	</div>
 	<div
 		class="tooltip tooltip-bottom"
 		data-tip={signUp ? 'Sign up with Google' : 'Sign in with Google'}
