@@ -53,10 +53,12 @@ describe('Test LogSignForm__SvelteComponent_ component', () => {
 
 		let header = screen.getByRole('heading');
 		let forgotPasswordBtn = screen.getByText(/Forgot password?/i);
-		const buttons = screen.getAllByRole('button').filter((btn) => btn.innerHTML === 'Login');
+		const buttons = screen
+			.getAllByRole('button')
+			.filter((btn) => btn.innerHTML.includes('Sign in'));
 		let sendFormBtn = buttons[0];
 
-		expect(header).toHaveTextContent('Login');
+		expect(header).toHaveTextContent('Sign in');
 		expect(forgotPasswordBtn).toBeInTheDocument();
 		expect(sendFormBtn).toBeInTheDocument();
 
