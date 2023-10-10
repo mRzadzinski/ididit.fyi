@@ -1,13 +1,32 @@
-import LogSignForm__SvelteComponent_ from '../../src/components/auth/SignUpSignInForm.svelte';
-import { describe, expect, it } from 'vitest';
+import SignUpSignInForm__SvelteComponent_ from '../../src/components/auth/SignUpSignInForm.svelte';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/svelte';
 import '@testing-library/jest-dom';
 
-describe('Test LogSignForm__SvelteComponent_ component', () => {
-	it('Renders correct form elements', () => {
-		const { rerender } = render(LogSignForm__SvelteComponent_, { signUp: false });
+import { goto } from '$app/navigation';
+import { sendEmailLink, signInWithPassword } from '$lib/firebase/auth/emailAuth';
+import { signUpError, signInError } from '$lib/stores/firebaseErrors';
+import ErrorMessage__SvelteComponent_ from '../../src/components/ErrorMessage.svelte';
 
-		const form = screen.getByRole('form')
+vi.mock('$app/navigation', () => {
+	const goto = vi.fn();
+
+	return { goto };
+});
+
+describe('Test LogSignForm__SvelteComponent_ component', () => {
+	afterEach(() => {
+		vi.resetAllMocks();
+	});
+
+	it('Renders correct form elements', () => {
+		const { rerender } = render(SignUpSignInForm__SvelteComponent_, {
+			signUp: false,
+			emailLinkSignIn: false,
+			toggleEmailSignIn: () => {}
+		});
+
+		const form = screen.getByRole('form');
 		const header = screen.getByRole('heading');
 		const emailInput = screen.getByLabelText('Email');
 		const passwordInput = screen.getByLabelText('Password');
@@ -19,14 +38,18 @@ describe('Test LogSignForm__SvelteComponent_ component', () => {
 		expect(passwordInput).toBeInTheDocument();
 		expect(buttons).toHaveLength(2);
 
-		rerender({ signUp: true });
+		rerender({ signUp: true, emailLinkSignIn: false, toggleEmailSignIn: () => {} });
 
 		buttons = screen.getAllByRole('button');
 		expect(buttons).toHaveLength(1);
 	});
 
 	it('Reactive elements display correct text', () => {
-		const { rerender } = render(LogSignForm__SvelteComponent_, { signUp: false });
+		const { rerender } = render(SignUpSignInForm__SvelteComponent_, {
+			signUp: false,
+			emailLinkSignIn: false,
+			toggleEmailSignIn: () => {}
+		});
 
 		let header = screen.getByRole('heading');
 		let forgotPasswordBtn = screen.getByText(/Forgot password?/i);
@@ -37,7 +60,7 @@ describe('Test LogSignForm__SvelteComponent_ component', () => {
 		expect(forgotPasswordBtn).toBeInTheDocument();
 		expect(sendFormBtn).toBeInTheDocument();
 
-		rerender({ signUp: true });
+		rerender({ signUp: true, emailLinkSignIn: false, toggleEmailSignIn: () => {} });
 
 		header = screen.getByRole('heading');
 		forgotPasswordBtn = screen.getByText(/Forgot password?/i);

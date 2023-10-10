@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	// import { goto } from '$app/navigation';
 	import { sendEmailLink, signInWithPassword } from '$lib/firebase/auth/emailAuth';
 	import { signUpError, signInError } from '$lib/stores/firebaseErrors';
 	import ErrorMessage from '../ErrorMessage.svelte';
@@ -16,7 +16,7 @@
 			inProgress = true;
 			await sendEmailLink(email);
 			if ($signUpError === '') {
-				goto('/auth/link-sent');
+				// goto('/auth/link-sent');
 			}
 			inProgress = false;
 		} else {

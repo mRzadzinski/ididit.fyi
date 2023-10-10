@@ -48,8 +48,7 @@
 		<div class="prose prose-sm card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
 			<div class="card-body">
 				{#if passwordUpdated}
-					<h1 class="mb-2">New password saved</h1>
-					<p class="mt-0 mb-5">You can now sign in with email and password</p>
+					<h1>New password saved</h1>
 					<button class="btn btn-primary w-36" type="submit" on:click={() => goto('/')}>
 						{#if inProgress}
 							<span class="loading loading-spinner" />
