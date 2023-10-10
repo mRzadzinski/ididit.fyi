@@ -42,6 +42,6 @@ describe('Test ToggleSignUp component', () => {
 		});
 
 		btn = screen.getByRole('button');
-		expect(btn).toHaveTextContent(/Go to login/i);
+		expect(btn).toHaveTextContent(/Sign in/i);
 	});
 });
