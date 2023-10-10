@@ -59,6 +59,10 @@
 				{:else}
 					<form on:submit|preventDefault={async () => await setPassword()} aria-label="form">
 						<h1>Set password</h1>
+						<div class="flex mb-5 w-full">
+							<div class="badge badge-neutral mr-2">optional</div>
+							<div class="text-xs flex items-center">Enables sign-in with email and password</div>
+						</div>
 						<label for="email-input" class="label">
 							<span class="label-text">Email</span>
 						</label>
@@ -114,7 +118,7 @@
 								Save
 							</button>
 						</div>
-						<div class="mt-7 w-full">
+						<div class="mt-5 w-full">
 							<button
 								on:click={() => {
 									goto('/');
