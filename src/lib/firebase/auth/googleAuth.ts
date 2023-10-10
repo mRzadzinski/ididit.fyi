@@ -20,6 +20,7 @@ export async function checkGoogleSignInStatus() {
 		if (result) {
 			firstSignIn.set(getAdditionalUserInfo(result)?.isNewUser);
 		}
+		signInError.set('');
 	} catch (error) {
 		if (
 			typeof error === 'object' &&

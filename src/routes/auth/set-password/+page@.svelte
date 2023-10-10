@@ -2,7 +2,7 @@
 	import { auth } from '$lib/firebase/firebase';
 	import { updatePassword } from 'firebase/auth';
 	import { updatePasswordError } from '$lib/stores/firebaseErrors';
-	import ErrorMessage from '../../../components/ErrorMessage.svelte';
+	import WarningMessage from '../../../components/WarningMessage.svelte';
 	import { user } from '$lib/stores/firebaseStores';
 	import { goto } from '$app/navigation';
 
@@ -26,6 +26,10 @@
 					passwordUpdated = true;
 					updatePasswordError.set('');
 				}
+			} else if (password !== passwordConfirm) {
+				updatePasswordError.set("Passwords don't match");
+			} else if (password.length < 12) {
+				updatePasswordError.set('Password too short, 12 characters minimum.');
 			}
 		} catch (error) {
 			if (
@@ -52,18 +56,18 @@
 						{/if}
 						Go to app
 					</button>
-					{:else}
+				{:else}
 					<form on:submit|preventDefault={async () => await setPassword()} aria-label="form">
 						<h1>Set password</h1>
 						<label for="email-input" class="label">
 							<span class="label-text">Email</span>
 						</label>
 						<input
-						value={$user.email}
-						id="email-input"
-						type="email"
-						placeholder="email"
-						disabled
+							value={$user.email}
+							id="email-input"
+							type="email"
+							placeholder="email"
+							disabled
 							class="input input-bordered w-full"
 						/>
 						<div class="form-control">
@@ -99,11 +103,9 @@
 							/>
 						</div>
 						{#if $updatePasswordError.length > 0}
-							<ErrorMessage message={$updatePasswordError} />
-						{:else if $updatePasswordError.length > 0}
-							<ErrorMessage message={$updatePasswordError} />
+							<WarningMessage message={$updatePasswordError} />
 						{/if}
-	
+
 						<div class="form-control mt-6">
 							<button class="btn btn-primary w-36" type="submit">
 								{#if inProgress}
@@ -115,7 +117,7 @@
 						<div class="mt-7 w-full">
 							<button
 								on:click={() => {
-									goto('/')
+									goto('/');
 								}}
 								class="btn btn-xs btn-link p-0 no-underline label-text no-animation normal-case opacity-90 font-medium"
 							>
@@ -124,7 +126,6 @@
 						</div>
 					</form>
 				{/if}
-
 			</div>
 		</div>
 	</main>
