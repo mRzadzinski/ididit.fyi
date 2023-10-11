@@ -1,6 +1,11 @@
 import { auth, redirectEmailSignInLink } from '$lib/firebase/firebase';
-import { sendSignInLinkToEmail, signInWithEmailAndPassword } from 'firebase/auth';
+import {
+	sendSignInLinkToEmail,
+	signInWithEmailAndPassword,
+	getAdditionalUserInfo
+} from 'firebase/auth';
 import { signUpError, signInError } from '$lib/stores/firebaseErrors';
+import { firstSignIn } from '$lib/stores/firebaseStores';
 
 const actionCodeSettings = {
 	url: redirectEmailSignInLink,
@@ -25,7 +30,8 @@ export async function sendEmailLink(email: string) {
 
 export async function signInWithPassword(email: string, password: string) {
 	try {
-		await signInWithEmailAndPassword(auth, email, password);
+		const userInfo = await signInWithEmailAndPassword(auth, email, password);
+		firstSignIn.set(getAdditionalUserInfo(userInfo)?.isNewUser);
 		signInError.set('');
 	} catch (error) {
 		if (
