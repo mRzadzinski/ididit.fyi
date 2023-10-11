@@ -4,10 +4,16 @@
 	import { goto } from '$app/navigation';
 	import SignInWithProvider from '../../../components/auth/SignInWithProvider.svelte';
 
+	let signedInWithGoogle = false;
+
 	$: if ($user === null) {
 		signInWithGoogle();
-	} else if ($user) {
+		signedInWithGoogle = true;
+	} else if ($user && signedInWithGoogle) {
 		checkForFirstSignIn();
+	} else if ($user) {
+		// User is already logged in
+		goto('/');
 	}
 
 	$: if ($firstSignIn === false && $firstSignIn !== undefined) {
