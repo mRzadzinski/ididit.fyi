@@ -26,7 +26,9 @@
 	}
 </script>
 
-<SignUpSignInForm {signUp} {emailLinkSignIn} {toggleEmailSignIn} />
-<div class="divider">OR</div>
-<LoginProviders {signUp} {emailLinkSignIn} {toggleEmailSignIn} />
-<ToggleSignUp {signUp} {toggleSignUp} />
+{#if $user === null}
+	<SignUpSignInForm {signUp} {emailLinkSignIn} {toggleEmailSignIn} />
+	<div class="divider">OR</div>
+	<LoginProviders {signUp} {emailLinkSignIn} {toggleEmailSignIn} />
+	<ToggleSignUp {signUp} {toggleSignUp} />
+{/if}

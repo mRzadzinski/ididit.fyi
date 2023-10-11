@@ -14,7 +14,7 @@ vi.mock('$app/navigation', () => {
 	return { goto };
 });
 
-describe('Test LogSignForm__SvelteComponent_ component', () => {
+describe('Test SignUpSignInForm component', () => {
 	afterEach(() => {
 		vi.resetAllMocks();
 	});

@@ -47,8 +47,10 @@
 				error &&
 				'message' in error &&
 				typeof error.message === 'string'
-			)
+			) {
+				inProgress = false;
 				signInError.set(error.message.replace('Firebase: ', ''));
+			}
 		}
 	}
 	confirmSignIn();
@@ -60,20 +62,19 @@
 
 {#if wrongLink}
 	<WarningMessage message="Link inactive. Go to sign in page." />
-	{#if inProgress}
-		<span class="loading loading-spinner" />
-	{:else}
-		<button
-			on:click={() => {
-				inProgress = true;
-				goto('/auth');
-				signInError.set('');
-			}}
-			class="btn btn-active btn-neutral"
-		>
-			Sign in page
-		</button>
-	{/if}
+	<button
+		on:click={() => {
+			inProgress = true;
+			goto('/auth');
+			signInError.set('');
+		}}
+		class="btn btn-active btn-neutral"
+	>
+		{#if inProgress}
+			<span class="loading loading-spinner" />
+		{/if}
+		Sign in page
+	</button>
 {:else if email || !linkEvaluated}
 	<h1>Signing in...</h1>
 	<div class="w-full flex justify-center">
@@ -81,7 +82,7 @@
 	</div>
 {:else if !email && linkEvaluated}
 	<h1>Enter your email</h1>
-	<form on:submit|preventDefault={() => {}} aria-label="form">
+	<form aria-label="form">
 		<div class="form-control">
 			<label for="email-input" class="label">
 				<span class="label-text">Email</span>
@@ -104,9 +105,15 @@
 				type="button"
 				on:click={() => {
 					email = inputValue;
+					inProgress = true;
 					confirmSignIn();
-				}}>Sign in</button
+				}}
 			>
+				{#if inProgress}
+					<span class="loading loading-spinner" />
+				{/if}
+				Sign in
+			</button>
 		</div>
 	</form>
 {/if}

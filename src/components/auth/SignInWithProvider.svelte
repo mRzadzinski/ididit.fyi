@@ -4,7 +4,7 @@
 	import { signInError } from '$lib/stores/firebaseErrors';
 	import ErrorMessage from '../ErrorMessage.svelte';
 
-    export let providerName: string;
+	export let providerName: string;
 </script>
 
 {#if $user === null}
@@ -12,12 +12,15 @@
 	<div class="w-full flex justify-center">
 		<span class="loading loading-spinner loading-lg" />
 	</div>
-{:else if $user || $user === undefined}
-	<div class="w-full flex justify-center">
+{:else if $user}
+	<div class="w-full flex flex-col justify-center">
+		<h1>ididit.fyi</h1>
 		<span class="loading loading-spinner loading-lg" />
 	</div>
 {:else if $signInError !== ''}
-	<ErrorMessage message={`${providerName} sign in failed: ${$signInError}. <br>Go back to sign in page.`} />
+	<ErrorMessage
+		message={`${providerName} sign in failed: ${$signInError}. <br>Go back to sign in page.`}
+	/>
 	<button
 		on:click={() => {
 			goto('/auth');

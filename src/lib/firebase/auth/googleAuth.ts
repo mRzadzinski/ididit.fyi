@@ -13,7 +13,7 @@ export async function signInWithGoogle() {
 	await signInWithRedirect(auth, provider);
 }
 
-export async function checkGoogleSignInStatus() {
+export async function checkForFirstSignIn() {
 	try {
 		const result = await getRedirectResult(auth);
 

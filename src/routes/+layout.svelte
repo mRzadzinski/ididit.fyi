@@ -11,5 +11,6 @@
 		</div>
 		<span class="loading loading-spinner loading-lg" />
 	</div>
+{:else}
+	<slot />
 {/if}
-<slot />
