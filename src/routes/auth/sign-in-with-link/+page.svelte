@@ -6,6 +6,8 @@
 	import { signInError } from '$lib/stores/firebaseErrors';
 	import { firstSignIn } from '$lib/stores/firebaseStores';
 	import { goto } from '$app/navigation';
+	import { user } from '$lib/stores/firebaseStores';
+	import { logout } from '$lib/firebase/auth/signOut';
 
 	let inputValue: string;
 	let email: string | null;
@@ -19,6 +21,8 @@
 
 	async function confirmSignIn() {
 		try {
+			if ($user) logout();
+
 			if (!linkEvaluated) {
 				if (isSignInWithEmailLink(auth, window.location.href)) {
 					linkEvaluated = true;
@@ -31,8 +35,8 @@
 			}
 			if (email) {
 				// await timeout(1500);
-				const user = await signInWithEmailLink(auth, email);
-				firstSignIn.set(getAdditionalUserInfo(user)?.isNewUser);
+				const userInfo = await signInWithEmailLink(auth, email);
+				firstSignIn.set(getAdditionalUserInfo(userInfo)?.isNewUser);
 				signInError.set('');
 
 				if ($firstSignIn) {
