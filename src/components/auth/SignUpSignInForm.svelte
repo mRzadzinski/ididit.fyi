@@ -1,5 +1,5 @@
 <script lang="ts">
-	// import { goto } from '$app/navigation';
+	import { goto } from '$app/navigation';
 	import { sendEmailLink, signInWithPassword } from '$lib/firebase/auth/emailAuth';
 	import { signUpError, signInError } from '$lib/stores/firebaseErrors';
 	import ErrorMessage from '../ErrorMessage.svelte';
@@ -16,7 +16,7 @@
 			inProgress = true;
 			await sendEmailLink(email);
 			if ($signUpError === '') {
-				// goto('/auth/link-sent');
+				goto('/auth/link-sent');
 			}
 			inProgress = false;
 		} else {
@@ -27,7 +27,7 @@
 	};
 </script>
 
-<form on:submit|preventDefault={onSubmit} aria-label="form">
+<form aria-label="form">
 	<div class="form-control">
 		<h1>
 			{signUp ? 'Sign up' : 'Sign in'}
@@ -76,7 +76,9 @@
 		<ErrorMessage message={$signInError} />
 	{/if}
 	<div class="form-control mt-6">
-		<button class="btn btn-primary w-36" type="submit">
+		<!-- Submitting form with empty, display: none input doesn't work in Safari.
+			moving submit handler to on button click.  -->
+		<button class="btn btn-primary w-36" on:click={onSubmit}>
 			{#if inProgress}
 				<span class="loading loading-spinner" />
 			{/if}
