@@ -5,8 +5,9 @@
 	export let register: boolean;
 </script>
 
-<span class="mt-4 w-full">
+<span class="mt-1 w-full">
 	<button
+		class="btn btn-md btn-link p-0 no-underline label-text no-animation normal-case opacity-90 font-medium"
 		on:click={() => {
 			if (register) {
 				registerError.set('');
@@ -16,7 +17,6 @@
 				goto('/auth/register');
 			}
 		}}
-		class="btn btn-xs btn-link p-0 no-underline label-text no-animation normal-case opacity-90 font-medium"
 	>
 		{register ? 'Login' : 'Register'}
 	</button>
