@@ -6,7 +6,7 @@
 	import { goto } from '$app/navigation';
 
 	$: if ($user) {
-		goto('/');
+		goto('/app');
 	}
 
 	let register = true;

@@ -41,7 +41,7 @@
 				if ($firstLogin) {
 					goto('/auth/set-password');
 				} else {
-					goto('/');
+					goto('/app');
 				}
 			}
 		} catch (error) {
@@ -68,7 +68,7 @@
 	<button
 		on:click={() => {
 			inProgress = true;
-			goto('/auth');
+			goto('/auth/login');
 			loginError.set('');
 		}}
 		class="btn btn-active btn-neutral"

@@ -20,6 +20,8 @@ export async function checkForFirstLogin() {
 			firstLogin.set(getAdditionalUserInfo(result)?.isNewUser);
 		}
 		loginError.set('');
+		
+		return result;
 	} catch (error) {
 		if (
 			typeof error === 'object' &&

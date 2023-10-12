@@ -12,7 +12,7 @@
 	let passwordUpdated = false;
 
 	$: if ($user === null) {
-		goto('/auth');
+		goto('/auth/login');
 	}
 
 	async function setPassword() {
@@ -46,11 +46,11 @@
 {#if $user}
 	{#if passwordUpdated}
 		<h1>New password saved</h1>
-		<button class="btn btn-primary w-36" type="submit" on:click={() => goto('/')}>
+		<button class="btn btn-primary w-36" type="submit" on:click={() => goto('/app')}>
 			{#if inProgress}
 				<span class="loading loading-spinner" />
 			{/if}
-			Go to app
+			Go to App
 		</button>
 	{:else}
 		<form aria-label="form">
@@ -121,7 +121,7 @@
 			<div class="mt-5 w-full">
 				<button
 					on:click={() => {
-						goto('/');
+						goto('/app');
 					}}
 					class="btn btn-xs btn-link p-0 no-underline label-text no-animation normal-case opacity-90 font-medium"
 				>
