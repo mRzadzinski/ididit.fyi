@@ -1,4 +1,4 @@
-import ToggleSignUp__SvelteComponent_ from '../../src/components/auth/ToggleSignUp.svelte';
+import ToggleSignUp__SvelteComponent_ from '../../src/components/auth/ToggleRegister.svelte';
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
@@ -6,7 +6,7 @@ import '@testing-library/jest-dom';
 
 describe('Test ToggleSignUp component', () => {
 	it('Render button', async () => {
-		render(ToggleSignUp__SvelteComponent_, { signUp: false, toggleSignUp: () => {} });
+		render(ToggleSignUp__SvelteComponent_, { register: false, toggleSignUp: () => {} });
 
 		const btn = screen.getByRole('button');
 
@@ -17,7 +17,7 @@ describe('Test ToggleSignUp component', () => {
 		const user = userEvent.setup();
 		const toggleSignUp = vi.fn(() => {});
 
-		render(ToggleSignUp__SvelteComponent_, { signUp: true, toggleSignUp: toggleSignUp });
+		render(ToggleSignUp__SvelteComponent_, { register: true, toggleSignUp: toggleSignUp });
 
 		const btn = screen.getByRole('button');
 		await user.click(btn);
@@ -29,7 +29,7 @@ describe('Test ToggleSignUp component', () => {
 
 	it('Display appropriate text', async () => {
 		const { rerender } = render(ToggleSignUp__SvelteComponent_, {
-			signUp: false,
+			register: false,
 			toggleSignUp: () => {}
 		});
 
@@ -37,7 +37,7 @@ describe('Test ToggleSignUp component', () => {
 		expect(btn).toHaveTextContent(/Need account?/i);
 
 		rerender({
-			signUp: true,
+			register: true,
 			toggleSignUp: () => {}
 		});
 

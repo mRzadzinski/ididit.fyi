@@ -1,4 +1,4 @@
-import SignUpSignInForm__SvelteComponent_ from '../../src/components/auth/SignUpSignInForm.svelte';
+import SignUpSignInForm__SvelteComponent_ from '../../src/components/auth/RegisterLoginForm.svelte';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/svelte';
 import '@testing-library/jest-dom';
@@ -21,7 +21,7 @@ describe('Test SignUpSignInForm component', () => {
 
 	it('Renders correct form elements', () => {
 		const { rerender } = render(SignUpSignInForm__SvelteComponent_, {
-			signUp: false,
+			register: false,
 			emailLinkSignIn: false,
 			toggleEmailSignIn: () => {}
 		});
@@ -38,7 +38,7 @@ describe('Test SignUpSignInForm component', () => {
 		expect(passwordInput).toBeInTheDocument();
 		expect(buttons).toHaveLength(2);
 
-		rerender({ signUp: true, emailLinkSignIn: false, toggleEmailSignIn: () => {} });
+		rerender({ register: true, emailLinkSignIn: false, toggleEmailSignIn: () => {} });
 
 		buttons = screen.getAllByRole('button');
 		expect(buttons).toHaveLength(1);
@@ -46,7 +46,7 @@ describe('Test SignUpSignInForm component', () => {
 
 	it('Reactive elements display correct text', () => {
 		const { rerender } = render(SignUpSignInForm__SvelteComponent_, {
-			signUp: false,
+			register: false,
 			emailLinkSignIn: false,
 			toggleEmailSignIn: () => {}
 		});
@@ -62,7 +62,7 @@ describe('Test SignUpSignInForm component', () => {
 		expect(forgotPasswordBtn).toBeInTheDocument();
 		expect(sendFormBtn).toBeInTheDocument();
 
-		rerender({ signUp: true, emailLinkSignIn: false, toggleEmailSignIn: () => {} });
+		rerender({ register: true, emailLinkSignIn: false, toggleEmailSignIn: () => {} });
 
 		header = screen.getByRole('heading');
 		forgotPasswordBtn = screen.getByText(/Forgot password?/i);

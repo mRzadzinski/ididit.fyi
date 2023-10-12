@@ -1,9 +1,9 @@
-import { auth, redirectEmailSignInLink } from '$lib/firebase/firebase';
+import { auth, redirectEmailLoginLink } from '$lib/firebase/firebase';
 import { sendSignInLinkToEmail, signInWithEmailAndPassword } from 'firebase/auth';
-import { signUpError, signInError } from '$lib/stores/firebaseErrors';
+import { registerError, loginError } from '$lib/stores/authStores';
 
 const actionCodeSettings = {
-	url: redirectEmailSignInLink,
+	url: redirectEmailLoginLink,
 	handleCodeInApp: true
 };
 
@@ -11,7 +11,7 @@ export async function sendEmailLink(email: string) {
 	try {
 		await sendSignInLinkToEmail(auth, email, actionCodeSettings);
 		window.localStorage.setItem('emailForSignIn', email);
-		signUpError.set('');
+		registerError.set('');
 	} catch (error) {
 		if (
 			typeof error === 'object' &&
@@ -19,14 +19,14 @@ export async function sendEmailLink(email: string) {
 			'message' in error &&
 			typeof error.message === 'string'
 		)
-			signUpError.set(error.message.replace('Firebase: ', ''));
+			registerError.set(error.message.replace('Firebase: ', ''));
 	}
 }
 
-export async function signInWithPassword(email: string, password: string) {
+export async function loginWithPassword(email: string, password: string) {
 	try {
 		await signInWithEmailAndPassword(auth, email, password);
-		signInError.set('');
+		loginError.set('');
 	} catch (error) {
 		if (
 			typeof error === 'object' &&
@@ -34,6 +34,6 @@ export async function signInWithPassword(email: string, password: string) {
 			'message' in error &&
 			typeof error.message === 'string'
 		)
-			signInError.set(error.message.replace('Firebase: ', ''));
+			loginError.set(error.message.replace('Firebase: ', ''));
 	}
 }

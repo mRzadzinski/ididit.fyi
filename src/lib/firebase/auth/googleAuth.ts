@@ -5,22 +5,21 @@ import {
 	getAdditionalUserInfo
 } from 'firebase/auth';
 import { auth } from '../firebase';
-import { firstSignIn } from '$lib/stores/firebaseStores';
-import { signInError } from '$lib/stores/firebaseErrors';
+import { firstLogin, loginError } from '$lib/stores/authStores';
 
-export async function signInWithGoogle() {
+export async function loginWithGoogle() {
 	const provider = new GoogleAuthProvider();
 	await signInWithRedirect(auth, provider);
 }
 
-export async function checkForFirstSignIn() {
+export async function checkForFirstLogin() {
 	try {
 		const result = await getRedirectResult(auth);
 
 		if (result) {
-			firstSignIn.set(getAdditionalUserInfo(result)?.isNewUser);
+			firstLogin.set(getAdditionalUserInfo(result)?.isNewUser);
 		}
-		signInError.set('');
+		loginError.set('');
 	} catch (error) {
 		if (
 			typeof error === 'object' &&
@@ -28,6 +27,6 @@ export async function checkForFirstSignIn() {
 			'message' in error &&
 			typeof error.message === 'string'
 		)
-			signInError.set(error.message.replace('Firebase: ', ''));
+			loginError.set(error.message.replace('Firebase: ', ''));
 	}
 }

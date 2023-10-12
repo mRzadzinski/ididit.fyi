@@ -1,6 +1,6 @@
 import { auth } from '$lib/firebase/firebase';
 import { signOut } from 'firebase/auth';
-import { signOutError } from '$lib/stores/firebaseErrors';
+import { logoutError } from '$lib/stores/authStores';
 
 export async function logout() {
 	try {
@@ -12,6 +12,6 @@ export async function logout() {
 			'message' in error &&
 			typeof error.message === 'string'
 		)
-		signOutError.set(error.message.replace('Firebase: ', '')); ;
+		logoutError.set(error.message.replace('Firebase: ', '')); ;
 	}
 }

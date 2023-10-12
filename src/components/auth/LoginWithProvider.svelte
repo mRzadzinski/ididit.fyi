@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { user } from '$lib/stores/firebaseStores';
+	import { user } from '$lib/stores/authStores';
 	import { goto } from '$app/navigation';
-	import { signInError } from '$lib/stores/firebaseErrors';
+	import { loginError } from '$lib/stores/authStores';
 	import ErrorMessage from '../ErrorMessage.svelte';
 
 	export let providerName: string;
@@ -17,17 +17,17 @@
 		<h1>ididit.fyi</h1>
 		<span class="loading loading-spinner loading-lg" />
 	</div>
-{:else if $signInError !== ''}
+{:else if $loginError !== ''}
 	<ErrorMessage
-		message={`${providerName} sign in failed: ${$signInError}. <br>Go back to sign in page.`}
+		message={`${providerName} login failed: ${$loginError}. <br>Go back to login page.`}
 	/>
 	<button
 		on:click={() => {
 			goto('/auth');
-			signInError.set('');
+			loginError.set('');
 		}}
 		class="btn btn-active btn-neutral"
 	>
-		Sign in page
+		Login page
 	</button>
 {/if}

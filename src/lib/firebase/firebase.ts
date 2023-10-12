@@ -1,6 +1,6 @@
 import { getApps, initializeApp } from 'firebase/app';
 import { getAuth, connectAuthEmulator, onAuthStateChanged } from 'firebase/auth';
-import { user } from '$lib/stores/firebaseStores';
+import { user } from '$lib/stores/authStores';
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyD6o7Yq4_ORCXQqbCLo-w1MbR08EcDjeTo',
@@ -19,17 +19,17 @@ if (!getApps().length) {
 
 // Authentication
 const auth = getAuth(firebaseApp);
-// connectAuthEmulator(auth, 'http://127.0.0.1:9099');
-// const redirectEmailSignInLink = 'http://127.0.0.1:5000/auth/sign-in-with-link/';
-const redirectEmailSignInLink = 'https://ididit.fyi/auth/sign-in-with-link/';
+connectAuthEmulator(auth, 'http://127.0.0.1:9099');
+const redirectEmailLoginLink = 'http://127.0.0.1:5000/auth/login-with-link/';
+// const redirectEmailLoginLink = 'https://ididit.fyi/auth/login-with-link/';
 
 onAuthStateChanged(auth, (currentUser) => {
 	if (currentUser) {
-		console.log('signed in');
+		console.log('logged in');
 	} else {
 		console.log('no user');
 	}
 	user.set(currentUser);
 });
 
-export { firebaseApp, auth, redirectEmailSignInLink };
+export { firebaseApp, auth, redirectEmailLoginLink };

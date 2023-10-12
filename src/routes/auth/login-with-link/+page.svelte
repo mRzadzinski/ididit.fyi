@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { auth } from '$lib/firebase/firebase';
 	import { getAdditionalUserInfo, isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
-	import WarningMessage from '../../../components/WarningMessage.svelte';
-	import ErrorMessage from '../../../components/ErrorMessage.svelte';
-	import { signInError } from '$lib/stores/firebaseErrors';
-	import { firstSignIn } from '$lib/stores/firebaseStores';
+	import WarningMessage from '$components/WarningMessage.svelte';
+	import ErrorMessage from '$components/ErrorMessage.svelte';
+	import { loginError, firstLogin } from '$lib/stores/authStores';
 	import { goto } from '$app/navigation';
-	import { user } from '$lib/stores/firebaseStores';
-	import { logout } from '$lib/firebase/auth/signOut';
+	import { user } from '$lib/stores/authStores';
+	import { logout } from '$lib/firebase/auth/logout';
 
 	let inputValue: string;
 	let email: string | null;
@@ -19,7 +18,7 @@
 	// 	return new Promise((resolve) => setTimeout(resolve, ms));
 	// }
 
-	async function confirmSignIn() {
+	async function confirmLogin() {
 		try {
 			if ($user) logout();
 
@@ -36,10 +35,10 @@
 			if (email) {
 				// await timeout(1500);
 				const userInfo = await signInWithEmailLink(auth, email);
-				firstSignIn.set(getAdditionalUserInfo(userInfo)?.isNewUser);
-				signInError.set('');
+				firstLogin.set(getAdditionalUserInfo(userInfo)?.isNewUser);
+				loginError.set('');
 
-				if ($firstSignIn) {
+				if ($firstLogin) {
 					goto('/auth/set-password');
 				} else {
 					goto('/');
@@ -53,34 +52,34 @@
 				typeof error.message === 'string'
 			) {
 				inProgress = false;
-				signInError.set(error.message.replace('Firebase: ', ''));
+				loginError.set(error.message.replace('Firebase: ', ''));
 			}
 		}
 	}
-	confirmSignIn();
+	confirmLogin();
 
-	$: if ($signInError) {
+	$: if ($loginError) {
 		wrongLink = true;
 	}
 </script>
 
 {#if wrongLink}
-	<WarningMessage message="Link inactive. Go to sign in page." />
+	<WarningMessage message="Link inactive. Go to login page." />
 	<button
 		on:click={() => {
 			inProgress = true;
 			goto('/auth');
-			signInError.set('');
+			loginError.set('');
 		}}
 		class="btn btn-active btn-neutral"
 	>
 		{#if inProgress}
 			<span class="loading loading-spinner" />
 		{/if}
-		Sign in page
+		Login page
 	</button>
 {:else if email || !linkEvaluated}
-	<h1>Signing in...</h1>
+	<h1>Logging in...</h1>
 	<div class="w-full flex justify-center">
 		<span class="loading loading-spinner loading-lg" />
 	</div>
@@ -100,8 +99,8 @@
 				class="input input-bordered"
 			/>
 		</div>
-		{#if $signInError.length > 0}
-			<ErrorMessage message={$signInError} />
+		{#if $loginError.length > 0}
+			<ErrorMessage message={$loginError} />
 		{/if}
 		<div class="form-control mt-6">
 			<button
@@ -110,13 +109,13 @@
 				on:click={() => {
 					email = inputValue;
 					inProgress = true;
-					confirmSignIn();
+					confirmLogin();
 				}}
 			>
 				{#if inProgress}
 					<span class="loading loading-spinner" />
 				{/if}
-				Sign in
+				Log In
 			</button>
 		</div>
 	</form>

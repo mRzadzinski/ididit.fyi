@@ -1,27 +1,26 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { sendEmailLink, signInWithPassword } from '$lib/firebase/auth/emailAuth';
-	import { signUpError, signInError } from '$lib/stores/firebaseErrors';
+	import { sendEmailLink, loginWithPassword } from '$lib/firebase/auth/emailAuth';
+	import { registerError, loginError } from '$lib/stores/authStores';
 	import ErrorMessage from '../ErrorMessage.svelte';
+	import { emailLinkLogin } from '$lib/stores/authStores';
 
-	export let signUp: boolean;
-	export let emailLinkSignIn: boolean;
-	export let toggleEmailSignIn: () => void;
+	export let register: boolean;
 	let email: string;
 	let password = '';
 	let inProgress = false;
 
 	const onSubmit = async () => {
-		if (signUp || emailLinkSignIn) {
+		if (register || $emailLinkLogin) {
 			inProgress = true;
 			await sendEmailLink(email);
-			if ($signUpError === '') {
+			if ($registerError === '') {
 				goto('/auth/link-sent');
 			}
 			inProgress = false;
 		} else {
 			inProgress = true;
-			await signInWithPassword(email, password);
+			await loginWithPassword(email, password);
 			inProgress = false;
 		}
 	};
@@ -30,7 +29,7 @@
 <form aria-label="form">
 	<div class="form-control">
 		<h1>
-			{signUp ? 'Sign up' : 'Sign in'}
+			{register ? 'Register' : 'Login'}
 		</h1>
 		<label for="email-input" class="label">
 			<span class="label-text">Email</span>
@@ -44,7 +43,7 @@
 			class="input input-bordered"
 		/>
 	</div>
-	<div class="form-control" style:display={signUp || emailLinkSignIn ? 'none' : 'flex'}>
+	<div class="form-control" style:display={register || $emailLinkLogin ? 'none' : 'flex'}>
 		<label for="password-input" class="label">
 			<span class="label-text">Password</span>
 		</label>
@@ -62,27 +61,30 @@
 		<span class="w-full mt-2">
 			<button
 				class="btn btn-xs btn-link p-0 no-underline label-text no-animation normal-case opacity-90 font-medium"
-				class:invisible={signUp}
+				class:invisible={register}
 				type="button"
-				on:click={toggleEmailSignIn}
+				on:click={() => {
+					loginError.set('');
+					emailLinkLogin.set(true);
+				}}
 			>
 				Forgot password?
 			</button>
 		</span>
 	</div>
-	{#if $signUpError.length > 0}
-		<ErrorMessage message={$signUpError} />
-	{:else if $signInError.length > 0}
-		<ErrorMessage message={$signInError} />
+	{#if $registerError.length > 0}
+		<ErrorMessage message={$registerError} />
+	{:else if $loginError.length > 0}
+		<ErrorMessage message={$loginError} />
 	{/if}
-	<div class="form-control mt-6">
+	<div class="form-control mt-7">
 		<!-- Submitting form with empty, display: none input doesn't work in Safari.
 			moving submit handler to on button click.  -->
 		<button class="btn btn-primary w-36" on:click={onSubmit}>
 			{#if inProgress}
 				<span class="loading loading-spinner" />
 			{/if}
-			{signUp ? 'Sign up' : 'Sign in'}
+			{register ? 'Register' : 'Log In'}
 		</button>
 	</div>
 </form>

@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { auth } from '$lib/firebase/firebase';
 	import { updatePassword } from 'firebase/auth';
-	import { updatePasswordError } from '$lib/stores/firebaseErrors';
+	import { updatePasswordError } from '$lib/stores/authStores';
 	import WarningMessage from '../../../components/WarningMessage.svelte';
-	import { user } from '$lib/stores/firebaseStores';
+	import { user } from '$lib/stores/authStores';
 	import { goto } from '$app/navigation';
 
 	let password: string;
@@ -57,7 +57,7 @@
 			<h1>Set password</h1>
 			<div class="flex mb-5 w-full">
 				<div class="badge badge-neutral mr-2">optional</div>
-				<div class="text-xs flex items-center">Enables sign-in with email and password</div>
+				<div class="text-xs flex items-center">Enables login with email and password</div>
 			</div>
 			<label for="email-input" class="label">
 				<span class="label-text">Email</span>
