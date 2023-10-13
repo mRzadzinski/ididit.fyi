@@ -1,11 +1,11 @@
-import SignUpSignInForm__SvelteComponent_ from '../../src/components/auth/RegisterLoginForm.svelte';
+import RegisterLoginForm__SvelteComponent_ from '../../src/components/auth/RegisterLoginForm.svelte';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/svelte';
 import '@testing-library/jest-dom';
 
 import { goto } from '$app/navigation';
-import { sendEmailLink, signInWithPassword } from '$lib/firebase/auth/emailAuth';
-import { signUpError, signInError } from '$lib/stores/firebaseErrors';
+import { sendEmailLink, loginWithPassword } from '$lib/firebase/auth/emailAuth';
+import { registerError, loginError } from '$lib/stores/authStores';
 import ErrorMessage__SvelteComponent_ from '../../src/components/ErrorMessage.svelte';
 
 vi.mock('$app/navigation', () => {
@@ -20,7 +20,7 @@ describe('Test SignUpSignInForm component', () => {
 	});
 
 	it('Renders correct form elements', () => {
-		const { rerender } = render(SignUpSignInForm__SvelteComponent_, {
+		const { rerender } = render(RegisterLoginForm__SvelteComponent_, {
 			register: false,
 			emailLinkSignIn: false,
 			toggleEmailSignIn: () => {}
@@ -45,7 +45,7 @@ describe('Test SignUpSignInForm component', () => {
 	});
 
 	it('Reactive elements display correct text', () => {
-		const { rerender } = render(SignUpSignInForm__SvelteComponent_, {
+		const { rerender } = render(RegisterLoginForm__SvelteComponent_, {
 			register: false,
 			emailLinkSignIn: false,
 			toggleEmailSignIn: () => {}
