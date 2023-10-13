@@ -1,17 +1,23 @@
 import RegisterLoginForm from '$components/auth/RegisterLoginForm.svelte';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it as test, vi } from 'vitest';
 import { render, screen } from '@testing-library/svelte';
 import '@testing-library/jest-dom';
+
 // Component imports
 import { goto } from '$app/navigation';
 import { sendEmailLink, loginWithPassword } from '$lib/firebase/auth/emailAuth';
 import { registerError, loginError, emailLinkLogin } from '$lib/stores/authStores';
-import ErrorMessage from '$components/ErrorMessage.svelte';
-// Mock imports
+
+// vi.hoisted - allows to use import in async mock
 const { mockLoginError, mockRegisterError, mockEmailLinkLogin } = await vi.hoisted(
 	() => import('./mocks/mock-stores')
 );
-const ErrorMessageMock = await vi.hoisted(() => import('./mocks/ErrorMessageMock.svelte'));
+// like there
+vi.mock('$lib/stores/authStores', async () => ({
+	registerError: mockRegisterError,
+	loginError: mockLoginError,
+	emailLinkLogin: mockEmailLinkLogin
+}));
 
 vi.mock('$app/navigation.js', () => ({
 	goto: vi.fn()
@@ -22,24 +28,8 @@ vi.mock('$lib/firebase/auth/emailAuth', () => ({
 	loginWithPassword: vi.fn()
 }));
 
-vi.mock('$lib/stores/authStores', async () => {
-	return {
-		registerError: mockRegisterError,
-		loginError: mockLoginError,
-		emailLinkLogin: mockEmailLinkLogin
-	};
-});
-
-vi.mock('$components/ErrorMessage.svelte', async () => ({
-	default: ErrorMessageMock
-}));
-
 describe('Test RegisterLoginForm component', () => {
-	afterEach(() => {
-		vi.resetAllMocks();
-	});
-
-	it('Renders correct form elements', () => {
+	test('Renders correct form elements', () => {
 		const { rerender } = render(RegisterLoginForm, {
 			register: false
 		});
@@ -62,29 +52,30 @@ describe('Test RegisterLoginForm component', () => {
 		expect(buttons).toHaveLength(1);
 	});
 
-	it('Reactive elements display correct text', () => {
+	test('Elements display correct text', () => {
 		const { rerender } = render(RegisterLoginForm, {
 			register: false
 		});
 
 		let header = screen.getByRole('heading');
+		let passwordInput = screen.getByLabelText('Password');
 		let forgotPasswordBtn = screen.getByText(/Forgot password?/i);
-		const buttons = screen
-			.getAllByRole('button')
-			.filter((btn) => btn.innerHTML.includes('Log In'));
-		let sendFormBtn = buttons[0];
+		let sendFormBtn = screen.getByText('Log In');
 
 		expect(header).toHaveTextContent('Login');
-		expect(forgotPasswordBtn).toBeInTheDocument();
+		expect(passwordInput).toBeVisible();
+		expect(forgotPasswordBtn).toBeVisible();
 		expect(sendFormBtn).toBeInTheDocument();
 
 		rerender({ register: true });
 
 		header = screen.getByRole('heading');
+		passwordInput = screen.getByLabelText('Password');
 		forgotPasswordBtn = screen.getByText(/Forgot password?/i);
 		sendFormBtn = screen.getByRole('button');
 
 		expect(header).toHaveTextContent('Register');
+		expect(passwordInput).not.toBeVisible();
 		expect(forgotPasswordBtn).not.toBeVisible();
 		expect(sendFormBtn).toHaveTextContent('Register');
 	});

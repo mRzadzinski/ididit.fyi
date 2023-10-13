@@ -14,10 +14,6 @@
 			}
 		})();
 	}
-	// else if ($user) {
-	// 	// User is already logged in
-	// 	goto('/app');
-	// }
 
 	$: if ($firstLogin === false && $firstLogin !== undefined) {
 		goto('/app');

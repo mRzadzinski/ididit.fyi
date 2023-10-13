@@ -1,5 +1,5 @@
 import ToggleRegister from '$components/auth/ToggleRegister.svelte';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, test, vi } from 'vitest';
 import { render, screen } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
@@ -24,7 +24,7 @@ describe('Test ToggleRegister component', () => {
 		vi.clearAllMocks();
 	});
 
-	it('Render button with correct text', async () => {
+	test('Render button with correct text', async () => {
 		const { rerender } = render(ToggleRegister, {
 			register: false
 		});
@@ -40,7 +40,7 @@ describe('Test ToggleRegister component', () => {
 		expect(btn).toHaveTextContent(/Login/i);
 	});
 
-	it('Call functions correctly on button click', async () => {
+	test('Call functions correctly on button click', async () => {
 		const user = userEvent.setup();
 
 		const { rerender } = render(ToggleRegister, {
