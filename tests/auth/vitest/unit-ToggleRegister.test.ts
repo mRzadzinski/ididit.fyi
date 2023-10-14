@@ -11,7 +11,9 @@ vi.mock('$app/navigation.js', () => ({
 	goto: vi.fn()
 }));
 
-const { mockLoginError, mockRegisterError } = await vi.hoisted(() => import('./mocks/mock-stores'));
+const { mockLoginError, mockRegisterError } = await vi.hoisted(
+	() => import('./vitest/mocks/mock-stores')
+);
 vi.mock('$lib/stores/authStores', async () => {
 	return {
 		loginError: mockLoginError,

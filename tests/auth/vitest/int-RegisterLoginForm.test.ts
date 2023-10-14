@@ -10,7 +10,7 @@ import { registerError, loginError, emailLinkLogin } from '$lib/stores/authStore
 
 // vi.hoisted - allows to use import in async mock
 const { mockLoginError, mockRegisterError, mockEmailLinkLogin } = await vi.hoisted(
-	() => import('./mocks/mock-stores')
+	() => import('./vitest/mocks/mock-stores')
 );
 // like there
 vi.mock('$lib/stores/authStores', async () => ({
