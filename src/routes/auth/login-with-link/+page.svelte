@@ -76,7 +76,7 @@
 		{#if inProgress}
 			<span class="loading loading-spinner" />
 		{/if}
-		Login page
+		Login
 	</button>
 {:else if email || !linkEvaluated}
 	<h1>Logging in...</h1>

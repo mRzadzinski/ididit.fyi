@@ -6,7 +6,12 @@ const config: PlaywrightTestConfig = {
 	// 	port: 4173
 	// },
 	testDir: 'tests',
-	testMatch: /(.+\.)?(spec)\.[jt]s/
+	testMatch: /(.+\.)?(spec)\.[jt]s/,
+	use: {
+		launchOptions: {
+		  slowMo: 500,
+		},
+	  },	
 };
 
 export default config;

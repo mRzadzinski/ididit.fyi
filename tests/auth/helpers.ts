@@ -1,11 +1,25 @@
+import fetch from 'node-fetch';
+
+interface OobCode {
+	oobCodes: [
+		{
+			email: string;
+			requestType: string;
+			oobCode: string;
+			oobLink: string;
+		}
+	];
+}
+
 export async function getFirebaseAuthLink() {
 	try {
 		const response = await fetch('http://localhost:9099/emulator/v1/projects/ididit-fyi/oobCodes');
 		const obj = await response.json();
-		const link = obj.oobCodes[obj.oobCodes.length - 1].oobLink;
+		const link = (obj as OobCode).oobCodes[(obj as OobCode).oobCodes.length - 1].oobLink;
 
 		return link;
 	} catch (error) {
+		console.log(error);
 		throw new Error('Getting firebase auth link failed.');
 	}
 }
@@ -32,6 +46,5 @@ export function generateRandomPassword(passLength: number) {
 		tempStr = strValues.charAt(Math.round(strValues.length * Math.random()));
 		password = password + tempStr;
 	}
-	console.log(password);
 	return password;
 }
