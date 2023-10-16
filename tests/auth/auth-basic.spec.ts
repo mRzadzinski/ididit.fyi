@@ -153,9 +153,7 @@ test.describe('Test auth', () => {
 		await page.getByPlaceholder('password').fill(generateRandomPassword(11));
 		await expect(page.locator('input[type="password"][required]:invalid')).toBeVisible();
 		// correct
-		// Fill twice, sometimes input doesn't record valid input
 		await page.getByPlaceholder('password').fill(generateRandomPassword(13));
-		await page.getByPlaceholder('password').fill(generateRandomPassword(12));
 		await expect(page.locator('input[type="password"][required]:valid')).toBeVisible();
 		await page.getByPlaceholder('password').fill(generateRandomPassword(56));
 		await expect(page.locator('input[type="password"][required]:valid')).toBeVisible();
