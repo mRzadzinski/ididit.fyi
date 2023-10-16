@@ -1,12 +1,45 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
 import { getFirebaseAuthLink, generateRandomEmail, generateRandomPassword } from './helpers';
 
 let email: string;
 let password: string;
 let emailLink: string;
 
+async function registerWithLink(page: Page) {
+	// Register and set password
+	await page.goto('http://127.0.0.1:5000/auth/register');
+	// Fill email and click register
+	email = generateRandomEmail();
+	await page.getByPlaceholder('email').fill(email);
+	await page.getByRole('button', { name: 'Register', exact: true }).click();
+	// Show link-sent page
+	await expect(page).toHaveURL('http://127.0.0.1:5000/auth/link-sent');
+	// Go to received url
+	emailLink = await getFirebaseAuthLink();
+	await page.goto(emailLink);
+	// Show set-password page for first login
+	await expect(page).toHaveURL('http://127.0.0.1:5000/auth/set-password');
+	// Set new password
+	password = generateRandomPassword(15);
+	await page.getByPlaceholder('password', { exact: true }).fill(password);
+	await page.getByPlaceholder('confirm password', { exact: true }).fill(password);
+	await page.getByRole('button', { name: 'Save', exact: true }).click();
+	// Show set-password confirmation
+	await expect(page.getByText('New password saved', { exact: true })).toBeVisible();
+	// Click Go to app btn
+	await page.getByRole('button', { name: 'Go to App', exact: true }).click();
+	// Log out -> Redirect to auth/login
+	await page.getByRole('button', { name: 'Log Out', exact: true }).click();
+}
+
+async function loginWithEmailAndPassword(page: Page) {
+	await page.getByPlaceholder('email').fill(email);
+	await page.getByPlaceholder('password', { exact: true }).fill(password);
+	await page.getByRole('button', { name: 'Log In', exact: true }).click();
+}
+
 test.describe('Test auth', () => {
-	test('Render login/register elements, test basic navigation without redirects', async ({
+	test('Render login/register elements', async ({
 		page
 	}) => {
 		await page.goto('http://127.0.0.1:5000/auth/login');
@@ -120,6 +153,8 @@ test.describe('Test auth', () => {
 		await page.getByPlaceholder('password').fill(generateRandomPassword(11));
 		await expect(page.locator('input[type="password"][required]:invalid')).toBeVisible();
 		// correct
+		// Fill twice, sometimes input doesn't record valid input
+		await page.getByPlaceholder('password').fill(generateRandomPassword(13));
 		await page.getByPlaceholder('password').fill(generateRandomPassword(12));
 		await expect(page.locator('input[type="password"][required]:valid')).toBeVisible();
 		await page.getByPlaceholder('password').fill(generateRandomPassword(56));
@@ -226,13 +261,13 @@ test.describe('Test auth', () => {
 		// Click Register with Google
 		page.getByRole('button', { name: 'Register with Google', exact: true }).click();
 		// Hard wait for google form, otherwise it doesn't record playwright actions
-		await page.waitForTimeout(500);
+		await page.waitForTimeout(1000);
 		// Click add new account
 		page.getByRole('button', { name: 'Add new account', exact: true }).click();
-		await page.waitForTimeout(500);
+		await page.waitForTimeout(1000);
 		// Fill the form and confirm
 		page.getByRole('button', { name: 'Auto-generate user information', exact: true }).click();
-		await page.waitForTimeout(500);
+		await page.waitForTimeout(1000);
 		// Get auto generated user info
 		email = await page.locator('#email-input').inputValue();
 		page.getByRole('button', { name: 'Sign in with Google.com', exact: true }).click();
@@ -244,7 +279,7 @@ test.describe('Test auth', () => {
 		// Login
 		await page.goto('http://127.0.0.1:5000/auth/login');
 		page.getByRole('button', { name: 'Login with Google', exact: true }).click();
-		await page.waitForTimeout(1000);
+		await page.waitForTimeout(1500);
 		// Choose google account
 		await page.getByText(email, { exact: true }).click();
 		// On second login go to app
@@ -252,30 +287,7 @@ test.describe('Test auth', () => {
 	});
 
 	test('Login with email and password', async ({ page }) => {
-		// Register and set password
-		await page.goto('http://127.0.0.1:5000/auth/register');
-		// Fill email and click register
-		email = generateRandomEmail();
-		await page.getByPlaceholder('email').fill(email);
-		await page.getByRole('button', { name: 'Register', exact: true }).click();
-		// Show link-sent page
-		await expect(page).toHaveURL('http://127.0.0.1:5000/auth/link-sent');
-		// Go to received url
-		emailLink = await getFirebaseAuthLink();
-		await page.goto(emailLink);
-		// Show set-password page for first login
-		await expect(page).toHaveURL('http://127.0.0.1:5000/auth/set-password');
-		// Set new password
-		password = generateRandomPassword(15);
-		await page.getByPlaceholder('password', { exact: true }).fill(password);
-		await page.getByPlaceholder('confirm password', { exact: true }).fill(password);
-		await page.getByRole('button', { name: 'Save', exact: true }).click();
-		// Show set-password confirmation
-		await expect(page.getByText('New password saved', { exact: true })).toBeVisible();
-		// Click Go to app btn
-		await page.getByRole('button', { name: 'Go to App', exact: true }).click();
-		// Log out -> Redirect to auth/login
-		await page.getByRole('button', { name: 'Log Out', exact: true }).click();
+		await registerWithLink(page);
 
 		// Login with email and password
 		// Wrong credentials
@@ -303,5 +315,60 @@ test.describe('Test auth', () => {
 		await expect(page).toHaveURL('http://127.0.0.1:5000/app');
 	});
 
-	test('Redirects: logged in / out, correct url navigation', async ({ page }) => {});
+	test('Redirects: logged in / out, correct url navigation', async ({ page }) => {
+		await registerWithLink(page);
+
+		// Logged out
+		// Go to /, redirect to auth/login
+		await page.goto('http://127.0.0.1:5000/');
+		await page.getByRole('button', { name: 'Go to App', exact: true }).click();
+		await expect(page).toHaveURL('http://127.0.0.1:5000/auth/login');
+		// Go to /app, redirect to auth/login
+		await page.goto('http://127.0.0.1:5000/app');
+		await expect(page).toHaveURL('http://127.0.0.1:5000/auth/login');
+		// Go to auth/set-password, redirect to auth/login
+		await page.goto('http://127.0.0.1:5000/auth/set-password');
+		await expect(page).toHaveURL('http://127.0.0.1:5000/auth/login');
+		// Go to /auth, redirect to auth/login
+		await page.goto('http://127.0.0.1:5000/auth');
+		await expect(page).toHaveURL('http://127.0.0.1:5000/auth/login');
+		// Go to auth/logout, redirect to auth/login
+		await page.goto('http://127.0.0.1:5000/auth/logout');
+		await expect(page).toHaveURL('http://127.0.0.1:5000/auth/login');
+
+		// Logged in
+		await loginWithEmailAndPassword(page);
+		// Go to /, redirect to /app
+		await page.goto('http://127.0.0.1:5000/');
+		await page.getByRole('button', { name: 'Go to App', exact: true }).click();
+		await expect(page).toHaveURL('http://127.0.0.1:5000/app');
+		// Go to /auth, redirect to /app
+		await page.goto('http://127.0.0.1:5000/auth');
+		await expect(page).toHaveURL('http://127.0.0.1:5000/app');
+		// Go to /auth/login, redirect to /app
+		await page.goto('http://127.0.0.1:5000/auth/login');
+		await expect(page).toHaveURL('http://127.0.0.1:5000/app');
+		// Go to /auth/login-with-google, redirect to /app
+		await page.goto('http://127.0.0.1:5000/auth/login-with-google');
+		await expect(page).toHaveURL('http://127.0.0.1:5000/app');
+		// Go to /auth/register, redirect to /app
+		await page.goto('http://127.0.0.1:5000/auth/register');
+		await expect(page).toHaveURL('http://127.0.0.1:5000/app');
+		// Go to /auth/link-sent, redirect to /app
+		await page.goto('http://127.0.0.1:5000/auth/link-sent');
+		await expect(page).toHaveURL('http://127.0.0.1:5000/app');
+		
+		// Go to /auth/login-with-link
+		await page.goto('http://127.0.0.1:5000/auth/login-with-link');
+		await expect(page.getByText('Link inactive. Go to login page.', { exact: true })).toBeVisible();
+		// Click Login button, redirect to auth/login
+		await page.getByRole('button', { name: 'Login', exact: true }).click();
+		await expect(page).toHaveURL('http://127.0.0.1:5000/auth/login');
+
+		await loginWithEmailAndPassword(page);
+
+		// Go to auth/logout, redirect to auth/login
+		await page.goto('http://127.0.0.1:5000/auth/logout');
+		await expect(page).toHaveURL('http://127.0.0.1:5000/auth/login');
+	});
 });
