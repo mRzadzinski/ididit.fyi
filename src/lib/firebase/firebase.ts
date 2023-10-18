@@ -1,5 +1,6 @@
 import { getApps, initializeApp } from 'firebase/app';
 import { getAuth, connectAuthEmulator, onAuthStateChanged } from 'firebase/auth';
+import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 import { user } from '$lib/stores/authStores';
 
 const firebaseConfig = {
@@ -19,8 +20,12 @@ if (!getApps().length) {
 
 // Authentication
 const auth = getAuth(firebaseApp);
+const db = getFirestore();
+
+connectFirestoreEmulator(db, '127.0.0.1', 8080);
 connectAuthEmulator(auth, 'http://127.0.0.1:9099');
 const redirectEmailLoginLink = 'http://127.0.0.1:5000/auth/login-with-link/';
+
 // const redirectEmailLoginLink = 'https://ididit.fyi/auth/login-with-link/';
 
 onAuthStateChanged(auth, (currentUser) => {
@@ -32,4 +37,4 @@ onAuthStateChanged(auth, (currentUser) => {
 	user.set(currentUser);
 });
 
-export { firebaseApp, auth, redirectEmailLoginLink };
+export { firebaseApp, auth, db, redirectEmailLoginLink };
