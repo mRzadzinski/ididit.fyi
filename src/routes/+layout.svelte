@@ -1,7 +1,9 @@
 <script lang="ts">
+	// Import to run initialize Firebase
 	import { firebaseApp } from '$lib/firebase/firebase';
 	import { user } from '$lib/stores/authStores';
 	import '../app.css';
+	// import { citiesRef } from '$lib/firebase/db-sandbox';
 </script>
 
 {#if $user === undefined}

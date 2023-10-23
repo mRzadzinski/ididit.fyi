@@ -18,12 +18,13 @@ if (!getApps().length) {
 	firebaseApp = initializeApp(firebaseConfig);
 }
 
-// Authentication
 const auth = getAuth(firebaseApp);
-const db = getFirestore();
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore (at least one app instance will be there)
+const db = getFirestore(firebaseApp);
 
-connectFirestoreEmulator(db, '127.0.0.1', 8080);
 connectAuthEmulator(auth, 'http://127.0.0.1:9099');
+connectFirestoreEmulator(db, '127.0.0.1', 8080);
 const redirectEmailLoginLink = 'http://127.0.0.1:5000/auth/login-with-link/';
 
 // const redirectEmailLoginLink = 'https://ididit.fyi/auth/login-with-link/';
