@@ -1,12 +1,10 @@
 <script>
 	import { user } from '$lib/stores/authStores';
 	import { goto } from '$app/navigation';
-	import Navbar from '$components/Navbar.svelte';
-	import Avatar from '$components/Avatar.svelte';
-	import { logout } from '$lib/firebase/auth/logout';
-	import DropdownMenuItems from '$components/DropdownMenuItems.svelte';
-
-	const sidebarListStyles = 'h-6 mb-6 text-base font-normal';
+	import Navbar from '$components/app-layout/Navbar.svelte';
+	import Avatar from '$components/app-layout/Avatar.svelte';
+	import DropdownMenuItems from '$components/app-layout/DropdownMenuItems.svelte';
+	import SidebarItems from '$components/app-layout/SidebarItems.svelte';
 
 	$: if ($user === null) {
 		goto('/auth/login');
@@ -20,9 +18,7 @@
 		<div class="flex h-full">
 			<!-- Sidebar -->
 			<ul class="menu p-4 w-60 min-h-full bg-base-200 hidden md:flex">
-				<button class="btn btn-warning mt-3 mb-6">Daily Review</button>
-				<li class={sidebarListStyles}><a>Seeds</a></li>
-				<li class={sidebarListStyles}><a>Goals</a></li>
+				<SidebarItems />
 			</ul>
 			<!-- Page content -->
 			<div class="flex flex-col flex-1 items-center h-full">
@@ -38,9 +34,7 @@
 		<label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay" />
 		<ul class="menu p-4 min-w-fit w-80 min-h-full bg-base-200 flex">
 			<!-- Sidebar content here -->
-			<button class="btn btn-warning mt-6 mb-6">Daily Review</button>
-			<li class={sidebarListStyles}><a>Seeds</a></li>
-			<li class={sidebarListStyles}><a>Goals</a></li>
+			<SidebarItems />
 			<!-- Avatar -->
 			<li class="w-16 h-16 flex items-center self-end mt-auto mb-4">
 				<button class="p-0" id="avatar-sidebar-dropdown">
