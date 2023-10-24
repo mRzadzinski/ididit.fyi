@@ -58,4 +58,8 @@
 	ul.dropdown-content {
 		bottom: 64px;
 	}
+
+	ul.menu {
+		max-width: 280px;
+	}
 </style>
