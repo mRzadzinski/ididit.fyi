@@ -4,6 +4,7 @@
 	import Navbar from '$components/Navbar.svelte';
 	import Avatar from '$components/Avatar.svelte';
 	import { logout } from '$lib/firebase/auth/logout';
+	import DropdownMenuItems from '$components/DropdownMenuItems.svelte';
 
 	const sidebarListStyles = 'h-6 mb-6 text-base font-normal';
 
@@ -48,14 +49,7 @@
 							<Avatar />
 						</label>
 						<ul class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-							<!-- svelte-ignore a11y-missing-attribute -->
-							<li><a>Settings</a></li>
-							<!-- svelte-ignore a11y-missing-attribute -->
-							<li>
-								<a role="button" tabindex="0" on:click={() => logout()} on:keydown={() => logout()}
-									>Log Out</a
-								>
-							</li>
+							<DropdownMenuItems />
 						</ul>
 					</div>
 				</button>

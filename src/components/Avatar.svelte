@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import src from '../static/profile.jpg';
 </script>
 

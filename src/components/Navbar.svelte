@@ -2,6 +2,7 @@
 	import { logout } from '$lib/firebase/auth/logout';
 	import src from '../static/profile.jpg';
 	import Avatar from './Avatar.svelte';
+	import DropdownMenuItems from './DropdownMenuItems.svelte';
 </script>
 
 <div class="w-full navbar bg-base-300">
@@ -34,14 +35,7 @@
 							<Avatar />
 						</label>
 						<ul class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-							<!-- svelte-ignore a11y-missing-attribute -->
-							<li><a>Settings</a></li>
-							<!-- svelte-ignore a11y-missing-attribute -->
-							<li>
-								<a role="button" tabindex="0" on:click={() => logout()} on:keydown={() => logout()}
-									>Log Out</a
-								>
-							</li>
+							<DropdownMenuItems />
 						</ul>
 					</div>
 				</button>
