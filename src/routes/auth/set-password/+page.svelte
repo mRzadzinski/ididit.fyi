@@ -2,7 +2,7 @@
 	import { auth } from '$lib/firebase/firebase';
 	import { updatePassword } from 'firebase/auth';
 	import { updatePasswordError } from '$lib/stores/authStores';
-	import WarningMessage from '../../../components/WarningMessage.svelte';
+	import WarningMessage from '../../../components/general/WarningMessage.svelte';
 	import { user } from '$lib/stores/authStores';
 	import { goto } from '$app/navigation';
 

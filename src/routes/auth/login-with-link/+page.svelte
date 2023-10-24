@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { auth } from '$lib/firebase/firebase';
 	import { getAdditionalUserInfo, isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
-	import WarningMessage from '$components/WarningMessage.svelte';
-	import ErrorMessage from '$components/ErrorMessage.svelte';
+	import WarningMessage from '$components/general/WarningMessage.svelte';
+	import ErrorMessage from '$components/general/ErrorMessage.svelte';
 	import { loginError, firstLogin } from '$lib/stores/authStores';
 	import { goto } from '$app/navigation';
 	import { user } from '$lib/stores/authStores';

@@ -2,7 +2,7 @@
 	import { user } from '$lib/stores/authStores';
 	import { goto } from '$app/navigation';
 	import { loginError } from '$lib/stores/authStores';
-	import ErrorMessage from '../ErrorMessage.svelte';
+	import ErrorMessage from '$components/general/ErrorMessage.svelte';
 
 	export let providerName: string;
 </script>

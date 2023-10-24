@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { sendEmailLink, loginWithPassword } from '$lib/firebase/auth/emailAuth';
 	import { registerError, loginError, emailLinkLogin } from '$lib/stores/authStores';
-	import ErrorMessage from '../ErrorMessage.svelte';
+	import ErrorMessage from '$components/general/ErrorMessage.svelte';
 
 	export let register: boolean;
 	let email: string;

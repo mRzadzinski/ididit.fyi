@@ -29,7 +29,7 @@ async function registerWithLink(page: Page) {
 	// Click Go to app btn
 	await page.getByRole('button', { name: 'Go to App', exact: true }).click();
 	// Log out -> Redirect to auth/login
-	await page.getByRole('button', { name: 'Log Out', exact: true }).click();
+	await page.goto('http://127.0.0.1:5000/auth/logout');
 }
 
 async function loginWithEmailAndPassword(page: Page) {
@@ -207,7 +207,7 @@ test.describe('Test auth', () => {
 		// Click Go to app btn
 		await page.getByRole('button', { name: 'Go to App', exact: true }).click();
 		// Log out -> Redirect to auth/login
-		await page.getByRole('button', { name: 'Log Out', exact: true }).click();
+		await page.goto('http://127.0.0.1:5000/auth/logout');
 		await expect(page).toHaveURL('http://127.0.0.1:5000/auth/login');
 
 		// Login with email link
@@ -221,7 +221,7 @@ test.describe('Test auth', () => {
 		await page.goto(emailLink);
 		// Show App page for second login, not set-password
 		await expect(page).toHaveURL('http://127.0.0.1:5000/app');
-		await page.getByRole('button', { name: 'Log Out', exact: true }).click();
+		await page.goto('http://127.0.0.1:5000/auth/logout');
 
 		// 'Set password later' button on set-password page works
 		// Create new account with email link
@@ -238,7 +238,7 @@ test.describe('Test auth', () => {
 		await page.getByRole('button', { name: 'Do it later in settings', exact: true }).click();
 		// Redirect to app page
 		await expect(page).toHaveURL('http://127.0.0.1:5000/app');
-		await page.getByRole('button', { name: 'Log Out', exact: true }).click();
+		await page.goto('http://127.0.0.1:5000/auth/logout');
 
 		// Show 'link inactive' message for used link
 		// Go to used url
