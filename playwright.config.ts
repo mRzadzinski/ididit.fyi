@@ -11,28 +11,27 @@ const config: PlaywrightTestConfig = {
 	},
 	projects: [
 		{
-			name: 'Default',
+			name: 'Default'
 		},
-		// Auth
 		{
-			name: 'auth-desktop',
-			testMatch: /.auth.spec.ts/,
+			name: 'desktop',
+			testMatch: /.*(all|desktop).*.spec.ts/,
 			use: {
 				...devices['Desktop Chrome'],
 				viewport: { width: 1440, height: 789 }
 			}
 		},
 		{
-			name: 'auth-tablet',
-			testMatch: /.auth.spec.ts/,
+			name: 'tablet',
+			testMatch: /.*(all|tablet).*.spec.ts/,
 			use: {
 				viewport: { width: 768, height: 1024 },
 				isMobile: true
 			}
 		},
 		{
-			name: 'auth-mobile',
-			testMatch: /.auth.spec.ts/,
+			name: 'mobile',
+			testMatch: /.*(all|mobile).*.spec.ts/,
 			use: {
 				viewport: { width: 320, height: 568 },
 				isMobile: true
