@@ -3,7 +3,9 @@
 	import { firebaseApp } from '$lib/firebase/firebase';
 	import { user } from '$lib/stores/authStores';
 	import '../app.css';
-	// import { citiesRef } from '$lib/firebase/db-sandbox';
+
+	// temp
+	import { snap } from '$lib/stores/dbStores';
 </script>
 
 {#if $user === undefined}
