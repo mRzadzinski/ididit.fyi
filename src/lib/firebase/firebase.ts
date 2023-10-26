@@ -1,6 +1,7 @@
 import { getApps, initializeApp } from 'firebase/app';
 import { getAuth, connectAuthEmulator, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
+import { connectFunctionsEmulator, getFunctions } from 'firebase/functions';
 import { user } from '$lib/stores/authStores';
 
 const firebaseConfig = {
@@ -18,16 +19,18 @@ if (!getApps().length) {
 	firebaseApp = initializeApp(firebaseConfig);
 }
 
-const auth = getAuth(firebaseApp);
+export const auth = getAuth(firebaseApp);
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore (at least one app instance will be there)
-const db = getFirestore(firebaseApp);
+export const db = getFirestore(firebaseApp);
+export const functions = getFunctions(firebaseApp, 'us-central1');
 
 connectAuthEmulator(auth, 'http://127.0.0.1:9099');
 connectFirestoreEmulator(db, '127.0.0.1', 8080);
-const redirectEmailLoginLink = 'http://127.0.0.1:5000/auth/login-with-link/';
+connectFunctionsEmulator(functions, "127.0.0.1", 5001);
+export const redirectEmailLoginLink = 'http://127.0.0.1:5000/auth/login-with-link/';
 
-// const redirectEmailLoginLink = 'https://ididit.fyi/auth/login-with-link/';
+// export const redirectEmailLoginLink = 'https://ididit.fyi/auth/login-with-link/';
 
 onAuthStateChanged(auth, (currentUser) => {
 	if (currentUser) {
@@ -38,4 +41,4 @@ onAuthStateChanged(auth, (currentUser) => {
 	user.set(currentUser);
 });
 
-export { firebaseApp, auth, db, redirectEmailLoginLink };
+export { firebaseApp };
