@@ -1,19 +1,47 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * import {onCall} from "firebase-functions/v2/https";
- * import {onDocumentWritten} from "firebase-functions/v2/firestore";
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
+import * as functions from 'firebase-functions';
+import * as admin from 'firebase-admin';
+// import { getAuth } from 'firebase-admin/auth';
 
-import { onRequest } from 'firebase-functions/v2/https';
-import * as logger from 'firebase-functions/logger';
+admin.initializeApp();
 
-// Start writing functions
-// https://firebase.google.com/docs/functions/typescript
-
-export const helloWorld = onRequest((request, response) => {
-	logger.info('Hello logs!', { structuredData: true });
-	response.send('Hello from Firebase!');
+export const onRegister = functions.auth.user().onCreate((user) => {
+	return admin.firestore().collection('users').doc(user.uid).set({
+		email: user.email,
+		uid: user.uid,
+		upvotedOn: []
+	});
 });
+
+export const onUserDelete = functions.auth.user().onDelete((user) => {
+	const doc = admin.firestore().collection('users').doc(user.uid);
+	return doc.delete();
+});
+
+
+
+// // Iterate through all users
+// let thousands = 0;
+// const listAllUsers = (nextPageToken?: string) => {
+// 	// List batch of users, 1000 at a time.
+// 	getAuth()
+// 		.listUsers(1000, nextPageToken)
+// 		.then((listUsersResult) => {
+// 			listUsersResult.users.forEach((userRecord) => {
+// 				admin.firestore().collection('users').doc(userRecord.uid).set({
+// 					email: userRecord.email,
+// 					uid: userRecord.uid,
+// 					friends: ['poor Joe', 'nobody']
+// 				});
+// 			});
+// 			thousands++;
+// 			if (listUsersResult.pageToken && thousands < 10) {
+// 				// List next batch of users.
+// 				listAllUsers(listUsersResult.pageToken);
+// 			}
+// 		})
+// 		.catch((error) => {
+// 			console.log('Error listing users:', error);
+// 		});
+// };
+// // Start listing users from the beginning, 1000 at a time.
+// listAllUsers();

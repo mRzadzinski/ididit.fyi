@@ -1,8 +1,20 @@
 import { db } from '$lib/firebase/firebase';
 import { user } from './authStores';
-import { addDoc, collection, doc, getDoc, getDocs, query, setDoc, where } from 'firebase/firestore';
+import {
+	QuerySnapshot,
+	addDoc,
+	collection,
+	doc,
+	getDoc,
+	getDocs,
+	onSnapshot,
+	query,
+	setDoc,
+	where,
+	type DocumentData
+} from 'firebase/firestore';
 
-const uid = 'yP2rYrmayId1laFevRDg2cD1401k'
+const uid = 'yP2rYrmayId1laFevRDg2cD1401k';
 export const snap = await getDoc(doc(db, 'user', 'cvCgQebgCcGfW1IIeY8K'));
 
 if (snap.exists()) {
@@ -15,7 +27,7 @@ if (snap.exists()) {
 const q = query(collection(db, 'user'), where('uid', '==', 'yP2rYrmayId1laFevRDg2cD1401k'));
 
 const querySnapshot = await getDocs(q);
-console.log(querySnapshot.empty);
+// console.log(querySnapshot.empty);
 querySnapshot.forEach((doc) => {
 	// doc.data() is never undefined for query doc snapshots
 	console.log(doc.id, ' => ', doc.data());
@@ -25,3 +37,12 @@ querySnapshot.forEach((doc) => {
 // 	name: 'Tokyo',
 // 	country: 'Japan'
 // });
+
+const qr = query(collection(db, 'courses'));
+const unsubscribe = onSnapshot(qr, (querySnapshot) => {
+	const courses: DocumentData[] = [];
+	querySnapshot.forEach((doc) => {
+		courses.push(doc.data());
+	});
+	console.log('Courses: ', courses);
+});
