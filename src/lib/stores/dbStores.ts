@@ -1,25 +1,12 @@
 import { db } from '$lib/firebase/firebase';
-import { user } from './authStores';
-import {
-	QuerySnapshot,
-	addDoc,
-	collection,
-	doc,
-	getDoc,
-	getDocs,
-	onSnapshot,
-	query,
-	setDoc,
-	where,
-	type DocumentData
-} from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 
-const uid = 'yP2rYrmayId1laFevRDg2cD1401k';
+// const uid = 'yP2rYrmayId1laFevRDg2cD1401k';
 export const snap = await getDoc(doc(db, 'user', 'cvCgQebgCcGfW1IIeY8K'));
 
 if (snap.exists()) {
 	console.log('Document exists');
-	// console.log(snap.data());
+	console.log(snap.data());
 } else {
 	console.log('No such document');
 }
@@ -37,12 +24,3 @@ querySnapshot.forEach((doc) => {
 // 	name: 'Tokyo',
 // 	country: 'Japan'
 // });
-
-const qr = query(collection(db, 'courses'));
-const unsubscribe = onSnapshot(qr, (querySnapshot) => {
-	const courses: DocumentData[] = [];
-	querySnapshot.forEach((doc) => {
-		courses.push(doc.data());
-	});
-	console.log('Courses: ', courses);
-});

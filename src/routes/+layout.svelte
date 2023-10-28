@@ -3,9 +3,6 @@
 	import { firebaseApp } from '$lib/firebase/firebase';
 	import { user } from '$lib/stores/authStores';
 	import '../app.css';
-
-	// temp
-	import { snap } from '$lib/stores/dbStores';
 </script>
 
 {#if $user === undefined}
