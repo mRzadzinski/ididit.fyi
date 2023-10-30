@@ -18,7 +18,7 @@
 			<Navbar />
 			<div class="flex h-full">
 				<!-- Sidebar -->
-				<ul class="menu p-4 w-60 min-h-full bg-base-200 hidden md:flex">
+				<ul class="menu p-4 w-60 min-h-full bg-base-300 hidden md:flex">
 					<SidebarItems />
 				</ul>
 				<!-- Page content -->
