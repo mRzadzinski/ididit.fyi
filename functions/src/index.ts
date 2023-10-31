@@ -1,22 +1,30 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
+import { userDataDoc, userMainDoc } from './helpers';
+// import { getAuth } from 'firebase-admin/auth';
 // import { HttpsError, onCall } from 'firebase-functions/v1/https';
 // import { FieldValue } from 'firebase-admin/firestore';
 // import { getAuth } from 'firebase-admin/auth';
 
 admin.initializeApp();
 
-export const onRegister = functions.auth.user().onCreate((user) => {
-	return admin.firestore().collection('users').doc(user.uid).set({
-		email: user.email,
-		uid: user.uid,
-		upvotedOn: []
-	});
+export const onRegister = functions.auth.user().onCreate(async (user) => {
+	// Create user documents in firestore
+	await admin.firestore().collection('users').doc(user.uid).set(userMainDoc);
+	await admin.firestore().collection('users').doc(user.uid).collection('data').add(userDataDoc);
+
+	return null;
 });
 
-export const onUserDelete = functions.auth.user().onDelete((user) => {
+export const onUserDelete = functions.auth.user().onDelete(async (user) => {
+	// Delete all user data
 	const doc = admin.firestore().collection('users').doc(user.uid);
-	return doc.delete();
+	const data = await admin.firestore().collection('users').doc(user.uid).collection('data').get();
+
+	await doc.delete();
+	data.docs.forEach(async (item) => await item.ref.delete());
+
+	return null;
 });
 
 // // let user upvote only once
@@ -77,14 +85,18 @@ export const onUserDelete = functions.auth.user().onDelete((user) => {
 // 		.listUsers(1000, nextPageToken)
 // 		.then((listUsersResult) => {
 // 			listUsersResult.users.forEach((userRecord) => {
-// 				admin.firestore().collection('users').doc(userRecord.uid).set({
-// 					email: userRecord.email,
-// 					uid: userRecord.uid,
-// 					upvotedOn: []
-// 				});
+// 				// Do something for each user
+// 				admin.firestore().collection('users').doc(userRecord.uid).set(userMainDoc);
+
+// 				admin
+// 					.firestore()
+// 					.collection('users')
+// 					.doc(userRecord.uid)
+// 					.collection('data')
+// 					.add(userDataDoc);
 // 			});
 // 			thousands++;
-// 			if (listUsersResult.pageToken && thousands < 10) {
+// 			if (listUsersResult.pageToken && thousands < 1) {
 // 				// List next batch of users.
 // 				listAllUsers(listUsersResult.pageToken);
 // 			}

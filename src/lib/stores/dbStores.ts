@@ -1,14 +1,26 @@
 import { db } from '$lib/firebase/firebase';
 import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
+import { writable } from 'svelte/store';
+import { user } from './authStores';
 
-// const uid = 'yP2rYrmayId1laFevRDg2cD1401k';
+export const accountData = writable({});
+
+
+export const snap = await getDoc(doc(db, 'user', ''));
+
+
+
+
+
+
+
+
 export const snap = await getDoc(doc(db, 'user', 'cvCgQebgCcGfW1IIeY8K'));
 
 if (snap.exists()) {
-	console.log('Document exists');
 	console.log(snap.data());
 } else {
-	console.log('No such document');
+	// console.log('No such document');
 }
 
 const q = query(collection(db, 'user'), where('uid', '==', 'yP2rYrmayId1laFevRDg2cD1401k'));
