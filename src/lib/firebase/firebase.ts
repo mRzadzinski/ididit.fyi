@@ -33,11 +33,11 @@ export const redirectEmailLoginLink = 'http://127.0.0.1:5000/auth/login-with-lin
 // export const redirectEmailLoginLink = 'https://ididit.fyi/auth/login-with-link/';
 
 onAuthStateChanged(auth, (currentUser) => {
-	if (currentUser) {
-		console.log('logged in');
-	} else {
-		console.log('no user');
-	}
+	// if (currentUser) {
+	// 	console.log('logged in');
+	// } else {
+	// 	console.log('no user');
+	// }
 	user.set(currentUser);
 });
 

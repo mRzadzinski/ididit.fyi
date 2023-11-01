@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import { mainData } from './helpers';
+import { userDocFactory } from './helpers';
 // import { HttpsError, onCall } from 'firebase-functions/v1/https';
 // import { FieldValue } from 'firebase-admin/firestore';
 // import { getAuth } from 'firebase-admin/auth';
@@ -9,17 +9,14 @@ admin.initializeApp();
 
 export const onRegister = functions.auth.user().onCreate(async (user) => {
 	// Create user document in firestore
-	await admin.firestore().collection('users').doc(user.uid).set(mainData);
+	await admin.firestore().collection('users').add(userDocFactory(user.uid));
 	return null;
 });
 
 export const onUserDelete = functions.auth.user().onDelete(async (user) => {
 	// Delete all user data
-	const doc = admin.firestore().collection('users').doc(user.uid);
-	const data = await admin.firestore().collection('users').doc(user.uid).collection('data').get();
-
-	await doc.delete();
-	data.docs.forEach(async (item) => await item.ref.delete());
+	const docs = await admin.firestore().collection('users').where('uid', '==', user.uid).get();
+	docs.forEach((doc) => doc.ref.delete());
 
 	return null;
 });
@@ -83,15 +80,9 @@ export const onUserDelete = functions.auth.user().onDelete(async (user) => {
 // 		.then((listUsersResult) => {
 // 			listUsersResult.users.forEach(async (userRecord) => {
 // 				// Do something for each user
-// 				// delete
-// 				const doc = admin.firestore().collection('users').doc(userRecord.uid);
-// 				const data = await admin.firestore().collection('users').doc(userRecord.uid).collection('data').get();
-			
-// 				await doc.delete();
-// 				data.docs.forEach(async (item) => await item.ref.delete());
-// 				// add
-// 				await admin.firestore().collection('users').doc(userRecord.uid).set(mainData);
+
 // 			});
+
 // 			// thousands++;
 // 			// if (listUsersResult.pageToken && thousands < 1) {
 // 			// 	// List next batch of users.
