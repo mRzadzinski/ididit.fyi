@@ -1,11 +1,23 @@
 <script lang="ts">
-	// Import to run initialize Firebase
+	// Import to initialize Firebase
 	import { firebaseApp } from '$lib/firebase/firebase';
+	import { accountData } from '$lib/stores/dbStores';
 	import { user } from '$lib/stores/authStores';
 	import '../app.css';
+
+	$: console.log($accountData);
+
+	let showLoading: boolean;
+	$: if ($user === undefined) {
+		showLoading = true;
+	} else if ($user && !$accountData) {
+		showLoading = true;
+	} else {
+		showLoading = false;
+	}
 </script>
 
-{#if $user === undefined}
+{#if showLoading}
 	<div class="w-screen h-screen flex justify-center items-center flex-col gap-3 text-xl">
 		<div>
 			<h1>ididit.fyi</h1>

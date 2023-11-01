@@ -1,7 +1,6 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import { userDataDoc, userMainDoc } from './helpers';
-// import { getAuth } from 'firebase-admin/auth';
+import { mainData } from './helpers';
 // import { HttpsError, onCall } from 'firebase-functions/v1/https';
 // import { FieldValue } from 'firebase-admin/firestore';
 // import { getAuth } from 'firebase-admin/auth';
@@ -9,10 +8,8 @@ import { userDataDoc, userMainDoc } from './helpers';
 admin.initializeApp();
 
 export const onRegister = functions.auth.user().onCreate(async (user) => {
-	// Create user documents in firestore
-	await admin.firestore().collection('users').doc(user.uid).set(userMainDoc);
-	await admin.firestore().collection('users').doc(user.uid).collection('data').add(userDataDoc);
-
+	// Create user document in firestore
+	await admin.firestore().collection('users').doc(user.uid).set(mainData);
 	return null;
 });
 
@@ -78,28 +75,28 @@ export const onUserDelete = functions.auth.user().onDelete(async (user) => {
 // 	});
 
 // // Iterate through all users
-// let thousands = 0;
+// // let thousands = 0;
 // const listAllUsers = (nextPageToken?: string) => {
 // 	// List batch of users, 1000 at a time.
 // 	getAuth()
 // 		.listUsers(1000, nextPageToken)
 // 		.then((listUsersResult) => {
-// 			listUsersResult.users.forEach((userRecord) => {
+// 			listUsersResult.users.forEach(async (userRecord) => {
 // 				// Do something for each user
-// 				admin.firestore().collection('users').doc(userRecord.uid).set(userMainDoc);
-
-// 				admin
-// 					.firestore()
-// 					.collection('users')
-// 					.doc(userRecord.uid)
-// 					.collection('data')
-// 					.add(userDataDoc);
+// 				// delete
+// 				const doc = admin.firestore().collection('users').doc(userRecord.uid);
+// 				const data = await admin.firestore().collection('users').doc(userRecord.uid).collection('data').get();
+			
+// 				await doc.delete();
+// 				data.docs.forEach(async (item) => await item.ref.delete());
+// 				// add
+// 				await admin.firestore().collection('users').doc(userRecord.uid).set(mainData);
 // 			});
-// 			thousands++;
-// 			if (listUsersResult.pageToken && thousands < 1) {
-// 				// List next batch of users.
-// 				listAllUsers(listUsersResult.pageToken);
-// 			}
+// 			// thousands++;
+// 			// if (listUsersResult.pageToken && thousands < 1) {
+// 			// 	// List next batch of users.
+// 			// 	listAllUsers(listUsersResult.pageToken);
+// 			// }
 // 		})
 // 		.catch((error) => {
 // 			console.log('Error listing users:', error);

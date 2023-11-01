@@ -27,7 +27,7 @@ export const functions = getFunctions(firebaseApp, 'us-central1');
 
 connectAuthEmulator(auth, 'http://127.0.0.1:9099');
 connectFirestoreEmulator(db, '127.0.0.1', 8080);
-connectFunctionsEmulator(functions, "127.0.0.1", 5001);
+connectFunctionsEmulator(functions, '127.0.0.1', 5001);
 export const redirectEmailLoginLink = 'http://127.0.0.1:5000/auth/login-with-link/';
 
 // export const redirectEmailLoginLink = 'https://ididit.fyi/auth/login-with-link/';

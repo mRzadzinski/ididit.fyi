@@ -1,20 +1,27 @@
-import { db } from '$lib/firebase/firebase';
-import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
+import { auth, db } from '$lib/firebase/firebase';
+import { collection, doc, getDoc, getDocs, onSnapshot, query, where } from 'firebase/firestore';
 import { writable } from 'svelte/store';
-import { user } from './authStores';
+import { onAuthStateChanged } from 'firebase/auth';
+import sizeof from 'firestore-size';
 
-export const accountData = writable({});
+export const accountData = writable();
 
+onAuthStateChanged(auth, async (currentUser) => {
+	if (currentUser) {
+		// Get subscription info from db
+		onSnapshot(doc(db, 'users', currentUser.uid), (doc) => {
+			accountData.set(doc.data());
 
-export const snap = await getDoc(doc(db, 'user', ''));
+			if (doc.data()) {
+				console.log(sizeof(doc.data() as Record<string, unknown>));
+			}
+		});
+	} else {
+		accountData.set(undefined);
+	}
+});
 
-
-
-
-
-
-
-
+// Firestore training code
 export const snap = await getDoc(doc(db, 'user', 'cvCgQebgCcGfW1IIeY8K'));
 
 if (snap.exists()) {

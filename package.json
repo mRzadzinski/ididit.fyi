@@ -48,6 +48,8 @@
 	"type": "module",
 	"dependencies": {
 		"firebase": "^10.4.0",
-		"node-fetch": "^3.3.2"
+		"firestore-size": "^2.0.7",
+		"node-fetch": "^3.3.2",
+		"uuid": "^9.0.1"
 	}
 }
