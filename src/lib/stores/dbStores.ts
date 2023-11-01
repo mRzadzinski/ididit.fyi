@@ -25,6 +25,7 @@ onAuthStateChanged(auth, async (currentUser) => {
 		const q = query(collection(db, 'users'), where('uid', '==', currentUser.uid));
 		unsubscribeDocs = onSnapshot(q, (querySnapshot) => {
 			const docsArray: DocumentData[] = [];
+			const docsInfo: object[] = [];
 			let goalsData: object[] = [];
 			let seedsData: object[] = [];
 			let visionData: object[] = [];
@@ -34,17 +35,14 @@ onAuthStateChanged(auth, async (currentUser) => {
 			let proudBoardData: object[] = [];
 			let friendsData: object[] = [];
 
-			// Reset user docs store
-			userDocs.set([]);
 			// Get array of user documents
 			querySnapshot.forEach((doc) => {
 				docsArray.push(doc.data());
-				// Save documents in store for comparison and size info
-				userDocs.update((prev) => [
-					...prev,
-					{ size: sizeof(doc.data()), doc: doc.data(), docID: doc.id }
-				]);
+				docsInfo.push({ size: sizeof(doc.data()), doc: doc.data(), docID: doc.id });
 			});
+
+			// Save documents data in store for comparison and size info
+			userDocs.set(docsInfo);
 
 			docsArray.forEach((doc) => {
 				// Save subscription info from master document
