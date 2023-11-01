@@ -5,6 +5,12 @@ import { onAuthStateChanged, type Unsubscribe } from 'firebase/auth';
 import { isEqual } from 'lodash';
 import sizeof from 'firestore-size';
 
+interface DocsInfo {
+	size: number;
+	doc: object;
+	docID: string;
+}
+
 export const userDocs = writable<DocumentData[]>([]);
 export const subscription = writable<object[]>([]);
 export const goals = writable<object[]>([]);
@@ -25,7 +31,7 @@ onAuthStateChanged(auth, async (currentUser) => {
 		const q = query(collection(db, 'users'), where('uid', '==', currentUser.uid));
 		unsubscribeDocs = onSnapshot(q, (querySnapshot) => {
 			const docsArray: DocumentData[] = [];
-			const docsInfo: object[] = [];
+			const docsInfo: DocsInfo[] = [];
 			let goalsData: object[] = [];
 			let seedsData: object[] = [];
 			let visionData: object[] = [];
@@ -41,6 +47,9 @@ onAuthStateChanged(auth, async (currentUser) => {
 				docsInfo.push({ size: sizeof(doc.data()), doc: doc.data(), docID: doc.id });
 			});
 
+			docsInfo.sort((prev, next) => {
+				return prev.size - next.size;
+			});
 			// Save documents data in store for comparison and size info
 			userDocs.set(docsInfo);
 
