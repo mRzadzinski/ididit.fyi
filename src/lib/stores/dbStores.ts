@@ -46,7 +46,11 @@ onAuthStateChanged(auth, async (currentUser) => {
 
 			docsArray.forEach((doc) => {
 				// Save subscription info from master document
-				if (doc.subscription) subscription.set(doc.subscription);
+				if (doc.subscription) {
+					if (!isEqual(get(subscription), doc.subscription)) {
+						subscription.set(doc.subscription);
+					}
+				}
 				// Extract app data
 				goalsData = [...goalsData, ...doc.goals];
 				seedsData = [...seedsData, ...doc.seeds];
