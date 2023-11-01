@@ -9,7 +9,7 @@
 	$: console.log('subscription: ', $subscription);
 	$: console.log('goals: ', $goals);
 	$: console.log('seeds: ', $seeds);
-	// $: console.log('vision: ', $vision);
+	$: console.log('vision: ', $vision);
 
 	let showLoading: boolean;
 	$: if ($user === undefined) {
