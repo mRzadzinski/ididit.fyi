@@ -1,15 +1,15 @@
 <script lang="ts">
 	// Import to initialize Firebase
 	import { firebaseApp } from '$lib/firebase/firebase';
-	import {  } from '$lib/stores/dbStores';
-	import { goals, seeds, subscription, vision } from '$lib/stores/dbStores';
+	import { goals, seeds, subscription, vision, userDocs } from '$lib/stores/dbStores';
 	import { user } from '$lib/stores/authStores';
 	import '../app.css';
 
-	$: console.log('subscription: ', $subscription);
-	$: console.log('goals: ', $goals);
-	$: console.log('seeds: ', $seeds);
-	$: console.log('vision: ', $vision);
+	// $: console.log('subscription: ', $subscription);
+	// $: console.log('goals: ', $goals);
+	// $: console.log('seeds: ', $seeds);
+	// $: console.log('vision: ', $vision);
+	$: console.log('userDocs: ', $userDocs);
 
 	let showLoading: boolean;
 	$: if ($user === undefined) {

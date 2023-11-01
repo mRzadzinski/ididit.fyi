@@ -5,7 +5,7 @@ import { onAuthStateChanged, type Unsubscribe } from 'firebase/auth';
 import { isEqual } from 'lodash';
 import sizeof from 'firestore-size';
 
-export const accountData = writable();
+export const userDocs = writable<DocumentData[]>([]);
 export const subscription = writable<object[]>([]);
 export const goals = writable<object[]>([]);
 export const seeds = writable<object[]>([]);
@@ -16,7 +16,7 @@ export const books = writable<object[]>([]);
 export const proudBoard = writable<object[]>([]);
 export const friends = writable<object[]>([]);
 
-let unsubscribeDocs: Unsubscribe;
+export let unsubscribeDocs: Unsubscribe;
 
 // Get logged user data from Firestore
 onAuthStateChanged(auth, async (currentUser) => {
@@ -34,9 +34,16 @@ onAuthStateChanged(auth, async (currentUser) => {
 			let proudBoardData: object[] = [];
 			let friendsData: object[] = [];
 
+			// Reset user docs store
+			userDocs.set([]);
 			// Get array of user documents
 			querySnapshot.forEach((doc) => {
 				docsArray.push(doc.data());
+				// Save documents in store for comparison and size info
+				userDocs.update((prev) => [
+					...prev,
+					{ size: sizeof(doc.data()), doc: doc.data(), docID: doc.id }
+				]);
 			});
 
 			docsArray.forEach((doc) => {
@@ -63,8 +70,18 @@ onAuthStateChanged(auth, async (currentUser) => {
 			if (!isEqual(get(proudBoard), proudBoardData)) proudBoard.set(proudBoardData);
 			if (!isEqual(get(friends), friendsData)) friends.set(friendsData);
 		});
-	} else {
-		accountData.set(undefined);
-		unsubscribeDocs();
 	}
 });
+
+export function clearAppData() {
+	unsubscribeDocs();
+	subscription.set([]);
+	goals.set([]);
+	seeds.set([]);
+	vision.set([]);
+	dreams.set([]);
+	wishlist.set([]);
+	books.set([]);
+	proudBoard.set([]);
+	friends.set([]);
+}

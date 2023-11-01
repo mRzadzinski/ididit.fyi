@@ -16,7 +16,9 @@ export const onRegister = functions.auth.user().onCreate(async (user) => {
 export const onUserDelete = functions.auth.user().onDelete(async (user) => {
 	// Delete all user data
 	const docs = await admin.firestore().collection('users').where('uid', '==', user.uid).get();
-	docs.forEach((doc) => doc.ref.delete());
+	for (let i = 0; i < docs.size; i++) {
+		docs.docs[i].ref.delete();
+	}
 
 	return null;
 });
@@ -78,6 +80,7 @@ export const onUserDelete = functions.auth.user().onDelete(async (user) => {
 // 	getAuth()
 // 		.listUsers(1000, nextPageToken)
 // 		.then((listUsersResult) => {
+			// USE FOR LOOP IN FUNCTIONS
 // 			listUsersResult.users.forEach(async (userRecord) => {
 // 				// Do something for each user
 
