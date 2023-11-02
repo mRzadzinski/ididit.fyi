@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import { userDocFactory } from './helpers';
+import { userMainDocFactory } from './helpers';
 // import { HttpsError, onCall } from 'firebase-functions/v1/https';
 // import { FieldValue } from 'firebase-admin/firestore';
 // import { getAuth } from 'firebase-admin/auth';
@@ -9,7 +9,7 @@ admin.initializeApp();
 
 export const onRegister = functions.auth.user().onCreate(async (user) => {
 	// Create user document in firestore
-	await admin.firestore().collection('users').add(userDocFactory(user.uid));
+	await admin.firestore().collection('users').add(userMainDocFactory(user.uid));
 	return null;
 });
 
@@ -79,12 +79,25 @@ export const onUserDelete = functions.auth.user().onDelete(async (user) => {
 // 	// List batch of users, 1000 at a time.
 // 	getAuth()
 // 		.listUsers(1000, nextPageToken)
-// 		.then((listUsersResult) => {
-			// USE FOR LOOP IN FUNCTIONS
-// 			listUsersResult.users.forEach(async (userRecord) => {
-// 				// Do something for each user
+// 		.then(async (listUsersResult) => {
+// 			// USE FOR LOOP IN FUNCTIONS
+// 			for (let i = 0; i < listUsersResult.users.length; i++) {
+// 				const user = listUsersResult.users[i];
 
-// 			});
+// 				// delete docs
+// 				const docs = await admin.firestore().collection('users').where('uid', '==', user.uid).get();
+// 				for (let i = 0; i < docs.size; i++) {
+// 					docs.docs[i].ref.delete();
+// 				}
+
+// 				// create docs
+// 				await admin.firestore().collection('users').add(userMainDocFactory(user.uid));
+// 				await admin.firestore().collection('users').add(userDataDocFactory(user.uid));
+// 				await admin.firestore().collection('users').add(userDataDocFactory(user.uid));
+// 			}
+// 			// listUsersResult.users.forEach(async (userRecord) => {
+// 			// 	// Do something for each user
+// 			// });
 
 // 			// thousands++;
 // 			// if (listUsersResult.pageToken && thousands < 1) {

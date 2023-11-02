@@ -1,0 +1,19 @@
+[debug] [2023-11-02T17:13:01.497Z] ----------------------------------------------------------------------
+[debug] [2023-11-02T17:13:01.502Z] Command:       /usr/local/Cellar/node@16/16.20.2/bin/node /usr/local/bin/firebase emulators:export ./firebase/emu-data
+[debug] [2023-11-02T17:13:01.503Z] CLI Version:   12.6.2
+[debug] [2023-11-02T17:13:01.503Z] Platform:      darwin
+[debug] [2023-11-02T17:13:01.503Z] Node Version:  v16.20.2
+[debug] [2023-11-02T17:13:01.505Z] Time:          Thu Nov 02 2023 18:13:01 GMT+0100 (Central European Standard Time)
+[debug] [2023-11-02T17:13:01.506Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-11-02T17:13:01.718Z] >>> [apiv2][query] GET http://127.0.0.1:4400/ [none]
+[debug] [2023-11-02T17:13:01.791Z] <<< [apiv2][status] GET http://127.0.0.1:4400/ 200
+[debug] [2023-11-02T17:13:01.791Z] <<< [apiv2][body] GET http://127.0.0.1:4400/ {"version":"12.6.2","origins":["http://127.0.0.1:4400","http://[::1]:4400"],"host":"127.0.0.1","port":4400}
+[info] i  Found running emulator hub for project ididit-fyi at http://127.0.0.1:4400 
+[info] i  Creating export directory /Users/Coding/repos/ididit.fyi/functions/firebase/emu-data 
+[debug] [2023-11-02T17:13:01.960Z] Error: ENOENT: no such file or directory, mkdir '/Users/Coding/repos/ididit.fyi/functions/firebase/emu-data'
+    at Object.mkdirSync (node:fs:1382:3)
+    at Object.exportEmulatorData (/usr/local/lib/node_modules/firebase-tools/lib/emulator/controller.js:620:12)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+[error] 
+[error] Error: An unexpected error has occurred.

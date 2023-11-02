@@ -11,16 +11,24 @@ interface DocsInfo {
 	docID: string;
 }
 
+interface Seeds {
+	decks: object[];
+	seeds: object[];
+}
+
 export const userDocs = writable<DocumentData[]>([]);
 export const subscription = writable<object[]>([]);
-export const goals = writable<object[]>([]);
-export const seeds = writable<object[]>([]);
-export const vision = writable<object[]>([]);
-export const dreams = writable<object[]>([]);
-export const wishlist = writable<object[]>([]);
-export const books = writable<object[]>([]);
-export const proudBoard = writable<object[]>([]);
-export const friends = writable<object[]>([]);
+// export const goals = writable<object[]>([]);
+export const seeds = writable<Seeds>({
+	decks: [],
+	seeds: []
+});
+// export const vision = writable<object[]>([]);
+// export const dreams = writable<object[]>([]);
+// export const wishlist = writable<object[]>([]);
+// export const books = writable<object[]>([]);
+// export const proudBoard = writable<object[]>([]);
+// export const friends = writable<object[]>([]);
 
 export let unsubscribeDocs: Unsubscribe;
 
@@ -32,14 +40,14 @@ onAuthStateChanged(auth, async (currentUser) => {
 		unsubscribeDocs = onSnapshot(q, (querySnapshot) => {
 			const docsArray: DocumentData[] = [];
 			const docsInfo: DocsInfo[] = [];
-			let goalsData: object[] = [];
-			let seedsData: object[] = [];
-			let visionData: object[] = [];
-			let dreamsData: object[] = [];
-			let wishlistData: object[] = [];
-			let booksData: object[] = [];
-			let proudBoardData: object[] = [];
-			let friendsData: object[] = [];
+			// let goalsData: object[] = [];
+			const seedsData: Seeds = { decks: [], seeds: [] };
+			// let visionData: object[] = [];
+			// let dreamsData: object[] = [];
+			// let wishlistData: object[] = [];
+			// let booksData: object[] = [];
+			// let proudBoardData: object[] = [];
+			// let friendsData: object[] = [];
 
 			// Get array of user documents
 			querySnapshot.forEach((doc) => {
@@ -61,25 +69,26 @@ onAuthStateChanged(auth, async (currentUser) => {
 					}
 				}
 				// Extract app data
-				goalsData = [...goalsData, ...doc.goals];
-				seedsData = [...seedsData, ...doc.seeds];
-				visionData = [...visionData, ...doc.vision];
-				dreamsData = [...dreamsData, ...doc.dreams];
-				wishlistData = [...wishlistData, ...doc.wishlist];
-				booksData = [...booksData, ...doc.books];
-				proudBoardData = [...proudBoardData, ...doc.proudBoard];
-				friendsData = [...friendsData, ...doc.friends];
+				// goalsData = [...goalsData, ...doc.goals];
+				seedsData.decks = seedsData.decks.concat(doc.seedsData.decks);
+				seedsData.seeds = seedsData.seeds.concat(doc.seedsData.seeds);
+				// visionData = [...visionData, ...doc.vision];
+				// dreamsData = [...dreamsData, ...doc.dreams];
+				// wishlistData = [...wishlistData, ...doc.wishlist];
+				// booksData = [...booksData, ...doc.books];
+				// proudBoardData = [...proudBoardData, ...doc.proudBoard];
+				// friendsData = [...friendsData, ...doc.friends];
 			});
 
 			// Compare with current data and update
-			if (!isEqual(get(goals), goalsData)) goals.set(goalsData);
+			// if (!isEqual(get(goals), goalsData)) goals.set(goalsData);
 			if (!isEqual(get(seeds), seedsData)) seeds.set(seedsData);
-			if (!isEqual(get(vision), visionData)) vision.set(visionData);
-			if (!isEqual(get(dreams), dreamsData)) dreams.set(dreamsData);
-			if (!isEqual(get(wishlist), wishlistData)) wishlist.set(wishlistData);
-			if (!isEqual(get(books), booksData)) books.set(booksData);
-			if (!isEqual(get(proudBoard), proudBoardData)) proudBoard.set(proudBoardData);
-			if (!isEqual(get(friends), friendsData)) friends.set(friendsData);
+			// if (!isEqual(get(vision), visionData)) vision.set(visionData);
+			// if (!isEqual(get(dreams), dreamsData)) dreams.set(dreamsData);
+			// if (!isEqual(get(wishlist), wishlistData)) wishlist.set(wishlistData);
+			// if (!isEqual(get(books), booksData)) books.set(booksData);
+			// if (!isEqual(get(proudBoard), proudBoardData)) proudBoard.set(proudBoardData);
+			// if (!isEqual(get(friends), friendsData)) friends.set(friendsData);
 		});
 	}
 });
@@ -87,12 +96,12 @@ onAuthStateChanged(auth, async (currentUser) => {
 export function clearAppData() {
 	unsubscribeDocs();
 	subscription.set([]);
-	goals.set([]);
-	seeds.set([]);
-	vision.set([]);
-	dreams.set([]);
-	wishlist.set([]);
-	books.set([]);
-	proudBoard.set([]);
-	friends.set([]);
+	// goals.set([]);
+	seeds.set({ decks: [], seeds: [] });
+	// vision.set([]);
+	// dreams.set([]);
+	// wishlist.set([]);
+	// books.set([]);
+	// proudBoard.set([]);
+	// friends.set([]);
 }

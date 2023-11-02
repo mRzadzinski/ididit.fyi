@@ -1,4 +1,4 @@
-export const userDocFactory = (uid: string) => {
+export const userMainDocFactory = (uid: string) => {
 	return {
 		uid,
 		subscription: {
@@ -13,13 +13,39 @@ export const userDocFactory = (uid: string) => {
 				books: 0
 			}
 		},
-		goals: [],
-		seeds: [],
-		vision: [],
-		dreams: [],
-		wishlist: [],
-		books: [],
-		proudBoard: [],
-		friends: []
+		// goalsData: {
+		// 	categories: [],
+		// 	goals: []
+		// },
+		seedsData: {
+			decks: [],
+			seeds: []
+		}
+		// visionData: {},
+		// dreamsData: {},
+		// wishlistData: {},
+		// booksData: {},
+		// proudBoardData: {},
+		// friendsData: {}
+	};
+};
+
+export const userDataDocFactory = (uid: string) => {
+	return {
+		uid,
+		// goalsData: {
+		// 	categories: [],
+		// 	goals: []
+		// },
+		seedsData: {
+			decks: [],
+			seeds: []
+		}
+		// visionData: {},
+		// dreamsData: {},
+		// wishlistData: {},
+		// booksData: {},
+		// proudBoardData: {},
+		// friendsData: {}
 	};
 };

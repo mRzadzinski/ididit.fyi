@@ -22,7 +22,7 @@
 					<SidebarItems />
 				</ul>
 				<!-- Page content -->
-				<div class="flex flex-col flex-1 items-center h-full">
+				<div class="h-full">
 					{#if $user}
 						<slot />
 					{/if}

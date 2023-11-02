@@ -2,6 +2,7 @@
 
 </script>
 
-<main class="prose flex justify-center items-center flex-col h-full">
-	<h1 class="text-3xl mb-3">Seeds</h1>
+<main class="prose h-full p-10">
+	<h1 class="text-3xl mb-3">Decks</h1>
+	<button class="btn">New Deck</button>
 </main>
