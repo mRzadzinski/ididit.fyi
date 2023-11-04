@@ -22,7 +22,7 @@
 					<SidebarItems />
 				</ul>
 				<!-- Page content -->
-				<div class="h-full">
+				<div class="h-full w-full">
 					{#if $user}
 						<slot />
 					{/if}

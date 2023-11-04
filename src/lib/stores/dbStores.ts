@@ -11,15 +11,20 @@ interface DocsInfo {
 	docID: string;
 }
 
+interface SeedsDeck {
+	name: string;
+	dailyLimit: number;
+}
+
 interface Seeds {
-	decks: object[];
+	decks: SeedsDeck[];
 	seeds: object[];
 }
 
 export const userDocs = writable<DocumentData[]>([]);
 export const subscription = writable<object[]>([]);
 // export const goals = writable<object[]>([]);
-export const seeds = writable<Seeds>({
+export const seedsData = writable<Seeds>({
 	decks: [],
 	seeds: []
 });
@@ -41,7 +46,7 @@ onAuthStateChanged(auth, async (currentUser) => {
 			const docsArray: DocumentData[] = [];
 			const docsInfo: DocsInfo[] = [];
 			// let goalsData: object[] = [];
-			const seedsData: Seeds = { decks: [], seeds: [] };
+			const allSeeds: Seeds = { decks: [], seeds: [] };
 			// let visionData: object[] = [];
 			// let dreamsData: object[] = [];
 			// let wishlistData: object[] = [];
@@ -70,8 +75,8 @@ onAuthStateChanged(auth, async (currentUser) => {
 				}
 				// Extract app data
 				// goalsData = [...goalsData, ...doc.goals];
-				seedsData.decks = seedsData.decks.concat(doc.seedsData.decks);
-				seedsData.seeds = seedsData.seeds.concat(doc.seedsData.seeds);
+				allSeeds.decks = allSeeds.decks.concat(doc.seedsData.decks);
+				allSeeds.seeds = allSeeds.seeds.concat(doc.seedsData.seeds);
 				// visionData = [...visionData, ...doc.vision];
 				// dreamsData = [...dreamsData, ...doc.dreams];
 				// wishlistData = [...wishlistData, ...doc.wishlist];
@@ -82,7 +87,7 @@ onAuthStateChanged(auth, async (currentUser) => {
 
 			// Compare with current data and update
 			// if (!isEqual(get(goals), goalsData)) goals.set(goalsData);
-			if (!isEqual(get(seeds), seedsData)) seeds.set(seedsData);
+			if (!isEqual(get(seedsData), allSeeds)) seedsData.set(allSeeds);
 			// if (!isEqual(get(vision), visionData)) vision.set(visionData);
 			// if (!isEqual(get(dreams), dreamsData)) dreams.set(dreamsData);
 			// if (!isEqual(get(wishlist), wishlistData)) wishlist.set(wishlistData);
@@ -97,7 +102,7 @@ export function clearAppData() {
 	unsubscribeDocs();
 	subscription.set([]);
 	// goals.set([]);
-	seeds.set({ decks: [], seeds: [] });
+	seedsData.set({ decks: [], seeds: [] });
 	// vision.set([]);
 	// dreams.set([]);
 	// wishlist.set([]);
