@@ -7,10 +7,22 @@
 	let listContainer: HTMLElement;
 	let grid: Muuri;
 	let muuriItems: (Element | null)[] = [];
+	let seedListVisibilityTimeout: NodeJS.Timeout;
 
 	onMount(() => {
 		// Initialize drag & drop
-		grid = new Muuri(listContainer, { dragEnabled: true });
+		grid = new Muuri(listContainer, {
+			dragEnabled: true,
+			dragAxis: 'y',
+			dragSortHeuristics: {
+				sortInterval: 0,
+				minDragDistance: 0
+			},
+			dragSortPredicate: {
+				threshold: 30
+			},
+			itemDraggingClass: 'drag-item'
+		});
 		// Clear grid if not empty
 		grid.remove(grid.getItems());
 	});
@@ -20,7 +32,8 @@
 		for (let i = 0; i < listContainer.children.length; i++) {
 			const el = listContainer.children.item(i);
 			if (!muuriItems.includes(el) && el !== null) {
-				grid.add(el as HTMLElement);
+				const htmlEl = el as HTMLElement;
+				grid.add(htmlEl);
 				muuriItems.push(el);
 			}
 		}
@@ -38,21 +51,35 @@
 			}
 		});
 		// Sort dnd list by item order
-		grid.sort(function (itemA, itemB) {
-			const elA = itemA.getElement();
-			const elB = itemB.getElement();
-			let orderAttrA = elA ? elA.getAttribute('data-order') : null;
-			let orderAttrB = elB ? elB.getAttribute('data-order') : null;
+		grid.sort(
+			function (itemA, itemB) {
+				const elA = itemA.getElement();
+				const elB = itemB.getElement();
+				let orderAttrA = elA ? elA.getAttribute('data-order') : null;
+				let orderAttrB = elB ? elB.getAttribute('data-order') : null;
 
-			if (orderAttrA && orderAttrB) {
-				return parseInt(orderAttrA) - parseInt(orderAttrB);
-			} else {
-				return 0;
+				if (orderAttrA && orderAttrB) {
+					return parseInt(orderAttrA) - parseInt(orderAttrB);
+				} else {
+					return 0;
+				}
+			},
+			{ layout: false }
+		);
+		// Show list after initial fill (filling doesn't look good)
+		seedListVisibilityTimeout = setTimeout(() => {
+			if (listContainer) {
+				listContainer.style.visibility = 'visible';
 			}
-		});
+		}, 20);
+
+		// Drag & drop events
 	});
 
 	onDestroy(() => {
+		if (seedListVisibilityTimeout) {
+			clearTimeout(seedListVisibilityTimeout);
+		}
 		grid.destroy();
 	});
 </script>
@@ -60,7 +87,7 @@
 <main class="h-full w-full p-10 m-0">
 	<h1 class="text-3xl mb-5">Decks</h1>
 	<button class="btn mb-6">New Deck</button>
-	<div class="dnd-container flex flex-col gap-3 relative" bind:this={listContainer}>
+	<div class="flex flex-col gap-3 relative invisible h-full" bind:this={listContainer}>
 		{#each $seedsData.decks as deck}
 			<SeedsCategory name={deck.name} dailyLimit={deck.dailyLimit} order={deck.order} />
 		{/each}
