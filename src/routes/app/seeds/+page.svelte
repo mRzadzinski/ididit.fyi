@@ -27,6 +27,15 @@
 		});
 		// Clear grid if not empty
 		grid.remove(grid.getItems());
+
+		// Grid events
+		grid.on('dragInit', function (item, event) {
+			console.log(item.getElement()?.id);
+			console.log(grid.getItems().indexOf(item));
+		});
+		grid.on('dragEnd', function (item, event) {
+			console.log(grid.getItems().indexOf(item));
+		});
 	});
 
 	afterUpdate(async () => {
@@ -64,21 +73,18 @@
 			}
 		});
 		// Sort dnd list by item order
-		grid.sort(
-			function (itemA, itemB) {
-				const elA = itemA.getElement();
-				const elB = itemB.getElement();
-				let orderAttrA = elA ? elA.getAttribute('data-order') : null;
-				let orderAttrB = elB ? elB.getAttribute('data-order') : null;
+		grid.sort(function (itemA, itemB) {
+			const elA = itemA.getElement();
+			const elB = itemB.getElement();
+			let orderAttrA = elA ? elA.getAttribute('data-order') : null;
+			let orderAttrB = elB ? elB.getAttribute('data-order') : null;
 
-				if (orderAttrA && orderAttrB) {
-					return parseInt(orderAttrA) - parseInt(orderAttrB);
-				} else {
-					return 0;
-				}
-			},
-			{ layout: false }
-		);
+			if (orderAttrA && orderAttrB) {
+				return parseInt(orderAttrA) - parseInt(orderAttrB);
+			} else {
+				return 0;
+			}
+		});
 	});
 
 	onDestroy(() => {
@@ -94,7 +100,12 @@
 	<button class="btn mb-6">New Deck</button>
 	<div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
 		{#each $seedsData.decks as deck}
-			<SeedsCategory name={deck.name} dailyLimit={deck.dailyLimit} order={deck.order} />
+			<SeedsCategory
+				name={deck.name}
+				dailyLimit={deck.dailyLimit}
+				order={deck.order}
+				id={deck.id}
+			/>
 		{/each}
 	</div>
 </main>

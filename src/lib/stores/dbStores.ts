@@ -12,6 +12,7 @@ interface DocsInfo {
 }
 
 export interface SeedsDeck {
+	id: string;
 	name: string;
 	dailyLimit: number;
 	order: number;
