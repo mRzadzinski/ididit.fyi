@@ -11,12 +11,13 @@ interface DocsInfo {
 	docID: string;
 }
 
-interface SeedsDeck {
+export interface SeedsDeck {
 	name: string;
 	dailyLimit: number;
+	order: number;
 }
 
-interface Seeds {
+export interface Seeds {
 	decks: SeedsDeck[];
 	seeds: object[];
 }
