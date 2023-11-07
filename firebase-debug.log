@@ -1,0 +1,366 @@
+[debug] [2023-11-07T14:24:31.706Z] ----------------------------------------------------------------------
+[debug] [2023-11-07T14:24:31.708Z] Command:       /usr/local/Cellar/node@16/16.20.2/bin/node /usr/local/bin/firebase emulators:start --import=./firebase/emu-data
+[debug] [2023-11-07T14:24:31.708Z] CLI Version:   12.6.2
+[debug] [2023-11-07T14:24:31.708Z] Platform:      darwin
+[debug] [2023-11-07T14:24:31.709Z] Node Version:  v16.20.2
+[debug] [2023-11-07T14:24:31.711Z] Time:          Tue Nov 07 2023 15:24:31 GMT+0100 (Central European Standard Time)
+[debug] [2023-11-07T14:24:31.711Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-11-07T14:24:31.835Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-11-07T14:24:31.835Z] > authorizing via signed-in user (volspree@gmail.com)
+[debug] [2023-11-07T14:24:32.072Z] java version "21.0.1" 2023-10-17 LTS
+Java(TM) SE Runtime Environment (build 21.0.1+12-LTS-29)
+
+[debug] [2023-11-07T14:24:32.073Z] Java HotSpot(TM) 64-Bit Server VM (build 21.0.1+12-LTS-29, mixed mode, sharing)
+
+[debug] [2023-11-07T14:24:32.088Z] Parsed Java major version: 21
+[info] i  emulators: Starting emulators: auth, functions, firestore, hosting {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: auth, functions, firestore, hosting"}}
+[debug] [2023-11-07T14:24:32.797Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2023-11-07T14:24:32.797Z] [auth] Authentication Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2023-11-07T14:24:32.797Z] [firestore] Firestore Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2023-11-07T14:24:32.797Z] [firestore.websocket] websocket server for firestore only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2023-11-07T14:24:32.797Z] [hosting] Hosting Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2023-11-07T14:24:32.797Z] assigned listening specs for emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"auth":[{"address":"127.0.0.1","family":"IPv4","port":9099}],"firestore":[{"address":"127.0.0.1","family":"IPv4","port":8080}],"firestore.websocket":[{"address":"127.0.0.1","family":"IPv4","port":9150}],"hosting":[{"address":"127.0.0.1","family":"IPv4","port":5000}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[debug] [2023-11-07T14:24:32.807Z] [hub] writing locator at /var/folders/d8/xmcpcj611wg8s4sgxw2n6lmw0000gp/T/hub-ididit-fyi.json
+[debug] [2023-11-07T14:24:32.817Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/ididit-fyi [none]
+[debug] [2023-11-07T14:24:33.448Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/ididit-fyi 200
+[debug] [2023-11-07T14:24:33.449Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/ididit-fyi {"projectId":"ididit-fyi","projectNumber":"756131332156","displayName":"ididit-fyi","name":"projects/ididit-fyi","resources":{"hostingSite":"ididit-fyi"},"state":"ACTIVE","etag":"1_b5fad30c-af3b-440b-a3d1-ab18939e3036"}
+[debug] [2023-11-07T14:24:36.413Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/ididit-fyi/sites pageToken=&pageSize=10
+[debug] [2023-11-07T14:24:37.645Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/ididit-fyi/sites 200
+[debug] [2023-11-07T14:24:37.646Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/ididit-fyi/sites {"sites":[{"name":"projects/ididit-fyi/sites/ididit-fyi","defaultUrl":"https://ididit-fyi.web.app","appId":"1:756131332156:web:89739ebc181c25ddb80339","type":"DEFAULT_SITE"}]}
+[debug] [2023-11-07T14:24:37.646Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/-/webApps/1:756131332156:web:89739ebc181c25ddb80339/config [none]
+[debug] [2023-11-07T14:24:38.567Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/-/webApps/1:756131332156:web:89739ebc181c25ddb80339/config 200
+[debug] [2023-11-07T14:24:38.567Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/-/webApps/1:756131332156:web:89739ebc181c25ddb80339/config {"projectId":"ididit-fyi","appId":"1:756131332156:web:89739ebc181c25ddb80339","storageBucket":"ididit-fyi.appspot.com","apiKey":"AIzaSyD6o7Yq4_ORCXQqbCLo-w1MbR08EcDjeTo","authDomain":"ididit-fyi.firebaseapp.com","messagingSenderId":"756131332156","measurementId":"G-0TD15L5HEY"}
+[info] 
+   Thank you for trying our experimental support for SvelteKit on Firebase Hosting.
+   While this integration is maintained by Googlers it is not a supported Firebase product.
+   Issues filed on GitHub will be addressed on a best-effort basis by maintainers and other community members.
+
+   Documentation: https://firebase.google.com/docs/hosting/frameworks/frameworks-overview
+   File a bug: https://github.com/firebase/firebase-tools/issues/new?template=bug_report.md
+   Submit a feature request: https://github.com/firebase/firebase-tools/issues/new?template=feature_request.md
+
+   We'd love to learn from you. Express your interest in helping us shape the future of Firebase Hosting: https://goo.gle/41enW5X
+
+[debug] [2023-11-07T14:24:51.972Z] [web frameworks] effective firebase.json:  {
+  "hosting": [
+    {
+      "source": ".",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "frameworksBackend": {
+        "region": "us-central1"
+      },
+      "site": "ididit-fyi",
+      "rewrites": [],
+      "redirects": [],
+      "headers": [
+        {
+          "source": "**/*.[jt]s",
+          "headers": [
+            {
+              "key": "Set-Cookie",
+              "value": "__FIREBASE_DEFAULTS__=eyJlbXVsYXRvckhvc3RzIjp7ImF1dGgiOiIxMjcuMC4wLjE6OTA5OSIsImZpcmVzdG9yZSI6IjEyNy4wLjAuMTo4MDgwIn0sImNvbmZpZyI6eyJwcm9qZWN0SWQiOiJpZGlkaXQtZnlpIiwiYXBwSWQiOiIxOjc1NjEzMTMzMjE1Njp3ZWI6ODk3MzllYmMxODFjMjVkZGI4MDMzOSIsInN0b3JhZ2VCdWNrZXQiOiJpZGlkaXQtZnlpLmFwcHNwb3QuY29tIiwiYXBpS2V5IjoiQUl6YVN5RDZvN1lxNF9PUkNYUXFiQ0xvLXcxTWJSMDhFY0RqZVRvIiwiYXV0aERvbWFpbiI6ImlkaWRpdC1meWkuZmlyZWJhc2VhcHAuY29tIiwibWVzc2FnaW5nU2VuZGVySWQiOiI3NTYxMzEzMzIxNTYiLCJtZWFzdXJlbWVudElkIjoiRy0wVEQxNUw1SEVZIn19; SameSite=Strict; Expires=2025-10-02T01:04:51.971Z; Path=/;"
+            }
+          ]
+        }
+      ],
+      "cleanUrls": true,
+      "public": "static",
+      "webFramework": "svelekit"
+    }
+  ],
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
+      ],
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run build"
+      ]
+    }
+  ]
+}
+[debug] [2023-11-07T14:24:52.281Z] [functions] Functions Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2023-11-07T14:24:52.281Z] [eventarc] Eventarc Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2023-11-07T14:24:52.281Z] late-assigned ports for functions and eventarc emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"auth":[{"address":"127.0.0.1","family":"IPv4","port":9099}],"firestore":[{"address":"127.0.0.1","family":"IPv4","port":8080}],"firestore.websocket":[{"address":"127.0.0.1","family":"IPv4","port":9150}],"hosting":[{"address":"127.0.0.1","family":"IPv4","port":5000}],"functions":[{"address":"127.0.0.1","family":"IPv4","port":5001}],"eventarc":[{"address":"127.0.0.1","family":"IPv4","port":9299}]},"metadata":{"message":"late-assigned ports for functions and eventarc emulators"}}
+[warn] ⚠  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: database, pubsub, storage {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: \u001b[1mdatabase, pubsub, storage\u001b[22m"}}
+[debug] [2023-11-07T14:24:52.292Z] defaultcredentials: writing to file /Users/Coding/.config/firebase/volspree_gmail_com_application_default_credentials.json
+[debug] [2023-11-07T14:24:52.296Z] Setting GAC to /Users/Coding/.config/firebase/volspree_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to /Users/Coding/.config/firebase/volspree_gmail_com_application_default_credentials.json"}}
+[debug] [2023-11-07T14:24:52.298Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/ididit-fyi/adminSdkConfig [none]
+[debug] [2023-11-07T14:24:52.629Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/ididit-fyi/adminSdkConfig 200
+[debug] [2023-11-07T14:24:52.630Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/ididit-fyi/adminSdkConfig {"projectId":"ididit-fyi","storageBucket":"ididit-fyi.appspot.com"}
+[info] i  firestore: Importing data from /Users/Coding/repos/ididit.fyi/firebase/emu-data/firestore_export/firestore_export.overall_export_metadata {"metadata":{"emulator":{"name":"firestore"},"message":"Importing data from /Users/Coding/repos/ididit.fyi/firebase/emu-data/firestore_export/firestore_export.overall_export_metadata"}}
+[debug] [2023-11-07T14:24:52.676Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2023-11-07T14:24:52.676Z] Ignoring unsupported arg: single_project_mode_error {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: single_project_mode_error"}}
+[debug] [2023-11-07T14:24:52.676Z] Starting Firestore Emulator with command {"binary":"java","args":["-Dgoogle.cloud_firestore.debug_log_level=FINE","-Duser.language=en","-jar","/Users/Coding/.cache/firebase/emulators/cloud-firestore-emulator-v1.18.2.jar","--host","127.0.0.1","--port",8080,"--websocket_port",9150,"--project_id","ididit-fyi","--seed_from_export","/Users/Coding/repos/ididit.fyi/firebase/emu-data/firestore_export/firestore_export.overall_export_metadata","--rules","/Users/Coding/repos/ididit.fyi/firebase/firestore.rules","--single_project_mode",true,"--functions_emulator","127.0.0.1:5001"],"optionalArgs":["port","webchannel_port","host","rules","websocket_port","functions_emulator","seed_from_export","project_id","single_project_mode"],"joinArgs":false} {"metadata":{"emulator":{"name":"firestore"},"message":"Starting Firestore Emulator with command {\"binary\":\"java\",\"args\":[\"-Dgoogle.cloud_firestore.debug_log_level=FINE\",\"-Duser.language=en\",\"-jar\",\"/Users/Coding/.cache/firebase/emulators/cloud-firestore-emulator-v1.18.2.jar\",\"--host\",\"127.0.0.1\",\"--port\",8080,\"--websocket_port\",9150,\"--project_id\",\"ididit-fyi\",\"--seed_from_export\",\"/Users/Coding/repos/ididit.fyi/firebase/emu-data/firestore_export/firestore_export.overall_export_metadata\",\"--rules\",\"/Users/Coding/repos/ididit.fyi/firebase/firestore.rules\",\"--single_project_mode\",true,\"--functions_emulator\",\"127.0.0.1:5001\"],\"optionalArgs\":[\"port\",\"webchannel_port\",\"host\",\"rules\",\"websocket_port\",\"functions_emulator\",\"seed_from_export\",\"project_id\",\"single_project_mode\"],\"joinArgs\":false}"}}
+[info] i  firestore: Firestore Emulator logging to firestore-debug.log {"metadata":{"emulator":{"name":"firestore"},"message":"Firestore Emulator logging to \u001b[1mfirestore-debug.log\u001b[22m"}}
+[debug] [2023-11-07T14:24:55.693Z] Nov 07, 2023 3:24:55 PM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketServer start
+INFO: Started WebSocket server on ws://127.0.0.1:9150
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Nov 07, 2023 3:24:55 PM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketServer start\nINFO: Started WebSocket server on ws://127.0.0.1:9150\n"}}
+[debug] [2023-11-07T14:24:55.735Z] API endpoint: http:// {"metadata":{"emulator":{"name":"firestore"},"message":"API endpoint: http://"}}
+[debug] [2023-11-07T14:24:55.735Z] 127.0.0.1:8080 {"metadata":{"emulator":{"name":"firestore"},"message":"127.0.0.1:8080"}}
+[debug] [2023-11-07T14:24:55.736Z] 
+ {"metadata":{"emulator":{"name":"firestore"},"message":"\n"}}
+[debug] [2023-11-07T14:24:55.736Z] If you are using a library that supports the FIRESTORE_EMULATOR_HOST environment variable, run:
+ {"metadata":{"emulator":{"name":"firestore"},"message":"If you are using a library that supports the FIRESTORE_EMULATOR_HOST environment variable, run:\n"}}
+[debug] [2023-11-07T14:24:55.736Z] 
+   export FIRESTORE_EMULATOR_HOST=127.0.0.1:8080
+
+ {"metadata":{"emulator":{"name":"firestore"},"message":"\n   export FIRESTORE_EMULATOR_HOST=127.0.0.1:8080\n\n"}}
+[debug] [2023-11-07T14:24:55.737Z] Dev App Server is now running.
+
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Dev App Server is now running.\n\n"}}
+[info] ✔  firestore: Firestore Emulator UI websocket is running on 9150. {"metadata":{"emulator":{"name":"firestore"},"message":"Firestore Emulator UI websocket is running on 9150."}}
+[info] i  auth: Importing config from /Users/Coding/repos/ididit.fyi/firebase/emu-data/auth_export/config.json {"metadata":{"emulator":{"name":"auth"},"message":"Importing config from /Users/Coding/repos/ididit.fyi/firebase/emu-data/auth_export/config.json"}}
+[info] i  auth: Importing accounts from /Users/Coding/repos/ididit.fyi/firebase/emu-data/auth_export/accounts.json {"metadata":{"emulator":{"name":"auth"},"message":"Importing accounts from /Users/Coding/repos/ididit.fyi/firebase/emu-data/auth_export/accounts.json"}}
+[debug] [2023-11-07T14:25:05.443Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/ididit-fyi/sites 
+[debug] [2023-11-07T14:25:06.627Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/ididit-fyi/sites 200
+[debug] [2023-11-07T14:25:06.627Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/ididit-fyi/sites {"sites":[{"name":"projects/ididit-fyi/sites/ididit-fyi","defaultUrl":"https://ididit-fyi.web.app","appId":"1:756131332156:web:89739ebc181c25ddb80339","type":"DEFAULT_SITE"}]}
+[debug] [2023-11-07T14:25:06.628Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/ididit-fyi/webApps/1:756131332156:web:89739ebc181c25ddb80339/config [none]
+[debug] [2023-11-07T14:25:07.543Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/ididit-fyi/webApps/1:756131332156:web:89739ebc181c25ddb80339/config 200
+[debug] [2023-11-07T14:25:07.543Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/ididit-fyi/webApps/1:756131332156:web:89739ebc181c25ddb80339/config {"projectId":"ididit-fyi","appId":"1:756131332156:web:89739ebc181c25ddb80339","storageBucket":"ididit-fyi.appspot.com","apiKey":"AIzaSyD6o7Yq4_ORCXQqbCLo-w1MbR08EcDjeTo","authDomain":"ididit-fyi.firebaseapp.com","messagingSenderId":"756131332156","measurementId":"G-0TD15L5HEY"}
+[info] i  hosting[ididit-fyi]: Serving hosting files from: static {"metadata":{"emulator":{"name":"hosting"},"message":"Serving hosting files from: \u001b[1mstatic\u001b[22m"}}
+[info] ✔  hosting[ididit-fyi]: Local server: http://127.0.0.1:5000 {"metadata":{"emulator":{"name":"hosting"},"message":"Local server: \u001b[4m\u001b[1mhttp://127.0.0.1:5000\u001b[22m\u001b[24m"}}
+[debug] [2023-11-07T14:25:07.623Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2023-11-07T14:25:07.623Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2023-11-07T14:25:07.623Z] Starting Emulator UI with command {"binary":"node","args":["/Users/Coding/.cache/firebase/emulators/ui-v1.11.7/server/server.js"],"optionalArgs":[],"joinArgs":false} {"metadata":{"emulator":{"name":"ui"},"message":"Starting Emulator UI with command {\"binary\":\"node\",\"args\":[\"/Users/Coding/.cache/firebase/emulators/ui-v1.11.7/server/server.js\"],\"optionalArgs\":[],\"joinArgs\":false}"}}
+[info] i  ui: Emulator UI logging to ui-debug.log {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI logging to \u001b[1mui-debug.log\u001b[22m"}}
+[debug] [2023-11-07T14:25:07.798Z] Web / API server started at 127.0.0.1:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at 127.0.0.1:4000\n"}}
+[debug] [2023-11-07T14:25:07.799Z] Web / API server started at ::1:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at ::1:4000\n"}}
+[info] i  functions: Watching "/Users/Coding/repos/ididit.fyi/functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"/Users/Coding/repos/ididit.fyi/functions\" for Cloud Functions..."}}
+[debug] [2023-11-07T14:25:07.890Z] Validating nodejs source
+[warn] ⚠  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2023-11-07T14:25:08.702Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.1.0",
+    "typescript": "^4.9.0"
+  },
+  "private": true
+}
+[debug] [2023-11-07T14:25:08.703Z] Building nodejs source
+[debug] [2023-11-07T14:25:08.703Z] Failed to find version of module node: reached end of search path /Users/Coding/repos/ididit.fyi/functions/node_modules
+[info] ✔  functions: Using node@16 from host. 
+[debug] [2023-11-07T14:25:08.708Z] Could not find functions.yaml. Must use http discovery
+[debug] [2023-11-07T14:25:08.717Z] Found firebase-functions binary at '/Users/Coding/repos/ididit.fyi/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8723
+
+[debug] [2023-11-07T14:25:09.335Z] Got response from /__/functions.yaml {"endpoints":{"onRegister":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"eventTrigger":{"eventType":"providers/firebase.auth/eventTypes/user.create","eventFilters":{"resource":"projects/ididit-fyi"},"retry":false},"labels":{},"entryPoint":"onRegister"},"onUserDelete":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"eventTrigger":{"eventType":"providers/firebase.auth/eventTypes/user.delete","eventFilters":{"resource":"projects/ididit-fyi"},"retry":false},"labels":{},"entryPoint":"onUserDelete"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] shutdown requested via /__/quitquitquit
+
+[debug] [2023-11-07T14:25:09.851Z] Nov 07, 2023 3:25:09 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Nov 07, 2023 3:25:09 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\nINFO: Detected HTTP/2 connection.\n"}}
+[info] ✔  functions: Loaded functions definitions from source: onRegister, onUserDelete. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: onRegister, onUserDelete."}}
+[debug] [2023-11-07T14:25:10.859Z] addAuthTrigger {"eventTrigger":{"eventType":"providers/firebase.auth/eventTypes/user.create","resource":"projects/ididit-fyi"}}
+[info] ✔  functions[us-central1-onRegister]: auth function initialized. {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mauth\u001b[22m function initialized."}}
+[debug] [2023-11-07T14:25:10.859Z] addAuthTrigger {"eventTrigger":{"eventType":"providers/firebase.auth/eventTypes/user.delete","resource":"projects/ididit-fyi"}}
+[info] ✔  functions[us-central1-onUserDelete]: auth function initialized. {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mauth\u001b[22m function initialized."}}
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://127.0.0.1:4000/               │
+└─────────────────────────────────────────────────────────────┘
+
+┌────────────────┬────────────────┬─────────────────────────────────┐
+│ Emulator       │ Host:Port      │ View in Emulator UI             │
+├────────────────┼────────────────┼─────────────────────────────────┤
+│ Authentication │ 127.0.0.1:9099 │ http://127.0.0.1:4000/auth      │
+├────────────────┼────────────────┼─────────────────────────────────┤
+│ Functions      │ 127.0.0.1:5001 │ http://127.0.0.1:4000/functions │
+├────────────────┼────────────────┼─────────────────────────────────┤
+│ Firestore      │ 127.0.0.1:8080 │ http://127.0.0.1:4000/firestore │
+├────────────────┼────────────────┼─────────────────────────────────┤
+│ Hosting        │ 127.0.0.1:5000 │ n/a                             │
+└────────────────┴────────────────┴─────────────────────────────────┘
+  Emulator Hub running at 127.0.0.1:4400
+  Other reserved ports: 4500, 9150
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
+[debug] [2023-11-07T14:25:16.568Z] Nov 07, 2023 3:25:16 PM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketChannelHandler initChannel
+INFO: Connected to new websocket client
+Nov 07, 2023 3:25:16 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Nov 07, 2023 3:25:16 PM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketChannelHandler initChannel\nINFO: Connected to new websocket client\nNov 07, 2023 3:25:16 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\nINFO: Detected non-HTTP/2 connection.\n"}}
+[debug] [2023-11-07T14:25:16.759Z] Nov 07, 2023 3:25:16 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Nov 07, 2023 3:25:16 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\nINFO: Detected HTTP/2 connection.\n"}}
+[debug] [2023-11-07T14:25:16.872Z] Nov 07, 2023 3:25:16 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Nov 07, 2023 3:25:16 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\nINFO: Detected non-HTTP/2 connection.\n"}}
+[debug] [2023-11-07T14:25:17.290Z] Nov 07, 2023 3:25:17 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Nov 07, 2023 3:25:17 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\nINFO: Detected non-HTTP/2 connection.\n"}}
+[debug] [2023-11-07T14:25:17.454Z] Nov 07, 2023 3:25:17 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Nov 07, 2023 3:25:17 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\nINFO: Detected non-HTTP/2 connection.\n"}}
+[debug] [2023-11-07T14:25:45.254Z] Nov 07, 2023 3:25:45 PM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketChannelHandler initChannel
+INFO: Connected to new websocket client
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Nov 07, 2023 3:25:45 PM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketChannelHandler initChannel\nINFO: Connected to new websocket client\n"}}
+[debug] [2023-11-07T14:26:13.914Z] File /Users/Coding/repos/ididit.fyi/functions/src/index.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/Coding/repos/ididit.fyi/functions/src/index.ts changed, reloading triggers"}}
+[debug] [2023-11-07T14:26:14.917Z] Validating nodejs source
+[warn] ⚠  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2023-11-07T14:26:16.610Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.1.0",
+    "typescript": "^4.9.0"
+  },
+  "private": true
+}
+[debug] [2023-11-07T14:26:16.610Z] Building nodejs source
+[debug] [2023-11-07T14:26:16.610Z] Failed to find version of module node: reached end of search path /Users/Coding/repos/ididit.fyi/functions/node_modules
+[info] ✔  functions: Using node@16 from host. 
+[debug] [2023-11-07T14:26:16.614Z] Could not find functions.yaml. Must use http discovery
+[debug] [2023-11-07T14:26:16.616Z] Found firebase-functions binary at '/Users/Coding/repos/ididit.fyi/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8768
+
+[debug] [2023-11-07T14:26:17.639Z] Got response from /__/functions.yaml {"endpoints":{"onRegister":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"eventTrigger":{"eventType":"providers/firebase.auth/eventTypes/user.create","eventFilters":{"resource":"projects/ididit-fyi"},"retry":false},"labels":{},"entryPoint":"onRegister"},"onUserDelete":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"eventTrigger":{"eventType":"providers/firebase.auth/eventTypes/user.delete","eventFilters":{"resource":"projects/ididit-fyi"},"retry":false},"labels":{},"entryPoint":"onUserDelete"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] shutdown requested via /__/quitquitquit
+
+[debug] [2023-11-07T14:26:18.216Z] Nov 07, 2023 3:26:18 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Nov 07, 2023 3:26:18 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\nINFO: Detected HTTP/2 connection.\n"}}
+[info] ✔  functions: Loaded functions definitions from source: onRegister, onUserDelete. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: onRegister, onUserDelete."}}
+[debug] [2023-11-07T14:26:32.123Z] File /Users/Coding/repos/ididit.fyi/functions/src/index.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/Coding/repos/ididit.fyi/functions/src/index.ts changed, reloading triggers"}}
+[debug] [2023-11-07T14:26:32.501Z] Nov 07, 2023 3:26:32 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Nov 07, 2023 3:26:32 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\nINFO: Detected non-HTTP/2 connection.\n"}}
+[debug] [2023-11-07T14:26:33.126Z] Validating nodejs source
+[warn] ⚠  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2023-11-07T14:26:35.036Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.1.0",
+    "typescript": "^4.9.0"
+  },
+  "private": true
+}
+[debug] [2023-11-07T14:26:35.036Z] Building nodejs source
+[debug] [2023-11-07T14:26:35.037Z] Failed to find version of module node: reached end of search path /Users/Coding/repos/ididit.fyi/functions/node_modules
+[info] ✔  functions: Using node@16 from host. 
+[debug] [2023-11-07T14:26:35.037Z] Could not find functions.yaml. Must use http discovery
+[debug] [2023-11-07T14:26:35.038Z] Found firebase-functions binary at '/Users/Coding/repos/ididit.fyi/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8388
+
+[debug] [2023-11-07T14:26:36.888Z] Got response from /__/functions.yaml {"endpoints":{"onRegister":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"eventTrigger":{"eventType":"providers/firebase.auth/eventTypes/user.create","eventFilters":{"resource":"projects/ididit-fyi"},"retry":false},"labels":{},"entryPoint":"onRegister"},"onUserDelete":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"eventTrigger":{"eventType":"providers/firebase.auth/eventTypes/user.delete","eventFilters":{"resource":"projects/ididit-fyi"},"retry":false},"labels":{},"entryPoint":"onUserDelete"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2023-11-07T14:26:37.127Z] Nov 07, 2023 3:26:37 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Nov 07, 2023 3:26:37 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\nINFO: Detected non-HTTP/2 connection.\n"}}
+[info] shutdown requested via /__/quitquitquit
+
+[debug] [2023-11-07T14:26:38.209Z] Nov 07, 2023 3:26:38 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Nov 07, 2023 3:26:38 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\nINFO: Detected HTTP/2 connection.\n"}}
+[info] ✔  functions: Loaded functions definitions from source: onRegister, onUserDelete. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: onRegister, onUserDelete."}}
+[debug] [2023-11-07T14:26:48.995Z] File /Users/Coding/repos/ididit.fyi/functions/lib/helpers.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/Coding/repos/ididit.fyi/functions/lib/helpers.js.map changed, reloading triggers"}}
+[debug] [2023-11-07T14:26:48.995Z] File /Users/Coding/repos/ididit.fyi/functions/lib/helpers.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/Coding/repos/ididit.fyi/functions/lib/helpers.js changed, reloading triggers"}}
+[debug] [2023-11-07T14:26:48.996Z] File /Users/Coding/repos/ididit.fyi/functions/lib/index.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/Coding/repos/ididit.fyi/functions/lib/index.js.map changed, reloading triggers"}}
+[debug] [2023-11-07T14:26:48.996Z] File /Users/Coding/repos/ididit.fyi/functions/lib/index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/Coding/repos/ididit.fyi/functions/lib/index.js changed, reloading triggers"}}
+[debug] [2023-11-07T14:26:49.998Z] Validating nodejs source
+[warn] ⚠  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2023-11-07T14:26:50.966Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.1.0",
+    "typescript": "^4.9.0"
+  },
+  "private": true
+}
+[debug] [2023-11-07T14:26:50.966Z] Building nodejs source
+[debug] [2023-11-07T14:26:50.966Z] Failed to find version of module node: reached end of search path /Users/Coding/repos/ididit.fyi/functions/node_modules
+[info] ✔  functions: Using node@16 from host. 
+[debug] [2023-11-07T14:26:50.967Z] Could not find functions.yaml. Must use http discovery
+[debug] [2023-11-07T14:26:50.968Z] Found firebase-functions binary at '/Users/Coding/repos/ididit.fyi/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8665
+
+[debug] [2023-11-07T14:26:51.745Z] Got response from /__/functions.yaml {"endpoints":{"onRegister":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"eventTrigger":{"eventType":"providers/firebase.auth/eventTypes/user.create","eventFilters":{"resource":"projects/ididit-fyi"},"retry":false},"labels":{},"entryPoint":"onRegister"},"onUserDelete":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"eventTrigger":{"eventType":"providers/firebase.auth/eventTypes/user.delete","eventFilters":{"resource":"projects/ididit-fyi"},"retry":false},"labels":{},"entryPoint":"onUserDelete"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] shutdown requested via /__/quitquitquit
+
+[info] ✔  functions: Loaded functions definitions from source: onRegister, onUserDelete. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: onRegister, onUserDelete."}}
+[debug] [2023-11-07T14:27:10.359Z] Nov 07, 2023 3:27:10 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Nov 07, 2023 3:27:10 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\nINFO: Detected non-HTTP/2 connection.\n"}}
+[debug] [2023-11-07T14:27:32.531Z] Nov 07, 2023 3:27:32 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Nov 07, 2023 3:27:32 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\nINFO: Detected non-HTTP/2 connection.\n"}}

@@ -9,7 +9,7 @@ admin.initializeApp();
 
 export const onRegister = functions.auth.user().onCreate(async (user) => {
 	// Create user document in firestore
-	await admin.firestore().collection('users').doc(user.uid).set(userMainDocFactory(user.uid))
+	await admin.firestore().collection('users').doc(user.uid).set(userMainDocFactory(user.uid));
 	return null;
 });
 
@@ -74,7 +74,7 @@ export const onUserDelete = functions.auth.user().onDelete(async (user) => {
 // 	});
 
 // // Iterate through all users
-// // let thousands = 0;
+// let thousands = 0;
 // const listAllUsers = (nextPageToken?: string) => {
 // 	// List batch of users, 1000 at a time.
 // 	getAuth()
@@ -84,16 +84,21 @@ export const onUserDelete = functions.auth.user().onDelete(async (user) => {
 // 			for (let i = 0; i < listUsersResult.users.length; i++) {
 // 				const user = listUsersResult.users[i];
 
-// 				// delete docs
-// 				const docs = await admin.firestore().collection('users').where('uid', '==', user.uid).get();
-// 				for (let i = 0; i < docs.size; i++) {
-// 					docs.docs[i].ref.delete();
-// 				}
+// 				// get old doc
+// 				const docs = await admin
+// 					.firestore()
+// 					.collection('users')
+// 					.where('uid', '==', user.uid)
+// 					.orderBy('subscription')
+// 					.get();
 
-// 				// create docs
-// 				await admin.firestore().collection('users').add(userMainDocFactory(user.uid));
-// 				await admin.firestore().collection('users').add(userDataDocFactory(user.uid));
-// 				await admin.firestore().collection('users').add(userDataDocFactory(user.uid));
+// 				const oldDoc = (await docs.docs[0].ref.get()).data();
+// 				// // Copy content from old doc to new one
+// 				if (oldDoc && docs.docs[0].ref.id !== user.uid) {
+// 					await admin.firestore().collection('users').doc(user.uid).set(oldDoc);
+// 					// // Delete old doc
+// 					docs.docs[0].ref.delete();
+// 				}
 // 			}
 // 			// listUsersResult.users.forEach(async (userRecord) => {
 // 			// 	// Do something for each user
