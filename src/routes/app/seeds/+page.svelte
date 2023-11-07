@@ -1,9 +1,8 @@
 <script lang="ts">
 	import SeedsCategory from '$components/seeds/SeedsCategory.svelte';
-	import { seedsData } from '$lib/stores/dbStores';
+	import { seedsData, type SeedsDeck } from '$lib/stores/dbStores';
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
 	import Muuri from 'muuri';
-	import { initial } from 'lodash';
 
 	let listContainer: HTMLElement;
 	let grid: Muuri;
@@ -16,6 +15,7 @@
 		grid = new Muuri(listContainer, {
 			dragEnabled: true,
 			dragAxis: 'y',
+			dragStartPredicate: { distance: 1 },
 			dragSortHeuristics: {
 				sortInterval: 0,
 				minDragDistance: 0
@@ -93,6 +93,8 @@
 		}
 		grid.destroy();
 	});
+
+	function updateDeck(deck: SeedsDeck) {}
 </script>
 
 <main class="h-full w-full p-10 m-0">
@@ -100,12 +102,7 @@
 	<button class="btn mb-6">New Deck</button>
 	<div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
 		{#each $seedsData.decks as deck}
-			<SeedsCategory
-				name={deck.name}
-				dailyLimit={deck.dailyLimit}
-				order={deck.order}
-				id={deck.id}
-			/>
+			<SeedsCategory {deck} />
 		{/each}
 	</div>
 </main>

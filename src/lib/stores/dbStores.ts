@@ -6,7 +6,7 @@ import { isEqual } from 'lodash';
 import sizeof from 'firestore-size';
 
 interface DocsInfo {
-	size: number;
+	remainingSpace: number;
 	doc: object;
 	docID: string;
 }
@@ -25,7 +25,7 @@ export interface Seeds {
 
 export const userDocs = writable<DocumentData[]>([]);
 export const subscription = writable<object[]>([]);
-// export const goals = writable<object[]>([]);
+// export const goalsData = writable<object[]>([]);
 export const seedsData = writable<Seeds>({
 	decks: [],
 	seeds: []
@@ -59,11 +59,15 @@ onAuthStateChanged(auth, async (currentUser) => {
 			// Get array of user documents
 			querySnapshot.forEach((doc) => {
 				docsArray.push(doc.data());
-				docsInfo.push({ size: sizeof(doc.data()), doc: doc.data(), docID: doc.id });
+				docsInfo.push({
+					remainingSpace: 1000000 - sizeof(doc.data()),
+					doc: doc.data(),
+					docID: doc.id
+				});
 			});
 
 			docsInfo.sort((prev, next) => {
-				return prev.size - next.size;
+				return prev.remainingSpace - next.remainingSpace;
 			});
 			// Save documents data in store for comparison and size info
 			userDocs.set(docsInfo);
