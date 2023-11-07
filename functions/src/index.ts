@@ -9,7 +9,7 @@ admin.initializeApp();
 
 export const onRegister = functions.auth.user().onCreate(async (user) => {
 	// Create user document in firestore
-	await admin.firestore().collection('users').add(userMainDocFactory(user.uid));
+	await admin.firestore().collection('users').doc(user.uid).set(userMainDocFactory(user.uid))
 	return null;
 });
 
