@@ -11,7 +11,7 @@ interface DocsInfo {
 	docID: string;
 }
 
-export interface SeedsDeck {
+export interface SeedsDeckType {
 	id: string;
 	name: string;
 	dailyLimit: number;
@@ -19,7 +19,7 @@ export interface SeedsDeck {
 }
 
 export interface Seeds {
-	decks: SeedsDeck[];
+	decks: SeedsDeckType[];
 	seeds: object[];
 }
 

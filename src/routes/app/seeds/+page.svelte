@@ -1,6 +1,6 @@
 <script lang="ts">
-	import SeedsCategory from '$components/seeds/SeedsCategory.svelte';
-	import { seedsData, type SeedsDeck } from '$lib/stores/dbStores';
+	import SeedsDeck from '$components/seeds/SeedsDeck.svelte';
+	import { seedsData, type SeedsDeckType } from '$lib/stores/dbStores';
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
 	import Muuri from 'muuri';
 
@@ -94,7 +94,9 @@
 		grid.destroy();
 	});
 
-	function updateDeck(deck: SeedsDeck) {}
+	function updateDeck(deckUpdate: SeedsDeckType) {
+		console.log(deckUpdate);
+	}
 </script>
 
 <main class="h-full w-full p-10 m-0">
@@ -102,7 +104,7 @@
 	<button class="btn mb-6">New Deck</button>
 	<div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
 		{#each $seedsData.decks as deck}
-			<SeedsCategory {deck} />
+			<SeedsDeck {deck} {updateDeck} />
 		{/each}
 	</div>
 </main>
