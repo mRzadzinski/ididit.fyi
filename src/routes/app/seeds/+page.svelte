@@ -3,6 +3,10 @@
 	import { seedsData, type SeedsDeckType } from '$lib/stores/dbStores';
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
 	import Muuri from 'muuri';
+	import sizeof from 'firestore-size';
+	import { getDocumentByDeckID } from './seedsHelpers';
+	import { doc, updateDoc } from 'firebase/firestore';
+	import { db } from '$lib/firebase/firebase';
 
 	let listContainer: HTMLElement;
 	let grid: Muuri;
@@ -94,8 +98,34 @@
 		grid.destroy();
 	});
 
-	function updateDeck(deckUpdate: SeedsDeckType) {
-		console.log(deckUpdate);
+	async function updateDeck(deckUpdate: SeedsDeckType) {
+		const document = getDocumentByDeckID(deckUpdate.id);
+		const deckUpdateSize = sizeof(deckUpdate);
+		const prevDeckSize = sizeof(document?.deck);
+		let newDeckArray: SeedsDeckType[] = [];
+
+		if (document) {
+			// Check if deck size increased
+			let enoughSpaceInDoc = true;
+			if (deckUpdateSize > prevDeckSize) {
+				// Check if there in enough space in doc
+				const spaceLeft = document.doc.remainingSpace - deckUpdateSize;
+				spaceLeft > 0 ? (enoughSpaceInDoc = true) : (enoughSpaceInDoc = false);
+			}
+
+			if (enoughSpaceInDoc) {
+				// Prepare new deck array to replace the old one
+				newDeckArray = document.decksArray;
+				newDeckArray[document.oldDeckIndex] = deckUpdate;
+
+				// Update doc in firestore
+				const docID = document.doc.docID;
+				const docRef = doc(db, 'users', docID);
+				await updateDoc(docRef, {
+					'seedsData.decks': newDeckArray
+				});
+			}
+		}
 	}
 </script>
 
