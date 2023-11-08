@@ -101,6 +101,17 @@
 		grid.destroy();
 	});
 
+	// async function fillDocs() {
+	// 	for (let i = 0; i < $userDocs.length; i++) {
+	// 		const docRef = doc(db, 'users', $userDocs[i].docID);
+	// 		await updateDoc(docRef, {
+	// 			toRemove: generateRandomPassword(920000)
+	// 		});
+	// 	}
+	// 	console.log('docs filled');
+	// }
+	// fillDocs();
+
 	async function updateDeck(updatedDeck: SeedsDeckType) {
 		const docInfo = getDocInfoByDeckID(updatedDeck.id);
 		const parentDocID = docInfo?.doc.docID;
@@ -110,20 +121,33 @@
 		const updatedDeckSize = sizeof(updatedDeck);
 		let changingDeckLocation = false;
 		let newDeckArray: SeedsDeckType[] = [];
+		let enoughSpaceInParentDoc = true;
 
 		if (docInfo) {
 			// Check if deck size increased
-			let enoughSpaceInDoc = true;
 			if (updatedDeckSize > prevDeckSize) {
 				// Check if there in enough space in doc
 				const spaceToAdd = updatedDeckSize - prevDeckSize;
 				const spaceLeft = parentDocRemainingSpace - spaceToAdd;
-				spaceLeft > 0 ? (enoughSpaceInDoc = true) : (enoughSpaceInDoc = false);
+				spaceLeft > 0 ? (enoughSpaceInParentDoc = true) : (enoughSpaceInParentDoc = false);
+			}
+
+			// Update parent doc if possible
+			if (enoughSpaceInParentDoc) {
+				// Prepare new decks array to replace the old one in parent doc
+				newDeckArray = docInfo.doc.doc.seedsData.decks;
+				newDeckArray[docInfo.oldDeckIndex] = updatedDeck;
+				// Update doc in firestore
+				const docRef = doc(db, 'users', parentDocID);
+				await updateDoc(docRef, {
+					'seedsData.decks': newDeckArray
+				});
+				return;
 			}
 
 			// If not enough space in parent doc, check remaining docs and add deck if possible
 			// userDocs are already sorted by space left, ascending
-			if (!enoughSpaceInDoc) {
+			if (!enoughSpaceInParentDoc) {
 				for (let i = 0; i < $userDocs.length; i++) {
 					const document = $userDocs[i];
 					const docSize = document.remainingSpace;
@@ -136,47 +160,34 @@
 						});
 						console.log(docRef.id);
 						changingDeckLocation = true;
-						enoughSpaceInDoc = true;
 						break;
 					}
 				}
 			}
 
 			// If none of docs can fit updated deck, create new doc and add here
-			if (!enoughSpaceInDoc) {
-				console.log('all docs full')
+			if (!enoughSpaceInParentDoc) {
 				let docObj;
 				if ($user && typeof $user === 'object') {
 					docObj = userDataDocFactory($user?.uid);
 				}
 				docObj?.seedsData.decks.push(updatedDeck);
 				const docRef = await addDoc(collection(db, 'users'), docObj);
-				console.log(docRef.id)
+				changingDeckLocation = true;
+				console.log('newDocID: ' + docRef.id);
 			}
 
-			// if (enoughSpaceInDoc) {
-			// 	// Prepare new decks array to replace the old one
-			// 	newDeckArray = docInfo.doc.doc.seedsData.decks;
-			// 	newDeckArray[docInfo.oldDeckIndex] = updatedDeck;
-			// 	// Update doc in firestore
-			// 	const docRef = doc(db, 'users', parentDocID);
-			// 	await updateDoc(docRef, {
-			// 		'seedsData.decks': newDeckArray
-			// 		// toRemove: generateRandomPassword(1000000)
-			// 	});
-			// } else {
-			// 	// Check remaining documents if there's enough space
-
-			// 	console.log('not enough space');
-			// 	// Create new doc object and populate it with deckUpdate
-			// 	// const userID = docInfo.doc.doc.uid;
-			// 	// const newDoc = userDataDocFactory(userID);
-			// 	// newDoc.seedsData.decks.push(deckUpdate);
-
-			// 	// // Create new doc for user
-			// 	// const docRef = await addDoc(collection(db, 'users'), newDoc);
-			// }
+			// Remove deck from parent doc
+			// Prepare new decks array to replace the old one in parent doc
+			newDeckArray = docInfo.doc.doc.seedsData.decks;
+			newDeckArray.splice(docInfo.oldDeckIndex, 1);
+			// Update doc in firestore
+			const docRef = doc(db, 'users', parentDocID);
+			await updateDoc(docRef, {
+				'seedsData.decks': newDeckArray
+			});
 		}
+		return;
 	}
 
 	export function generateRandomPassword(passLength: number) {
