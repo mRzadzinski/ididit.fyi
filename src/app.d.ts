@@ -20,6 +20,24 @@ declare global {
 			) => void;
 		}
 	}
+
+	interface DocsInfo {
+		remainingSpace: number;
+		doc: object;
+		docID: string;
+	}
+
+	interface SeedsDeckType {
+		id: string;
+		name: string;
+		dailyLimit: number;
+		order: number;
+	}
+
+	interface Seeds {
+		decks: SeedsDeckType[];
+		seeds: object[];
+	}
 }
 
 export {};

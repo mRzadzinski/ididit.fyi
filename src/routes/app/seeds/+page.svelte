@@ -1,12 +1,15 @@
 <script lang="ts">
 	import SeedsDeck from '$components/seeds/SeedsDeck.svelte';
-	import { seedsData, type SeedsDeckType } from '$lib/stores/dbStores';
+	import { seedsData, userDocs } from '$lib/stores/dbStores';
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
 	import Muuri from 'muuri';
 	import sizeof from 'firestore-size';
-	import { getDocumentByDeckID } from './seedsHelpers';
-	import { doc, updateDoc } from 'firebase/firestore';
+	import { getDocInfoByDeckID } from './seedsLogic';
+	import { addDoc, arrayUnion, collection, doc, updateDoc } from 'firebase/firestore';
 	import { db } from '$lib/firebase/firebase';
+	import { userDataDocFactory } from '$lib/db/docsBoilerplate';
+	import { get } from 'svelte/store';
+	import { user } from '$lib/stores/authStores';
 
 	let listContainer: HTMLElement;
 	let grid: Muuri;
@@ -98,34 +101,91 @@
 		grid.destroy();
 	});
 
-	async function updateDeck(deckUpdate: SeedsDeckType) {
-		const document = getDocumentByDeckID(deckUpdate.id);
-		const deckUpdateSize = sizeof(deckUpdate);
-		const prevDeckSize = sizeof(document?.deck);
+	async function updateDeck(updatedDeck: SeedsDeckType) {
+		const docInfo = getDocInfoByDeckID(updatedDeck.id);
+		const parentDocID = docInfo?.doc.docID;
+		const parentDocRemainingSpace = docInfo?.doc.remainingSpace;
+		const prevDeck = docInfo?.doc.doc.seedsData.decks[docInfo.oldDeckIndex];
+		const prevDeckSize = sizeof(prevDeck);
+		const updatedDeckSize = sizeof(updatedDeck);
+		let changingDeckLocation = false;
 		let newDeckArray: SeedsDeckType[] = [];
 
-		if (document) {
+		if (docInfo) {
 			// Check if deck size increased
 			let enoughSpaceInDoc = true;
-			if (deckUpdateSize > prevDeckSize) {
+			if (updatedDeckSize > prevDeckSize) {
 				// Check if there in enough space in doc
-				const spaceLeft = document.doc.remainingSpace - deckUpdateSize;
+				const spaceToAdd = updatedDeckSize - prevDeckSize;
+				const spaceLeft = parentDocRemainingSpace - spaceToAdd;
 				spaceLeft > 0 ? (enoughSpaceInDoc = true) : (enoughSpaceInDoc = false);
 			}
 
-			if (enoughSpaceInDoc) {
-				// Prepare new deck array to replace the old one
-				newDeckArray = document.decksArray;
-				newDeckArray[document.oldDeckIndex] = deckUpdate;
+			// If not enough space in parent doc, check remaining docs and add deck if possible
+			// userDocs are already sorted by space left, ascending
+			if (!enoughSpaceInDoc) {
+				for (let i = 0; i < $userDocs.length; i++) {
+					const document = $userDocs[i];
+					const docSize = document.remainingSpace;
+					const spaceLeft = docSize - updatedDeckSize;
 
-				// Update doc in firestore
-				const docID = document.doc.docID;
-				const docRef = doc(db, 'users', docID);
-				await updateDoc(docRef, {
-					'seedsData.decks': newDeckArray
-				});
+					if (spaceLeft > 0 && document.docID !== parentDocID) {
+						const docRef = doc(db, 'users', document.docID);
+						await updateDoc(docRef, {
+							'seedsData.decks': arrayUnion(updatedDeck)
+						});
+						console.log(docRef.id);
+						changingDeckLocation = true;
+						enoughSpaceInDoc = true;
+						break;
+					}
+				}
 			}
+
+			// // If none of docs can fit updated deck, create new doc and add here
+			// if (!enoughSpaceInDoc) {
+			// 	let docObj;
+			// 	if ($user && typeof $user === 'object') {
+			// 		docObj = userDataDocFactory($user?.uid);
+			// 	}
+			// 	docObj?.seedsData.decks.push(updatedDeck);
+			// 	const docRef = await addDoc(collection(db, 'users'), docObj);
+			// }
+
+			// if (enoughSpaceInDoc) {
+			// 	// Prepare new decks array to replace the old one
+			// 	newDeckArray = docInfo.doc.doc.seedsData.decks;
+			// 	newDeckArray[docInfo.oldDeckIndex] = updatedDeck;
+			// 	// Update doc in firestore
+			// 	const docRef = doc(db, 'users', parentDocID);
+			// 	await updateDoc(docRef, {
+			// 		'seedsData.decks': newDeckArray
+			// 		// toRemove: generateRandomPassword(1000000)
+			// 	});
+			// } else {
+			// 	// Check remaining documents if there's enough space
+
+			// 	console.log('not enough space');
+			// 	// Create new doc object and populate it with deckUpdate
+			// 	// const userID = docInfo.doc.doc.uid;
+			// 	// const newDoc = userDataDocFactory(userID);
+			// 	// newDoc.seedsData.decks.push(deckUpdate);
+
+			// 	// // Create new doc for user
+			// 	// const docRef = await addDoc(collection(db, 'users'), newDoc);
+			// }
 		}
+	}
+
+	export function generateRandomPassword(passLength: number) {
+		const strValues = 'abcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()_+-=';
+		let password = '';
+		let tempStr: string;
+		for (let i = 0; i < passLength; i++) {
+			tempStr = strValues.charAt(Math.round(strValues.length * Math.random()));
+			password = password + tempStr;
+		}
+		return password;
 	}
 </script>
 

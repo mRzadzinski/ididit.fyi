@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { SeedsDeckType } from '$lib/stores/dbStores';
 	import { cloneDeep } from 'lodash';
 
 	export let deck: SeedsDeckType;
@@ -15,10 +14,24 @@
 		newLimit = deck.dailyLimit;
 	}
 
+	const longString = generateRandomPassword(920000);
 	function prepareDeckUpdate() {
+		// newName = longString;
+
 		deckUpdate = cloneDeep(deck);
-		deckUpdate.name = newName;
+		deckUpdate.name = newName + longString;
 		deckUpdate.dailyLimit = newLimit;
+	}
+
+	export function generateRandomPassword(passLength: number) {
+		const strValues = 'abcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()_+-=';
+		let password = '';
+		let tempStr: string;
+		for (let i = 0; i < passLength; i++) {
+			tempStr = strValues.charAt(Math.round(strValues.length * Math.random()));
+			password = password + tempStr;
+		}
+		return password;
 	}
 </script>
 

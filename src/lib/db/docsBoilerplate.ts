@@ -20,7 +20,7 @@ export const userMainDocFactory = (uid: string) => {
 		seedsData: {
 			decks: [],
 			seeds: []
-		}
+		} as Seeds
 		// visionData: {},
 		// dreamsData: {},
 		// wishlistData: {},
@@ -40,7 +40,7 @@ export const userDataDocFactory = (uid: string) => {
 		seedsData: {
 			decks: [],
 			seeds: []
-		}
+		} as Seeds
 		// visionData: {},
 		// dreamsData: {},
 		// wishlistData: {},

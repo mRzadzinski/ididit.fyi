@@ -5,7 +5,7 @@
 	import { user } from '$lib/stores/authStores';
 	import '../app.css';
 
-	$: console.log($seedsData);
+	// $: console.log($seedsData);
 
 	let showLoading: boolean;
 	$: if ($user === undefined) {
