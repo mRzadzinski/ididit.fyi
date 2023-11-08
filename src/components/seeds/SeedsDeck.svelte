@@ -14,7 +14,7 @@
 		newLimit = deck.dailyLimit;
 	}
 
-	const longString = generateRandomPassword(920000);
+	const longString = generateRandomPassword(120000);
 	function prepareDeckUpdate() {
 		// newName = longString;
 

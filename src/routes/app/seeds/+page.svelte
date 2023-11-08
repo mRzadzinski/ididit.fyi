@@ -142,15 +142,17 @@
 				}
 			}
 
-			// // If none of docs can fit updated deck, create new doc and add here
-			// if (!enoughSpaceInDoc) {
-			// 	let docObj;
-			// 	if ($user && typeof $user === 'object') {
-			// 		docObj = userDataDocFactory($user?.uid);
-			// 	}
-			// 	docObj?.seedsData.decks.push(updatedDeck);
-			// 	const docRef = await addDoc(collection(db, 'users'), docObj);
-			// }
+			// If none of docs can fit updated deck, create new doc and add here
+			if (!enoughSpaceInDoc) {
+				console.log('all docs full')
+				let docObj;
+				if ($user && typeof $user === 'object') {
+					docObj = userDataDocFactory($user?.uid);
+				}
+				docObj?.seedsData.decks.push(updatedDeck);
+				const docRef = await addDoc(collection(db, 'users'), docObj);
+				console.log(docRef.id)
+			}
 
 			// if (enoughSpaceInDoc) {
 			// 	// Prepare new decks array to replace the old one
