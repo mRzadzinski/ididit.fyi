@@ -119,7 +119,6 @@
 		const prevDeck = docInfo?.doc.doc.seedsData.decks[docInfo.oldDeckIndex];
 		const prevDeckSize = sizeof(prevDeck);
 		const updatedDeckSize = sizeof(updatedDeck);
-		let changingDeckLocation = false;
 		let newDeckArray: SeedsDeckType[] = [];
 		let enoughSpaceInParentDoc = true;
 
@@ -158,8 +157,6 @@
 						await updateDoc(docRef, {
 							'seedsData.decks': arrayUnion(updatedDeck)
 						});
-						console.log(docRef.id);
-						changingDeckLocation = true;
 						break;
 					}
 				}
@@ -173,8 +170,6 @@
 				}
 				docObj?.seedsData.decks.push(updatedDeck);
 				const docRef = await addDoc(collection(db, 'users'), docObj);
-				changingDeckLocation = true;
-				console.log('newDocID: ' + docRef.id);
 			}
 
 			// Remove deck from parent doc
@@ -187,7 +182,6 @@
 				'seedsData.decks': newDeckArray
 			});
 		}
-		return;
 	}
 
 	export function generateRandomPassword(passLength: number) {
