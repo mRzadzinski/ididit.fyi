@@ -37,8 +37,6 @@
 		const dndSyncInfo = syncDnd(listContainer, dndList, dndItems, dndInitialListFill);
 		dndItems = dndSyncInfo.updatedDndItems;
 		dndInitialListFill = dndSyncInfo.initialListFill;
-		// and...
-		sortListDnd(dndList);
 	});
 
 	onDestroy(() => {

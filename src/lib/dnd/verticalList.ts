@@ -64,6 +64,8 @@ export function syncDnd(
 		}
 	});
 
+	sortListDnd(dndGrid);
+	
 	return {
 		updatedDndItems,
 		initialListFill
