@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { cloneDeep } from 'lodash';
+	import { updateDeck } from '../../routes/app/seeds/seedsLogic';
 
 	export let deck: SeedsDeckType;
-	export let updateDeck: (deck: SeedsDeckType) => void;
 
-	let deckUpdate = deck;
+	let updatedDeck = deck;
 	let newName = deck.name;
 	let newLimit = deck.dailyLimit;
 	let editMode = false;
@@ -14,24 +14,10 @@
 		newLimit = deck.dailyLimit;
 	}
 
-	const longString = generateRandomPassword(920000);
 	function prepareDeckUpdate() {
-		// newName = longString;
-
-		deckUpdate = cloneDeep(deck);
-		deckUpdate.name = newName + longString;
-		deckUpdate.dailyLimit = newLimit;
-	}
-
-	export function generateRandomPassword(passLength: number) {
-		const strValues = 'abcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()_+-=';
-		let password = '';
-		let tempStr: string;
-		for (let i = 0; i < passLength; i++) {
-			tempStr = strValues.charAt(Math.round(strValues.length * Math.random()));
-			password = password + tempStr;
-		}
-		return password;
+		updatedDeck = cloneDeep(deck);
+		updatedDeck.name = newName;
+		updatedDeck.dailyLimit = newLimit;
 	}
 </script>
 
@@ -78,7 +64,7 @@
 						editMode = false;
 						if (newName !== deck.name || newLimit !== deck.dailyLimit) {
 							prepareDeckUpdate();
-							updateDeck(deckUpdate);
+							updateDeck(updatedDeck);
 						}
 					}}>Save</button
 				>
