@@ -4,12 +4,12 @@
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
 	import type Muuri from 'muuri';
 	import { initializeDnd, syncDnd, sortListDnd } from '$lib/dnd/verticalList';
+	import { reorderSeeds } from './seedsLogic';
 
 	let listContainer: HTMLElement;
 	let dndList: Muuri;
 	let dndItems: (Element | null)[] = [];
 	let dndInitialListFill = true;
-	let draggedItemID: string;
 	let initialPosition: number;
 	let droppedPosition: number;
 
@@ -21,14 +21,14 @@
 		dndList.on('dragInit', function (item, event) {
 			const itemEl = item.getElement();
 			if (itemEl) {
-				draggedItemID = itemEl.id;
 				initialPosition = dndList.getItems().indexOf(item);
-				console.log(initialPosition);
 			}
 		});
 		dndList.on('dragEnd', function (item, event) {
 			droppedPosition = dndList.getItems().indexOf(item);
-			console.log(droppedPosition);
+			if (initialPosition !== droppedPosition) {
+				reorderSeeds(initialPosition, droppedPosition);
+			}
 		});
 	});
 
