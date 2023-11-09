@@ -3,7 +3,7 @@
 	import { seedsData } from '$lib/stores/dbStores';
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
 	import type Muuri from 'muuri';
-	import { initializeDnd, addItemDnd, removeItemDnd, sortListDnd } from '$lib/dnd/verticalList';
+	import { initializeDnd, syncDnd, sortListDnd } from '$lib/dnd/verticalList';
 
 	let listContainer: HTMLElement;
 	let dndList: Muuri;
@@ -33,13 +33,11 @@
 	});
 
 	afterUpdate(async () => {
-		// Add item to dnd list
-		const addItemInfo = addItemDnd(listContainer, dndList, dndItems, dndInitialListFill);
-		dndItems = addItemInfo.updatedDndItems;
-		dndInitialListFill = addItemInfo.initialListFill;
-		// Remove item from dnd list
-		dndItems = removeItemDnd(listContainer, dndList, dndItems);
-		// Sort dnd list
+		// Keep dnd list in sync with listContainer and update reference array
+		const dndSyncInfo = syncDnd(listContainer, dndList, dndItems, dndInitialListFill);
+		dndItems = dndSyncInfo.updatedDndItems;
+		dndInitialListFill = dndSyncInfo.initialListFill;
+		// and...
 		sortListDnd(dndList);
 	});
 

@@ -21,13 +21,13 @@ export function initializeDnd(listContainer: HTMLElement) {
 	return grid;
 }
 
-export function addItemDnd(
+export function syncDnd(
 	listContainer: HTMLElement,
 	dndGrid: Muuri,
 	dndItems: (Element | null)[],
 	dndInitialListFill: boolean
 ) {
-	const updatedDndItems = [...dndItems];
+	let updatedDndItems = [...dndItems];
 	let initialListFill = dndInitialListFill;
 
 	// Add item to muuri if missing
@@ -50,19 +50,6 @@ export function addItemDnd(
 		initialListFill = false;
 	}
 
-	return {
-		updatedDndItems,
-		initialListFill
-	};
-}
-
-export function removeItemDnd(
-	listContainer: HTMLElement,
-	dndGrid: Muuri,
-	dndItems: (Element | null)[]
-) {
-	let updatedDndItems = [...dndItems];
-
 	// Remove muuri item if not in listContainer HTMLcollection
 	updatedDndItems.forEach((muuriItem) => {
 		let found = false;
@@ -76,7 +63,11 @@ export function removeItemDnd(
 			updatedDndItems = updatedDndItems.filter((item) => item !== muuriItem);
 		}
 	});
-	return updatedDndItems;
+
+	return {
+		updatedDndItems,
+		initialListFill
+	};
 }
 
 export function sortListDnd(dndGrid: Muuri) {
