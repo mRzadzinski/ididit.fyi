@@ -3,11 +3,9 @@
 	import { seedsData, userDocs } from '$lib/stores/dbStores';
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
 	import type Muuri from 'muuri';
-	import { initializeDnd, syncDnd, sortListDnd } from '$lib/dnd/verticalList';
+	import { initializeDnd, syncDnd } from '$lib/dnd/verticalList';
 	import { fillDocs, reorderSeeds } from './seedsLogic';
 
-	// $: console.log($seedsData)
-	$: console.log($userDocs)
 	let listContainer: HTMLElement;
 	let dndList: Muuri;
 	let dndItems: (Element | null)[] = [];
@@ -51,7 +49,7 @@
 	<h1 class="text-3xl mb-5">Decks</h1>
 	<button class="btn mb-6">New Deck</button>
 	<div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
-		{#each $seedsData.decks as deck}
+		{#each $seedsData.decks as deck (deck.id)}
 			<SeedsDeck {deck} />
 		{/each}
 	</div>

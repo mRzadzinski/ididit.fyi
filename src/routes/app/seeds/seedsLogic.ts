@@ -22,7 +22,6 @@ export function getDocInfoByDeckID(seedID: string) {
 
 export async function updateDeck(updatedDeck: SeedsDeckType) {
 	const docInfo = getDocInfoByDeckID(updatedDeck.id);
-	console.log('updating');
 
 	if (docInfo) {
 		const parentDocID = docInfo?.doc.docID;
@@ -43,7 +42,6 @@ export async function updateDeck(updatedDeck: SeedsDeckType) {
 
 		// Update parent doc if possible
 		if (enoughSpaceInParentDoc) {
-			console.log('updating old doc');
 			// Prepare new decks array to replace the old one in parent doc
 			newDeckArray = cloneDeep(docInfo.doc.doc.seedsData.decks);
 			newDeckArray[docInfo.oldDeckIndex] = updatedDeck;
@@ -60,7 +58,6 @@ export async function updateDeck(updatedDeck: SeedsDeckType) {
 		// userDocs are already sorted by space left, ascending
 		if (!enoughSpaceInParentDoc) {
 			let added = false;
-			console.log('pushing to another doc');
 			for (let i = 0; i < get(userDocs).length; i++) {
 				const document = get(userDocs)[i];
 				const docSize = document.remainingSpace;
@@ -84,7 +81,6 @@ export async function updateDeck(updatedDeck: SeedsDeckType) {
 
 				const docRef = doc(collection(db, 'users'));
 				batch.set(docRef, docObj);
-				console.log('new doc created');
 			}
 		}
 
