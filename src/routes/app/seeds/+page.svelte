@@ -1,11 +1,13 @@
 <script lang="ts">
 	import SeedsDeck from '$components/seeds/SeedsDeck.svelte';
-	import { seedsData } from '$lib/stores/dbStores';
+	import { seedsData, userDocs } from '$lib/stores/dbStores';
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
 	import type Muuri from 'muuri';
 	import { initializeDnd, syncDnd, sortListDnd } from '$lib/dnd/verticalList';
 	import { fillDocs, reorderSeeds } from './seedsLogic';
 
+	// $: console.log($seedsData)
+	$: console.log($userDocs)
 	let listContainer: HTMLElement;
 	let dndList: Muuri;
 	let dndItems: (Element | null)[] = [];
@@ -37,12 +39,11 @@
 		const dndSyncInfo = syncDnd(listContainer, dndList, dndItems, dndInitialListFill);
 		dndItems = dndSyncInfo.updatedDndItems;
 		dndInitialListFill = dndSyncInfo.initialListFill;
-
-		// fillDocs();
 	});
 
 	onDestroy(() => {
 		dndList.destroy();
+		fillDocs();
 	});
 </script>
 

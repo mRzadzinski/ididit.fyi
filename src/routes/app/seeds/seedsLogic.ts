@@ -22,15 +22,17 @@ export function getDocInfoByDeckID(seedID: string) {
 
 export async function updateDeck(updatedDeck: SeedsDeckType) {
 	const docInfo = getDocInfoByDeckID(updatedDeck.id);
-	const parentDocID = docInfo?.doc.docID;
-	const parentDocRemainingSpace = docInfo?.doc.remainingSpace;
-	const prevDeck = docInfo?.doc.doc.seedsData.decks[docInfo.oldDeckIndex];
-	const prevDeckSize = sizeof(prevDeck);
-	const updatedDeckSize = sizeof(updatedDeck);
-	let newDeckArray: SeedsDeckType[] = [];
-	let enoughSpaceInParentDoc = true;
+	console.log('updating');
 
 	if (docInfo) {
+		const parentDocID = docInfo?.doc.docID;
+		const parentDocRemainingSpace = docInfo?.doc.remainingSpace;
+		const prevDeck = docInfo?.doc.doc.seedsData.decks[docInfo.oldDeckIndex];
+		const prevDeckSize = sizeof(prevDeck);
+		const updatedDeckSize = sizeof(updatedDeck);
+		let newDeckArray: SeedsDeckType[] = [];
+		let enoughSpaceInParentDoc = true;
+
 		// Check if deck size increased
 		if (updatedDeckSize > prevDeckSize) {
 			// Check if there in enough space in doc
@@ -41,6 +43,7 @@ export async function updateDeck(updatedDeck: SeedsDeckType) {
 
 		// Update parent doc if possible
 		if (enoughSpaceInParentDoc) {
+			console.log('updating old doc');
 			// Prepare new decks array to replace the old one in parent doc
 			newDeckArray = cloneDeep(docInfo.doc.doc.seedsData.decks);
 			newDeckArray[docInfo.oldDeckIndex] = updatedDeck;
@@ -56,6 +59,8 @@ export async function updateDeck(updatedDeck: SeedsDeckType) {
 		// If not enough space in parent doc, check remaining docs and add deck if possible
 		// userDocs are already sorted by space left, ascending
 		if (!enoughSpaceInParentDoc) {
+			let added = false;
+			console.log('pushing to another doc');
 			for (let i = 0; i < get(userDocs).length; i++) {
 				const document = get(userDocs)[i];
 				const docSize = document.remainingSpace;
@@ -64,23 +69,23 @@ export async function updateDeck(updatedDeck: SeedsDeckType) {
 				if (spaceLeft > 0 && document.docID !== parentDocID) {
 					const docRef = doc(db, 'users', document.docID);
 					batch.update(docRef, { 'seedsData.decks': arrayUnion(updatedDeck) });
+					added = true;
 					break;
 				}
 			}
-		}
+			// If none of docs can fit updated deck, create new doc and add here
+			if (!added) {
+				let docObj;
+				const usr = get(user);
+				if (usr && typeof usr === 'object') {
+					docObj = userDataDocFactory(usr.uid);
+				}
+				docObj?.seedsData.decks.push(updatedDeck);
 
-		// If none of docs can fit updated deck, create new doc and add here
-		if (!enoughSpaceInParentDoc) {
-			let docObj;
-			const usr = get(user);
-			if (usr && typeof usr === 'object') {
-				docObj = userDataDocFactory(usr.uid);
+				const docRef = doc(collection(db, 'users'));
+				batch.set(docRef, docObj);
+				console.log('new doc created');
 			}
-			docObj?.seedsData.decks.push(updatedDeck);
-
-			const docRef = doc(collection(db, 'users'));
-			batch.set(docRef, docObj);
-			console.log('new doc created')
 		}
 
 		// Remove deck from parent doc
@@ -138,10 +143,11 @@ export async function reorderSeeds(initialPosition: number, droppedPosition: num
 
 export async function fillDocs() {
 	const docs = get(userDocs);
+	const randomString = generateRandomPassword(1020000);
 	for (let i = 0; i < docs.length; i++) {
 		const docRef = doc(db, 'users', docs[i].docID);
 		await updateDoc(docRef, {
-			toRemove: generateRandomPassword(920000)
+			toRemove: randomString
 		});
 	}
 	console.log('docs filled');

@@ -15,12 +15,10 @@
 		newLimit = deck.dailyLimit;
 	}
 
-	const longString = generateRandomPassword(920000);
 	function prepareDeckUpdate() {
 		updatedDeck = cloneDeep(deck);
 		updatedDeck.name = newName;
 		updatedDeck.dailyLimit = newLimit;
-		updatedDeck.toRemove = longString;
 	}
 </script>
 

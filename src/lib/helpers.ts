@@ -1,5 +1,5 @@
 export function generateRandomPassword(passLength: number) {
-	const strValues = 'abcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()_+-=';
+	const strValues = 'abcdefghijklmnopqrstuvwxyz';
 	let password = '';
 	let tempStr: string;
 	for (let i = 0; i < passLength; i++) {

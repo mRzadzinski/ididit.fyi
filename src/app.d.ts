@@ -21,9 +21,9 @@ declare global {
 		}
 	}
 
-	interface DocsInfo {
+	interface UserDoc {
 		remainingSpace: number;
-		doc: object;
+		doc: DocumentData;
 		docID: string;
 	}
 

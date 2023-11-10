@@ -1,15 +1,21 @@
 import { auth, db } from '$lib/firebase/firebase';
-import { collection, onSnapshot, query, type DocumentData, where } from 'firebase/firestore';
-import { get, writable } from 'svelte/store';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import { derived, get, writable } from 'svelte/store';
 import { onAuthStateChanged, type Unsubscribe } from 'firebase/auth';
-import { isEqual } from 'lodash';
 import sizeof from 'firestore-size';
 
-export const userDocs = writable<DocumentData[]>([]);
-export const subscription = writable<object[]>([]);
-export const seedsData = writable<Seeds>({
-	decks: [],
-	seeds: []
+export const userDocs = writable<UserDoc[]>([]);
+export const subscription = writable();
+export const seedsData = derived(userDocs, ($userDocs) => {
+	const data: Seeds = {
+		decks: [],
+		seeds: []
+	};
+	for (let i = 0; i < $userDocs.length; i++) {
+		data.decks = data.decks.concat($userDocs[i].doc.seedsData.decks);
+		data.seeds = data.seeds.concat($userDocs[i].doc.seedsData.seeds);
+	}
+	return data;
 });
 
 export let unsubscribeDocs: Unsubscribe;
@@ -20,64 +26,57 @@ onAuthStateChanged(auth, async (currentUser) => {
 		// Get user docs and listen to changes
 		const q = query(collection(db, 'users'), where('uid', '==', currentUser.uid));
 		unsubscribeDocs = onSnapshot(q, (querySnapshot) => {
-			const docsArray: DocumentData[] = [];
-			const docsInfo: DocsInfo[] = [];
-			const allSeeds: Seeds = { decks: [], seeds: [] };
-			const changedDocs: DocumentData[] = [];
-
-			// Get initial array of user documents
-			// if (docsArray.length === 0) {
-				querySnapshot.forEach((doc) => {
-					docsArray.push(doc.data());
-					docsInfo.push({
-						remainingSpace: 1000000 - sizeof(doc.data()),
-						doc: doc.data(),
-						docID: doc.id
-					});
-				});
-			// }
+			const docs: UserDoc[] = get(userDocs);
 
 			// See what changed
 			querySnapshot.docChanges().forEach((change) => {
+				// Add new docs
 				if (change.type === 'added') {
-					console.log('New: ', change.doc.data());
+					const newDoc = change.doc;
+					docs.push({
+						remainingSpace: 1000000 - sizeof(newDoc.data()),
+						doc: newDoc.data(),
+						docID: newDoc.id
+					});
+					// console.log('New: ', change.doc.id);
 				}
+				// Modify
 				if (change.type === 'modified') {
-					console.log('Modified: ', change.doc.data());
-				}
-				if (change.type === 'removed') {
-					console.log('Removed: ', change.doc.data());
-				}
-			});
+					const newRemainingSpace = 1000000 - sizeof(change.doc.data());
+					const updatedDoc = change.doc.data();
 
-			docsArray.forEach((doc) => {
-				// Save subscription info from master document
-				if (doc.subscription) {
-					if (!isEqual(get(subscription), doc.subscription)) {
-						subscription.set(doc.subscription);
+					for (let i = 0; i < docs.length; i++) {
+						if (change.doc.id === docs[i].docID) {
+							docs[i].remainingSpace = newRemainingSpace;
+							docs[i].doc = updatedDoc;
+						}
 					}
+					// console.log('Modified: ', change.doc.id);
 				}
-
-				// Extract app data
-				allSeeds.decks = allSeeds.decks.concat(doc.seedsData.decks);
-				allSeeds.seeds = allSeeds.seeds.concat(doc.seedsData.seeds);
+				// Remove
+				if (change.type === 'removed') {
+					docs.filter((doc) => doc.docID !== change.doc.id);
+					// console.log('Removed: ', change.doc.id);
+				}
 			});
 
-			// Compare with current data and update
-			if (!isEqual(get(seedsData), allSeeds)) seedsData.set(allSeeds);
-
-			// Sort docsInfo by remainingSpace ascending
-			docsInfo.sort((prev, next) => {
+			// Save subscription info
+			for (let i = 0; i < docs.length; i++) {
+				if (docs[i].doc.subscription) {
+					subscription.set(docs[i].doc.subscription);
+				}
+			}
+			// Sort docs by remainingSpace ascending
+			docs.sort((prev, next) => {
 				return prev.remainingSpace - next.remainingSpace;
 			});
-			// Save documents data in store for comparison and size info
-			userDocs.set(docsInfo);
+			// Save documents data in store
+			userDocs.set(docs);
 		});
 	}
 });
 
 export function clearAppData() {
 	unsubscribeDocs();
-	subscription.set([]);
-	seedsData.set({ decks: [], seeds: [] });
+	subscription.set({});
 }
