@@ -1,8 +1,9 @@
 import { userDataDocFactory } from '$lib/db/docsBoilerplate';
 import { db } from '$lib/firebase/firebase';
+import { generateRandomPassword } from '$lib/helpers';
 import { user } from '$lib/stores/authStores';
 import { userDocs } from '$lib/stores/dbStores';
-import { addDoc, arrayUnion, collection, doc, updateDoc, writeBatch } from 'firebase/firestore';
+import { arrayUnion, collection, doc, updateDoc, writeBatch } from 'firebase/firestore';
 import sizeof from 'firestore-size';
 import { cloneDeep, isEqual } from 'lodash';
 import { get } from 'svelte/store';
@@ -51,6 +52,7 @@ export async function updateDeck(updatedDeck: SeedsDeckType) {
 			return;
 		}
 
+		const batch = writeBatch(db);
 		// If not enough space in parent doc, check remaining docs and add deck if possible
 		// userDocs are already sorted by space left, ascending
 		if (!enoughSpaceInParentDoc) {
@@ -61,9 +63,7 @@ export async function updateDeck(updatedDeck: SeedsDeckType) {
 
 				if (spaceLeft > 0 && document.docID !== parentDocID) {
 					const docRef = doc(db, 'users', document.docID);
-					await updateDoc(docRef, {
-						'seedsData.decks': arrayUnion(updatedDeck)
-					});
+					batch.update(docRef, { 'seedsData.decks': arrayUnion(updatedDeck) });
 					break;
 				}
 			}
@@ -77,7 +77,10 @@ export async function updateDeck(updatedDeck: SeedsDeckType) {
 				docObj = userDataDocFactory(usr.uid);
 			}
 			docObj?.seedsData.decks.push(updatedDeck);
-			await addDoc(collection(db, 'users'), docObj);
+
+			const docRef = doc(collection(db, 'users'));
+			batch.set(docRef, docObj);
+			console.log('new doc created')
 		}
 
 		// Remove deck from parent doc
@@ -86,9 +89,10 @@ export async function updateDeck(updatedDeck: SeedsDeckType) {
 		newDeckArray.splice(docInfo.oldDeckIndex, 1);
 		// Update doc in firestore
 		const docRef = doc(db, 'users', parentDocID);
-		await updateDoc(docRef, {
-			'seedsData.decks': newDeckArray
-		});
+		batch.update(docRef, { 'seedsData.decks': newDeckArray });
+
+		// Push changes
+		await batch.commit();
 	}
 }
 
@@ -130,17 +134,15 @@ export async function reorderSeeds(initialPosition: number, droppedPosition: num
 	});
 
 	await batch.commit();
-	console.log('Initial: ' + initialPosition);
-	console.log('Dropped: ' + droppedPosition);
 }
 
-// async function fillDocs() {
-// 	for (let i = 0; i < $userDocs.length; i++) {
-// 		const docRef = doc(db, 'users', $userDocs[i].docID);
-// 		await updateDoc(docRef, {
-// 			toRemove: generateRandomPassword(920000)
-// 		});
-// 	}
-// 	console.log('docs filled');
-// }
-// fillDocs();
+export async function fillDocs() {
+	const docs = get(userDocs);
+	for (let i = 0; i < docs.length; i++) {
+		const docRef = doc(db, 'users', docs[i].docID);
+		await updateDoc(docRef, {
+			toRemove: generateRandomPassword(920000)
+		});
+	}
+	console.log('docs filled');
+}

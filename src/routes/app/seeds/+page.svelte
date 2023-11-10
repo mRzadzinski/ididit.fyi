@@ -4,7 +4,7 @@
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
 	import type Muuri from 'muuri';
 	import { initializeDnd, syncDnd, sortListDnd } from '$lib/dnd/verticalList';
-	import { reorderSeeds } from './seedsLogic';
+	import { fillDocs, reorderSeeds } from './seedsLogic';
 
 	let listContainer: HTMLElement;
 	let dndList: Muuri;
@@ -37,6 +37,8 @@
 		const dndSyncInfo = syncDnd(listContainer, dndList, dndItems, dndInitialListFill);
 		dndItems = dndSyncInfo.updatedDndItems;
 		dndInitialListFill = dndSyncInfo.initialListFill;
+
+		// fillDocs();
 	});
 
 	onDestroy(() => {

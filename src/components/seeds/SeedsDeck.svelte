@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { cloneDeep } from 'lodash';
 	import { updateDeck } from '../../routes/app/seeds/seedsLogic';
+	import { generateRandomPassword } from '$lib/helpers';
 
 	export let deck: SeedsDeckType;
 
@@ -14,10 +15,12 @@
 		newLimit = deck.dailyLimit;
 	}
 
+	const longString = generateRandomPassword(920000);
 	function prepareDeckUpdate() {
 		updatedDeck = cloneDeep(deck);
 		updatedDeck.name = newName;
 		updatedDeck.dailyLimit = newLimit;
+		updatedDeck.toRemove = longString;
 	}
 </script>
 
@@ -46,9 +49,6 @@
 					type="text"
 					placeholder="Deck name"
 					bind:value={newName}
-					on:input={() => {
-						console.log(newName);
-					}}
 				/>
 				<input
 					class="input input-bordered w-24 max-w-xs input-sm"
