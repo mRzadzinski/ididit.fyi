@@ -1,6 +1,6 @@
 <script lang="ts">
 	import SeedsDeck from '$components/seeds/SeedsDeck.svelte';
-	import { seedsData, userDocs } from '$lib/stores/dbStores';
+	import { seedsData } from '$lib/stores/dbStores';
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
 	import type Muuri from 'muuri';
 	import { initializeDnd, syncDnd } from '$lib/dnd/verticalList';
@@ -12,6 +12,9 @@
 	let dndInitialListFill = true;
 	let initialPosition: number;
 	let droppedPosition: number;
+
+	let addDeckMode = false;
+	let newDeck: SeedsDeckType;
 
 	onMount(() => {
 		// Initialize drag & drop
@@ -49,6 +52,9 @@
 	<h1 class="text-3xl mb-5">Decks</h1>
 	<button class="btn mb-6">New Deck</button>
 	<div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
+		{#if addDeckMode}
+		<SeedsDeck deck={newDeck} />
+		{/if}
 		{#each $seedsData.decks as deck (deck.id)}
 			<SeedsDeck {deck} />
 		{/each}

@@ -7,6 +7,7 @@ import { arrayUnion, collection, doc, updateDoc, writeBatch } from 'firebase/fir
 import sizeof from 'firestore-size';
 import { cloneDeep, isEqual } from 'lodash';
 import { get } from 'svelte/store';
+import { createId } from '@paralleldrive/cuid2';
 
 export function getDocInfoByDeckID(seedID: string) {
 	const docs = get(userDocs);
@@ -135,6 +136,15 @@ export async function reorderSeeds(initialPosition: number, droppedPosition: num
 	});
 
 	await batch.commit();
+}
+
+export function deckFactory() {
+	return {
+		id: createId(),
+		name: '',
+		dailyLimit: 5,
+		order: 0
+	}
 }
 
 export async function fillDocs() {
