@@ -9,14 +9,19 @@ import { cloneDeep, isEqual } from 'lodash';
 import { get } from 'svelte/store';
 import { createId } from '@paralleldrive/cuid2';
 
-export function getDocInfoByDeckID(seedID: string) {
-	const docs = get(userDocs);
-	for (let i = 0; i < docs.length; i++) {
-		for (let j = 0; j < docs[i].doc.seedsData.decks.length; j++) {
-			const scannedSeedID = docs[i].doc.seedsData.decks[j].id;
-			if (scannedSeedID === seedID) {
-				return { doc: docs[i], oldDeckIndex: j };
-			}
+export async function createDeck(deck: SeedsDeckType) {
+	const deckSize = sizeof(deck);
+
+	// Check to which doc add new deck
+	for (let i = 0; i < get(userDocs).length; i++) {
+		const document = get(userDocs)[i];
+		const docSize = document.remainingSpace;
+		const spaceLeft = docSize - deckSize;
+
+		if (spaceLeft > 0) {
+			// Push deck to db
+			const docRef = doc(db, 'users', document.docID);
+			await updateDoc(docRef, { 'seedsData.decks': arrayUnion(deck) });
 		}
 	}
 }
@@ -142,8 +147,20 @@ export function deckFactory() {
 	return {
 		id: createId(),
 		name: '',
-		dailyLimit: 5,
+		dailyLimit: 0,
 		order: 0
+	};
+}
+
+export function getDocInfoByDeckID(seedID: string) {
+	const docs = get(userDocs);
+	for (let i = 0; i < docs.length; i++) {
+		for (let j = 0; j < docs[i].doc.seedsData.decks.length; j++) {
+			const scannedSeedID = docs[i].doc.seedsData.decks[j].id;
+			if (scannedSeedID === seedID) {
+				return { doc: docs[i], oldDeckIndex: j };
+			}
+		}
 	}
 }
 

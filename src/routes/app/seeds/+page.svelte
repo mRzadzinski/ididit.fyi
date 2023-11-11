@@ -4,7 +4,7 @@
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
 	import type Muuri from 'muuri';
 	import { initializeDnd, syncDnd } from '$lib/dnd/verticalList';
-	import { fillDocs, reorderSeeds } from './seedsLogic';
+	import { deckFactory, fillDocs, reorderSeeds } from './seedsLogic';
 
 	let listContainer: HTMLElement;
 	let dndList: Muuri;
@@ -13,8 +13,17 @@
 	let initialPosition: number;
 	let droppedPosition: number;
 
-	let addDeckMode = false;
+	let showDeckCreator = false;
 	let newDeck: SeedsDeckType;
+
+	function createNewDeck() {
+		newDeck = deckFactory();
+		showDeckCreator = true;
+	}
+
+	function hideDeckCreator() {
+		showDeckCreator = false;
+	}
 
 	onMount(() => {
 		// Initialize drag & drop
@@ -50,10 +59,10 @@
 
 <main class="h-full w-full p-10 m-0">
 	<h1 class="text-3xl mb-5">Decks</h1>
-	<button class="btn mb-6">New Deck</button>
+	<button class="btn mb-6" on:click={createNewDeck}>New Deck</button>
 	<div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
-		{#if addDeckMode}
-		<SeedsDeck deck={newDeck} />
+		{#if showDeckCreator}
+			<SeedsDeck deck={newDeck} deckCreator={true} {hideDeckCreator} />
 		{/if}
 		{#each $seedsData.decks as deck (deck.id)}
 			<SeedsDeck {deck} />
