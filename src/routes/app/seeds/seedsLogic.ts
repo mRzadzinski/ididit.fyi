@@ -7,7 +7,6 @@ import { arrayUnion, collection, doc, updateDoc, writeBatch } from 'firebase/fir
 import sizeof from 'firestore-size';
 import { cloneDeep, isEqual } from 'lodash';
 import { get } from 'svelte/store';
-import { createId } from '@paralleldrive/cuid2';
 
 export async function createDeck(deck: SeedsDeckType) {
 	const deckSize = sizeof(deck);
@@ -22,6 +21,7 @@ export async function createDeck(deck: SeedsDeckType) {
 			// Push deck to db
 			const docRef = doc(db, 'users', document.docID);
 			await updateDoc(docRef, { 'seedsData.decks': arrayUnion(deck) });
+			return;
 		}
 	}
 }
@@ -143,9 +143,33 @@ export async function reorderSeeds(initialPosition: number, droppedPosition: num
 	await batch.commit();
 }
 
+export async function incrementAllSeedsOrder() {
+	const batch = writeBatch(db);
+
+	// Scan all user docs
+	get(userDocs).forEach((document) => {
+		const docID = document.docID;
+		const decksArray = document.doc.seedsData.decks;
+		const decksClone = cloneDeep(decksArray);
+
+		// Increment order for all decks
+		for (let i = 0; i < decksClone.length; i++) {
+			decksClone[i].order += 1;
+		}
+
+		// If any changes were made in doc, prepare update
+		if (!isEqual(decksClone, decksArray)) {
+			const docRef = doc(db, 'users', docID);
+			batch.update(docRef, { 'seedsData.decks': decksClone });
+		}
+	});
+
+	await batch.commit();
+}
+
 export function deckFactory() {
 	return {
-		id: createId(),
+		id: 'deckCreator',
 		name: '',
 		dailyLimit: 0,
 		order: 0

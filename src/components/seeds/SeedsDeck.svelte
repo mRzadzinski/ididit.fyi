@@ -2,7 +2,7 @@
 	import { cloneDeep } from 'lodash';
 	import { createDeck, updateDeck } from '../../routes/app/seeds/seedsLogic';
 	import { onMount } from 'svelte';
-	import type { Item } from 'muuri';
+	import { createId } from '@paralleldrive/cuid2';
 
 	export let deck: SeedsDeckType;
 	export let deckCreator = false;
@@ -26,11 +26,16 @@
 	function prepareDeckUpdate() {
 		updatedDeck = cloneDeep(deck);
 		updatedDeck.name = newName;
+
 		if (newLimit === null) {
 			updatedDeck.dailyLimit = 0;
 			newLimit = 0;
 		} else {
 			updatedDeck.dailyLimit = newLimit;
+		}
+
+		if (deckCreator) {
+			updatedDeck.id = createId();
 		}
 	}
 

@@ -2,8 +2,8 @@
 	import SeedsDeck from '$components/seeds/SeedsDeck.svelte';
 	import { seedsData } from '$lib/stores/dbStores';
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
-	import type Muuri from 'muuri';
-	import { initializeDnd, syncDnd } from '$lib/dnd/verticalList';
+	import Muuri from 'muuri';
+	import { syncDnd } from '$lib/dnd/verticalList';
 	import { deckFactory, fillDocs, reorderSeeds } from './seedsLogic';
 
 	let listContainer: HTMLElement;
@@ -24,10 +24,34 @@
 	function hideDeckCreator() {
 		showDeckCreator = false;
 	}
-
 	onMount(() => {
 		// Initialize drag & drop
-		dndList = initializeDnd(listContainer);
+		dndList = new Muuri(listContainer, {
+			dragEnabled: true,
+			dragAxis: 'y',
+			dragStartPredicate: (item, e) => {
+				if (e.isFinal) {
+					Muuri.ItemDrag.defaultStartPredicate(item, e);
+					return;
+				}
+				// Prevent first item from being dragged when deckCreator is on
+				if (dndList.getItems()[0] === item && showDeckCreator) {
+					return false;
+				}
+				// For other items use the default drag start predicate.
+				return true;
+			},
+			dragSortHeuristics: {
+				sortInterval: 0,
+				minDragDistance: 0
+			},
+			dragSortPredicate: {
+				threshold: 30
+			},
+			itemDraggingClass: 'drag-item'
+		});
+		// Clear grid if not empty
+		dndList.remove(dndList.getItems());
 
 		// Grid events
 		dndList.on('dragInit', function (item, event) {
