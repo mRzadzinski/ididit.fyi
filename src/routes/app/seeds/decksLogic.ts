@@ -7,23 +7,84 @@ import { arrayUnion, collection, doc, updateDoc, writeBatch } from 'firebase/fir
 import sizeof from 'firestore-size';
 import { cloneDeep, isEqual } from 'lodash';
 import { get } from 'svelte/store';
+import { createId } from '@paralleldrive/cuid2';
 
-export async function createDeck(deck: SeedsDeckType) {
-	const deckSize = sizeof(deck);
+export async function createDeck(newDeck: SeedsDeckType) {
+	const batch = writeBatch(db);
+	const deckSize = sizeof(newDeck);
+	let deckCreated = false;
 
 	// Check to which doc add new deck
 	for (let i = 0; i < get(userDocs).length; i++) {
 		const document = get(userDocs)[i];
-		const docSize = document.remainingSpace;
-		const spaceLeft = docSize - deckSize;
+		const documentId = document.docID;
+		const documentSize = document.remainingSpace;
+		const spaceLeft = documentSize - deckSize;
+		const decksArray = document.doc.seedsData.decks;
+		const updatedDecksArray = cloneDeep(decksArray);
 
-		if (spaceLeft > 0) {
-			// Push deck to db
-			const docRef = doc(db, 'users', document.docID);
-			await updateDoc(docRef, { 'seedsData.decks': arrayUnion(deck) });
-			return;
+		// Add new deck if there's enough space in docs
+		if (spaceLeft > 0 && !deckCreated) {
+			updatedDecksArray.push(newDeck);
+			deckCreated = true;
+		}
+
+		// Increment position of all other decks
+		for (let j = 0; j < updatedDecksArray.length; j++) {
+			if (newDeck.id !== updatedDecksArray[j].id) updatedDecksArray[j].order += 1;
+		}
+
+		// If anything changed in deck, add to batch update
+		if (!isEqual(decksArray, updatedDecksArray)) {
+			const docRef = doc(db, 'users', documentId);
+			batch.update(docRef, { 'seedsData.decks': updatedDecksArray });
 		}
 	}
+	// If there was no space in docs, create new one and add deck
+	if (!deckCreated) {
+		let docObj;
+		const usr = get(user);
+		if (usr && typeof usr === 'object') {
+			docObj = userDataDocFactory(usr.uid);
+		}
+		docObj?.seedsData.decks.push(newDeck);
+
+		const docRef = doc(collection(db, 'users'));
+		batch.set(docRef, docObj);
+	}
+
+	await batch.commit();
+}
+
+export async function deleteDeck(deckToDeleteOrder: number) {
+	const batch = writeBatch(db);
+
+	// Find deck location in docs
+	for (let i = 0; i < get(userDocs).length; i++) {
+		const document = get(userDocs)[i];
+		const documentId = document.docID;
+		const decksArray = document.doc.seedsData.decks;
+		const updatedDecksArray = cloneDeep(decksArray);
+
+		for (let j = 0; j < updatedDecksArray.length; j++) {
+			const scannedDeck = updatedDecksArray[j];
+			const scannedDeckOrder = scannedDeck.order;
+			// Delete deck
+			if (scannedDeckOrder === deckToDeleteOrder) {
+				updatedDecksArray.splice(j, 1);
+			}
+			// Reorder decks
+			else if (scannedDeckOrder > deckToDeleteOrder) {
+				scannedDeck.order -= 1;
+			}
+		}
+		// If anything changed in deck, add to batch update
+		if (!isEqual(decksArray, updatedDecksArray)) {
+			const docRef = doc(db, 'users', documentId);
+			batch.update(docRef, { 'seedsData.decks': updatedDecksArray });
+		}
+	}
+	await batch.commit();
 }
 
 export async function updateDeck(updatedDeck: SeedsDeckType) {
@@ -146,7 +207,7 @@ export async function reorderSeeds(initialPosition: number, droppedPosition: num
 	await batch.commit();
 }
 
-export async function incrementAllSeedsOrder() {
+export async function manageAllSeedsOrder(action: string) {
 	const batch = writeBatch(db);
 
 	// Scan all user docs
@@ -157,7 +218,11 @@ export async function incrementAllSeedsOrder() {
 
 		// Increment order for all decks
 		for (let i = 0; i < decksClone.length; i++) {
-			decksClone[i].order += 1;
+			if (action === 'increment') {
+				decksClone[i].order += 1;
+			} else if (action === 'decrement') {
+				decksClone[i].order -= 1;
+			}
 		}
 
 		// If any changes were made in doc, prepare update
@@ -172,10 +237,10 @@ export async function incrementAllSeedsOrder() {
 
 export function deckFactory() {
 	return {
-		id: 'deckCreator',
+		id: createId(),
 		name: '',
 		dailyLimit: 0,
-		order: 0
+		order: 1
 	};
 }
 

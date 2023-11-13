@@ -1,10 +1,10 @@
 <script lang="ts">
 	import SeedsDeck from '$components/seeds/SeedsDeck.svelte';
-	import { seedsData } from '$lib/stores/dbStores';
+	import { seedsData, userDocs } from '$lib/stores/dbStores';
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
 	import Muuri from 'muuri';
 	import { syncDnd } from '$lib/dnd/verticalList';
-	import { deckFactory, fillDocs, reorderSeeds } from './seedsLogic';
+	import { createDeck, deckFactory, fillDocs, reorderSeeds } from './decksLogic';
 
 	let listContainer: HTMLElement;
 	let dndList: Muuri;
@@ -12,18 +12,16 @@
 	let dndInitialListFill = true;
 	let initialPosition: number;
 	let droppedPosition: number;
+	let newDeckId: string;
 
-	let showDeckCreator = false;
 	let newDeck: SeedsDeckType;
 
-	function createNewDeck() {
+	function prepareNewDeck() {
 		newDeck = deckFactory();
-		showDeckCreator = true;
+		newDeckId = newDeck.id;
+		createDeck(newDeck);
 	}
 
-	function hideDeckCreator() {
-		showDeckCreator = false;
-	}
 	onMount(() => {
 		// Initialize drag & drop
 		dndList = new Muuri(listContainer, {
@@ -34,9 +32,9 @@
 					Muuri.ItemDrag.defaultStartPredicate(item, e);
 					return;
 				}
-				// Prevent first item from being dragged when deckCreator is on
-				if (dndList.getItems()[0] === item && showDeckCreator) {
-					return false;
+				// Prevent first item from being dragged
+				if (dndList.getItems()[0] === item) {
+					// return false;
 				}
 				// For other items use the default drag start predicate.
 				return true;
@@ -77,19 +75,21 @@
 
 	onDestroy(() => {
 		dndList.destroy();
-		fillDocs();
+		// fillDocs();
 	});
 </script>
 
 <main class="h-full w-full p-10 m-0">
 	<h1 class="text-3xl mb-5">Decks</h1>
-	<button class="btn mb-6" on:click={createNewDeck}>New Deck</button>
+	<button class="btn mb-6" on:click={prepareNewDeck}>New Deck</button>
 	<div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
-		{#if showDeckCreator}
-			<SeedsDeck deck={newDeck} deckCreator={true} {hideDeckCreator} />
-		{/if}
 		{#each $seedsData.decks as deck (deck.id)}
-			<SeedsDeck {deck} />
+			{#if newDeckId === deck.id}
+				<SeedsDeck {deck} newDeck={true} />
+				{(newDeckId = '')}
+			{:else}
+				<SeedsDeck {deck} />
+			{/if}
 		{/each}
 	</div>
 </main>
