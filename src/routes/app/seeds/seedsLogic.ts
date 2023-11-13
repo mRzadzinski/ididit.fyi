@@ -104,6 +104,9 @@ export async function updateDeck(updatedDeck: SeedsDeckType) {
 }
 
 export async function reorderSeeds(initialPosition: number, droppedPosition: number) {
+	// Increment order to switch back to 1 based index from 0 in client (dnd positioning)
+	const dbInitialPosition = initialPosition + 1;
+	const dbdroppedPosition = droppedPosition + 1;
 	const batch = writeBatch(db);
 
 	// Scan all user docs
@@ -117,17 +120,17 @@ export async function reorderSeeds(initialPosition: number, droppedPosition: num
 			const scannedDeckPosition = decksClone[i].order;
 
 			// Reorder dropped deck
-			if (scannedDeckPosition === initialPosition) {
-				decksClone[i].order = droppedPosition;
+			if (scannedDeckPosition === dbInitialPosition) {
+				decksClone[i].order = dbdroppedPosition;
 			}
 
 			// Reorder decks in between
-			if (initialPosition < droppedPosition) {
-				if (scannedDeckPosition > initialPosition && scannedDeckPosition <= droppedPosition) {
+			if (dbInitialPosition < dbdroppedPosition) {
+				if (scannedDeckPosition > dbInitialPosition && scannedDeckPosition <= dbdroppedPosition) {
 					decksClone[i].order--;
 				}
-			} else if (initialPosition > droppedPosition) {
-				if (scannedDeckPosition < initialPosition && scannedDeckPosition >= droppedPosition) {
+			} else if (dbInitialPosition > dbdroppedPosition) {
+				if (scannedDeckPosition < dbInitialPosition && scannedDeckPosition >= dbdroppedPosition) {
 					decksClone[i].order++;
 				}
 			}

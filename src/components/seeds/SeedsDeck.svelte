@@ -1,6 +1,10 @@
 <script lang="ts">
 	import { cloneDeep } from 'lodash';
-	import { createDeck, updateDeck } from '../../routes/app/seeds/seedsLogic';
+	import {
+		createDeck,
+		incrementAllSeedsOrder,
+		updateDeck
+	} from '../../routes/app/seeds/seedsLogic';
 	import { onMount } from 'svelte';
 	import { createId } from '@paralleldrive/cuid2';
 
@@ -45,8 +49,8 @@
 		}
 	});
 </script>
-
-<div class="absolute mb-6 w-full z-0" data-order={deck.order} id={deck.id}>
+<!-- Switch from 1 based index in db to 0 for dnd positioning  -->
+<div class="absolute mb-6 w-full z-0" data-order={deck.order - 1} id={deck.id}>
 	<button
 		class="btn h-auto flex items-center justify-between w-full p-2 rounded-xl font-normal normal-case"
 	>
@@ -71,6 +75,7 @@
 					editMode = false;
 					if (deckCreator) {
 						prepareDeckUpdate();
+						// incrementAllSeedsOrder();
 						createDeck(updatedDeck);
 						hideDeckCreator();
 					} else if (newName !== deck.name || newLimit !== deck.dailyLimit) {
