@@ -40,6 +40,7 @@
 
 		if (deckCreator) {
 			updatedDeck.id = createId();
+			updatedDeck.order = 1;
 		}
 	}
 
@@ -75,7 +76,7 @@
 					editMode = false;
 					if (deckCreator) {
 						prepareDeckUpdate();
-						// incrementAllSeedsOrder();
+						incrementAllSeedsOrder();
 						createDeck(updatedDeck);
 						hideDeckCreator();
 					} else if (newName !== deck.name || newLimit !== deck.dailyLimit) {
