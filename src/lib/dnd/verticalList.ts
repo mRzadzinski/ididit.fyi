@@ -51,21 +51,23 @@ export function syncDnd(
 	}
 
 	// Remove muuri item if not in listContainer HTMLcollection
-	updatedDndItems.forEach((muuriItem) => {
+	for (let i = 0; i < updatedDndItems.length; i++) {
+		const dndItem = updatedDndItems[i];
 		let found = false;
-		for (let i = 0; i < listContainer.children.length; i++) {
-			if (listContainer.children.item(i) === muuriItem) {
+
+		for (let j = 0; j < listContainer.children.length; j++) {
+			if (listContainer.children.item(j) === dndItem) {
 				found = true;
 			}
 		}
 		if (!found) {
-			dndGrid.remove(dndGrid.getItems(muuriItem as HTMLElement));
-			updatedDndItems = updatedDndItems.filter((item) => item !== muuriItem);
+			dndGrid.remove(dndGrid.getItems(dndItem as HTMLElement));
+			updatedDndItems = updatedDndItems.filter((item) => item !== dndItem);
 		}
-	});
+	}
 
 	sortListDnd(dndGrid);
-	
+
 	return {
 		updatedDndItems,
 		initialListFill

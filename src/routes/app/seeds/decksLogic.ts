@@ -1,13 +1,12 @@
 import { userDataDocFactory } from '$lib/db/docsBoilerplate';
 import { db } from '$lib/firebase/firebase';
-import { generateRandomPassword } from '$lib/helpers';
+import { generateRandomPassword, uniqueID } from '$lib/helpers';
 import { user } from '$lib/stores/authStores';
 import { userDocs } from '$lib/stores/dbStores';
 import { arrayUnion, collection, doc, updateDoc, writeBatch } from 'firebase/firestore';
 import sizeof from 'firestore-size';
 import { cloneDeep, isEqual } from 'lodash';
 import { get } from 'svelte/store';
-import { createId } from '@paralleldrive/cuid2';
 
 export async function createDeck(newDeck: SeedsDeckType) {
 	const batch = writeBatch(db);
@@ -166,8 +165,8 @@ export async function updateDeck(updatedDeck: SeedsDeckType) {
 
 export async function reorderSeeds(initialPosition: number, droppedPosition: number) {
 	// Increment order to switch back to 1 based index from 0 in client (dnd positioning)
-	const dbInitialPosition = initialPosition + 1;
-	const dbdroppedPosition = droppedPosition + 1;
+	const dbInitialPosition = initialPosition;
+	const dbdroppedPosition = droppedPosition;
 	const batch = writeBatch(db);
 
 	// Scan all user docs
@@ -237,10 +236,10 @@ export async function manageAllSeedsOrder(action: string) {
 
 export function deckFactory() {
 	return {
-		id: createId(),
+		id: uniqueID(),
 		name: '',
 		dailyLimit: 0,
-		order: 1
+		order: 0
 	};
 }
 

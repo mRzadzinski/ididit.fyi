@@ -1,3 +1,10 @@
+import { init } from '@paralleldrive/cuid2';
+
+export const uniqueID = init({
+	length: 10,
+	fingerprint: 'a-custom-host-fingerprint'
+});
+
 export function generateRandomPassword(passLength: number) {
 	const strValues = 'abcdefghijklmnopqrstuvwxyz';
 	// 1234567890!@#$%^&*()_+-=';

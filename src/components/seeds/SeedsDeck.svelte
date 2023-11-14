@@ -41,7 +41,7 @@
 </script>
 
 <!-- Switch from 1 based index in db to 0 for dnd positioning  -->
-<div class="absolute mb-6 w-full z-0" data-order={deck.order - 1} id={deck.id}>
+<div class="absolute mb-6 w-full z-0" data-order={deck.order} id={deck.id}>
 	<button
 		class="btn h-auto flex items-center justify-between w-full p-2 rounded-xl font-normal normal-case"
 	>

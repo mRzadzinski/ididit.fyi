@@ -6,6 +6,11 @@
 	import { syncDnd } from '$lib/dnd/verticalList';
 	import { createDeck, deckFactory, fillDocs, reorderSeeds } from './decksLogic';
 
+	$: {
+		console.log($userDocs[0].doc.seedsData.decks);
+		console.log(listContainer);
+	}
+
 	let listContainer: HTMLElement;
 	let dndList: Muuri;
 	let dndItems: (Element | null)[] = [];
@@ -82,6 +87,9 @@
 <main class="h-full w-full p-10 m-0">
 	<h1 class="text-3xl mb-5">Decks</h1>
 	<button class="btn mb-6" on:click={prepareNewDeck}>New Deck</button>
+	<button class="btn" on:click={() => syncDnd(listContainer, dndList, dndItems, dndInitialListFill)}
+		>Sync dnd</button
+	>
 	<div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
 		{#each $seedsData.decks as deck (deck.id)}
 			{#if newDeckId === deck.id}
