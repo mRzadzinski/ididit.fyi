@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { cloneDeep } from 'lodash';
 	import { updateDeck } from '../../routes/app/seeds/decksLogic';
-	import { afterUpdate, beforeUpdate, onMount } from 'svelte';
+	import { beforeUpdate, onMount } from 'svelte';
 
 	export let deck: SeedsDeckType;
 	export let newDeck = false;
@@ -65,7 +65,7 @@
 			<div class="flex gap-1 w-1/3">
 				<span class="mr-8 ml-3 w-full text-left">{deck.name}</span>
 				<!-- <span class="w-24">limit: {deck.dailyLimit}</span> -->
-				<span class="w-24">order: {deck.order}</span>
+				<span class="w-28">order: {deck.order}</span>
 			</div>
 			<div>
 				<button

@@ -4,6 +4,7 @@ import { derived, get, writable } from 'svelte/store';
 import { onAuthStateChanged, type Unsubscribe } from 'firebase/auth';
 import sizeof from 'firestore-size';
 
+export const syncInProgress = writable<boolean>(false);
 export const userDocs = writable<UserDoc[]>([]);
 export const subscription = writable();
 export const seedsData = derived(userDocs, ($userDocs) => {

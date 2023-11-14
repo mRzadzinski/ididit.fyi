@@ -1,6 +1,8 @@
 <script>
 	import { goto } from '$app/navigation';
+	import { syncInProgress } from '$lib/stores/dbStores';
 	import Avatar from './Avatar.svelte';
+	import SyncComplete from '~icons/fluent/cloud-sync-complete-28-regular';
 	import DropdownMenuItems from './DropdownMenuItems.svelte';
 </script>
 
@@ -27,7 +29,11 @@
 	<div class="flex-none items-center hidden md:block">
 		<ul class="menu menu-horizontal p-0 mr-3 flex items-center">
 			<!-- Navbar menu content here -->
-			<input class="input input-sm input-bordered w-56 mr-10" type="text" placeholder="Search..." />
+			{#if $syncInProgress}
+			<span class="loading loading-spinner loading-md mr-4 text-error"></span>
+			{:else}
+				<SyncComplete style="font-size: 1.7rem; color: hsl(var(--su)); margin-right: 1rem;" />
+			{/if}
 			<li>
 				<button class="p-0 focus:bg-current" id="avatar-nav-dropdown">
 					<div class="dropdown dropdown-end">

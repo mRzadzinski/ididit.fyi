@@ -2,7 +2,7 @@ import { userDataDocFactory } from '$lib/db/docsBoilerplate';
 import { db } from '$lib/firebase/firebase';
 import { generateRandomPassword, uniqueID } from '$lib/helpers';
 import { user } from '$lib/stores/authStores';
-import { userDocs } from '$lib/stores/dbStores';
+import { syncInProgress, userDocs } from '$lib/stores/dbStores';
 import { arrayUnion, collection, doc, updateDoc, writeBatch } from 'firebase/firestore';
 import sizeof from 'firestore-size';
 import { cloneDeep, isEqual } from 'lodash';
@@ -53,8 +53,9 @@ export async function createDeck(newDeck: SeedsDeckType) {
 		const docRef = doc(collection(db, 'users'));
 		batch.set(docRef, docObj);
 	}
-
+	syncInProgress.set(true);
 	await batch.commit();
+	syncInProgress.set(false);
 }
 
 export async function deleteDeck(deckToDeleteOrder: number) {
@@ -85,7 +86,9 @@ export async function deleteDeck(deckToDeleteOrder: number) {
 			batch.update(docRef, { 'seedsData.decks': updatedDecksArray });
 		}
 	}
+	syncInProgress.set(true);
 	await batch.commit();
+	syncInProgress.set(false);
 }
 
 export async function updateDeck(updatedDeck: SeedsDeckType) {
@@ -115,9 +118,11 @@ export async function updateDeck(updatedDeck: SeedsDeckType) {
 			newDeckArray[docInfo.oldDeckIndex] = updatedDeck;
 			// Update doc in firestore
 			const docRef = doc(db, 'users', parentDocID);
+			syncInProgress.set(true);
 			await updateDoc(docRef, {
 				'seedsData.decks': newDeckArray
 			});
+			syncInProgress.set(false);
 			return;
 		}
 
@@ -161,7 +166,9 @@ export async function updateDeck(updatedDeck: SeedsDeckType) {
 		batch.update(docRef, { 'seedsData.decks': newDeckArray });
 
 		// Push changes
+		syncInProgress.set(true);
 		await batch.commit();
+		syncInProgress.set(false);
 	}
 }
 
@@ -203,8 +210,9 @@ export async function reorderSeeds(initialPosition: number, droppedPosition: num
 			batch.update(docRef, { 'seedsData.decks': decksClone });
 		}
 	});
-
+	syncInProgress.set(true);
 	await batch.commit();
+	syncInProgress.set(false);
 }
 
 export async function manageAllSeedsOrder(action: string) {
@@ -231,8 +239,9 @@ export async function manageAllSeedsOrder(action: string) {
 			batch.update(docRef, { 'seedsData.decks': decksClone });
 		}
 	});
-
+	syncInProgress.set(true);
 	await batch.commit();
+	syncInProgress.set(false);
 }
 
 export function deckFactory() {
@@ -261,9 +270,11 @@ export async function fillDocs() {
 	const randomString = generateRandomPassword(1020000);
 	for (let i = 0; i < docs.length; i++) {
 		const docRef = doc(db, 'users', docs[i].docID);
+		syncInProgress.set(true);
 		await updateDoc(docRef, {
 			toRemove: randomString
 		});
+		syncInProgress.set(false);
 	}
 	console.log('docs filled');
 }
