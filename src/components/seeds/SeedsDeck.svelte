@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { cloneDeep } from 'lodash';
-	import { deleteDeck, updateDeck } from '../../routes/app/seeds/decksLogic';
-	import { onMount } from 'svelte';
+	import { updateDeck } from '../../routes/app/seeds/decksLogic';
+	import { afterUpdate, beforeUpdate, onMount } from 'svelte';
 
 	export let deck: SeedsDeckType;
 	export let newDeck = false;
+	export let editedDeckId: string;
+	export let manageEditedDeckId: (action: string, id: string) => void;
 	export let handleDeleteDeck: (dndItem: HTMLElement, itemOrder: number) => void;
 
 	let dndItem: HTMLElement;
@@ -40,9 +42,22 @@
 			nameInput.focus();
 		}
 	});
+
+	beforeUpdate(() => {
+		if (editedDeckId.length > 0 && editedDeckId !== deck.id) {
+			editMode = false;
+			cancelChanges();
+		}
+	});
 </script>
 
-<div class="absolute mb-6 w-full z-0" data-order={deck.order} data-edit-mode={editMode} id={deck.id} bind:this={dndItem}>
+<div
+	class="absolute mb-6 w-full z-0"
+	data-order={deck.order}
+	data-edit-mode={editMode}
+	id={deck.id}
+	bind:this={dndItem}
+>
 	<button
 		class="btn h-auto flex items-center justify-between w-full p-2 rounded-xl font-normal normal-case"
 	>
@@ -56,6 +71,7 @@
 				<button
 					class="btn"
 					on:click={() => {
+						manageEditedDeckId('enable', deck.id);
 						editMode = true;
 					}}>Edit</button
 				>
@@ -93,13 +109,15 @@
 					/>
 				</div>
 				<div>
-					<button class="btn" type="submit">Save</button>
+					<button class="btn" type="submit" on:click={() => manageEditedDeckId('disable', deck.id)}
+						>Save</button
+					>
 					<button
 						class="btn"
 						type="reset"
 						on:click={() => {
 							editMode = false;
-
+							manageEditedDeckId('disable', deck.id);
 							cancelChanges();
 						}}>Cancel</button
 					>

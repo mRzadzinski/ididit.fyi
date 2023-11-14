@@ -13,7 +13,7 @@
 	let initialPosition: number;
 	let droppedPosition: number;
 	let newDeckId: string;
-
+	let editedDeckId = '';
 	let newDeck: SeedsDeckType;
 
 	function handleCreateDeck() {
@@ -26,6 +26,15 @@
 		// Removing dnd item first before modifying data, to avoid duplicated HTMLelement from Muuri
 		dndList.remove(dndList.getItems(dndItem), { removeElements: true });
 		deleteDeck(itemOrder);
+	}
+
+	// Allow only one deck to have edit mode enabled
+	function manageEditedDeckId(action: string, id: string) {
+		if (action === 'enable') {
+			editedDeckId = id;
+		} else if (action === 'disable' && editedDeckId === id) {
+			editedDeckId = '';
+		}
 	}
 
 	onMount(() => {
@@ -94,10 +103,10 @@
 	<div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
 		{#each $seedsData.decks as deck (deck.id)}
 			{#if newDeckId === deck.id}
-				<SeedsDeck {deck} newDeck={true} {handleDeleteDeck} />
+				<SeedsDeck {deck} {handleDeleteDeck} {manageEditedDeckId} {editedDeckId} newDeck={true} />
 				{(newDeckId = '')}
 			{:else}
-				<SeedsDeck {deck} {handleDeleteDeck} />
+				<SeedsDeck {deck} {handleDeleteDeck} {manageEditedDeckId} {editedDeckId} />
 			{/if}
 		{/each}
 	</div>
