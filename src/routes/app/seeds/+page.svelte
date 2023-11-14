@@ -23,6 +23,7 @@
 	}
 
 	function handleDeleteDeck(dndItem: HTMLElement, itemOrder: number) {
+		// Removing dnd item first before modifying data, to avoid duplicated HTMLelement from Muuri
 		dndList.remove(dndList.getItems(dndItem), { removeElements: true });
 		deleteDeck(itemOrder);
 	}
@@ -33,16 +34,19 @@
 			dragEnabled: true,
 			dragAxis: 'y',
 			dragStartPredicate: (item, e) => {
+				const htmlEl = item.getElement();
+
 				if (e.isFinal) {
 					Muuri.ItemDrag.defaultStartPredicate(item, e);
 					return;
 				}
-				// Prevent first item from being dragged
-				if (dndList.getItems()[0] === item) {
-					// return false;
+
+				// Disable dnd for decks in editMode
+				if (htmlEl && htmlEl.dataset.editMode === 'true') {
+					return false;
+				} else {
+					return true;
 				}
-				// For other items use the default drag start predicate.
-				return true;
 			},
 			dragSortHeuristics: {
 				sortInterval: 0,
@@ -87,9 +91,6 @@
 <main class="h-full w-full p-10 m-0">
 	<h1 class="text-3xl mb-5">Decks</h1>
 	<button class="btn mb-6" on:click={handleCreateDeck}>New Deck</button>
-	<button class="btn" on:click={() => syncDnd(listContainer, dndList, dndItems, dndInitialListFill)}
-		>Sync dnd</button
-	>
 	<div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
 		{#each $seedsData.decks as deck (deck.id)}
 			{#if newDeckId === deck.id}

@@ -42,7 +42,7 @@
 	});
 </script>
 
-<div class="absolute mb-6 w-full z-0" data-order={deck.order} id={deck.id} bind:this={dndItem}>
+<div class="absolute mb-6 w-full z-0" data-order={deck.order} data-edit-mode={editMode} id={deck.id} bind:this={dndItem}>
 	<button
 		class="btn h-auto flex items-center justify-between w-full p-2 rounded-xl font-normal normal-case"
 	>
