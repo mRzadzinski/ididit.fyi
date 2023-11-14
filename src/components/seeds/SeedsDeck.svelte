@@ -5,9 +5,11 @@
 
 	export let deck: SeedsDeckType;
 	export let newDeck = false;
+	export let handleDeleteDeck: (dndItem: HTMLElement, itemOrder: number) => void;
 
-	let editMode = false;
+	let dndItem: HTMLElement;
 	let nameInput: HTMLElement;
+	let editMode = false;
 	let updatedDeck = deck;
 	let newName = deck.name;
 	let newLimit = deck.dailyLimit;
@@ -40,8 +42,7 @@
 	});
 </script>
 
-<!-- Switch from 1 based index in db to 0 for dnd positioning  -->
-<div class="absolute mb-6 w-full z-0" data-order={deck.order} id={deck.id}>
+<div class="absolute mb-6 w-full z-0" data-order={deck.order} id={deck.id} bind:this={dndItem}>
 	<button
 		class="btn h-auto flex items-center justify-between w-full p-2 rounded-xl font-normal normal-case"
 	>
@@ -61,7 +62,7 @@
 				<button
 					class="btn"
 					on:click={async () => {
-						await deleteDeck(deck.order);
+						handleDeleteDeck(dndItem, deck.order);
 					}}>Delete</button
 				>
 			</div>

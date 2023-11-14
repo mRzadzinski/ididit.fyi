@@ -30,7 +30,9 @@ export async function createDeck(newDeck: SeedsDeckType) {
 
 		// Increment position of all other decks
 		for (let j = 0; j < updatedDecksArray.length; j++) {
-			if (newDeck.id !== updatedDecksArray[j].id) updatedDecksArray[j].order += 1;
+			if (newDeck.id !== updatedDecksArray[j].id) {
+				updatedDecksArray[j].order += 1;
+			}
 		}
 
 		// If anything changed in deck, add to batch update
@@ -164,7 +166,6 @@ export async function updateDeck(updatedDeck: SeedsDeckType) {
 }
 
 export async function reorderSeeds(initialPosition: number, droppedPosition: number) {
-	// Increment order to switch back to 1 based index from 0 in client (dnd positioning)
 	const dbInitialPosition = initialPosition;
 	const dbdroppedPosition = droppedPosition;
 	const batch = writeBatch(db);

@@ -23,7 +23,7 @@ export function initializeDnd(listContainer: HTMLElement) {
 
 export function syncDnd(
 	listContainer: HTMLElement,
-	dndGrid: Muuri,
+	dndList: Muuri,
 	dndItems: (Element | null)[],
 	dndInitialListFill: boolean
 ) {
@@ -37,16 +37,16 @@ export function syncDnd(
 			const htmlEl = el as HTMLElement;
 			// Add items as hidden during initial fill (bulk adding doesn't look good)
 			if (initialListFill) {
-				dndGrid.add(htmlEl, { active: false });
+				dndList.add(htmlEl, { active: false });
 			} else {
-				dndGrid.add(htmlEl);
+				dndList.add(htmlEl);
 			}
 			updatedDndItems.push(el);
 		}
 	}
 	// Show list after initial fill
 	if (initialListFill) {
-		dndGrid.show(dndGrid.getItems());
+		dndList.show(dndList.getItems());
 		initialListFill = false;
 	}
 
@@ -61,12 +61,12 @@ export function syncDnd(
 			}
 		}
 		if (!found) {
-			dndGrid.remove(dndGrid.getItems(dndItem as HTMLElement));
+			dndList.remove(dndList.getItems(dndItem as HTMLElement));
 			updatedDndItems = updatedDndItems.filter((item) => item !== dndItem);
 		}
 	}
 
-	sortListDnd(dndGrid);
+	sortListDnd(dndList);
 
 	return {
 		updatedDndItems,
@@ -74,9 +74,9 @@ export function syncDnd(
 	};
 }
 
-export function sortListDnd(dndGrid: Muuri) {
+export function sortListDnd(dndList: Muuri) {
 	// Sort dnd list by item order
-	dndGrid.sort(function (itemA, itemB) {
+	dndList.sort(function (itemA, itemB) {
 		const elA = itemA.getElement();
 		const elB = itemB.getElement();
 		const orderAttrA = elA ? elA.getAttribute('data-order') : null;

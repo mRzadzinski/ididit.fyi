@@ -4,12 +4,7 @@
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
 	import Muuri from 'muuri';
 	import { syncDnd } from '$lib/dnd/verticalList';
-	import { createDeck, deckFactory, fillDocs, reorderSeeds } from './decksLogic';
-
-	$: {
-		console.log($userDocs[0].doc.seedsData.decks);
-		console.log(listContainer);
-	}
+	import { createDeck, deckFactory, deleteDeck, fillDocs, reorderSeeds } from './decksLogic';
 
 	let listContainer: HTMLElement;
 	let dndList: Muuri;
@@ -21,10 +16,15 @@
 
 	let newDeck: SeedsDeckType;
 
-	function prepareNewDeck() {
+	function handleCreateDeck() {
 		newDeck = deckFactory();
 		newDeckId = newDeck.id;
 		createDeck(newDeck);
+	}
+
+	function handleDeleteDeck(dndItem: HTMLElement, itemOrder: number) {
+		dndList.remove(dndList.getItems(dndItem), { removeElements: true });
+		deleteDeck(itemOrder);
 	}
 
 	onMount(() => {
@@ -86,17 +86,17 @@
 
 <main class="h-full w-full p-10 m-0">
 	<h1 class="text-3xl mb-5">Decks</h1>
-	<button class="btn mb-6" on:click={prepareNewDeck}>New Deck</button>
+	<button class="btn mb-6" on:click={handleCreateDeck}>New Deck</button>
 	<button class="btn" on:click={() => syncDnd(listContainer, dndList, dndItems, dndInitialListFill)}
 		>Sync dnd</button
 	>
 	<div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
 		{#each $seedsData.decks as deck (deck.id)}
 			{#if newDeckId === deck.id}
-				<SeedsDeck {deck} newDeck={true} />
+				<SeedsDeck {deck} newDeck={true} {handleDeleteDeck} />
 				{(newDeckId = '')}
 			{:else}
-				<SeedsDeck {deck} />
+				<SeedsDeck {deck} {handleDeleteDeck} />
 			{/if}
 		{/each}
 	</div>
