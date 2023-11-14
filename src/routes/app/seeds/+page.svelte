@@ -19,6 +19,8 @@
 	function handleCreateDeck() {
 		newDeck = deckFactory();
 		newDeckId = newDeck.id;
+		// New deck is automatically in edit mode
+		editedDeckId = newDeck.id;
 		createDeck(newDeck);
 	}
 
