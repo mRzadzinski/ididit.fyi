@@ -59,7 +59,7 @@
 	bind:this={dndItem}
 >
 	<button
-		class="btn h-auto flex items-center justify-between w-full p-2 rounded-xl font-normal normal-case"
+		class="btn no-animation h-auto flex items-center justify-between w-full p-2 rounded-xl font-normal normal-case"
 	>
 		{#if !editMode}
 			<div class="flex gap-1 w-1/3">

@@ -3,13 +3,15 @@
 	import { seedsData, userDocs } from '$lib/stores/dbStores';
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
 	import Muuri from 'muuri';
-	import { syncDnd } from '$lib/dnd/verticalList';
+	import { sortListDnd, syncDnd } from '$lib/dnd/verticalList';
 	import { createDeck, deckFactory, deleteDeck, fillDocs, reorderSeeds } from './decksLogic';
 
+	const scrollContainer = document.getElementById('dnd-scroll-container');
 	let listContainer: HTMLElement;
 	let dndList: Muuri;
 	let dndItems: (Element | null)[] = [];
 	let dndInitialListFill = true;
+	let dndItemWidth: number;
 	let initialPosition: number;
 	let droppedPosition: number;
 	let newDeckId: string;
@@ -66,7 +68,20 @@
 			dragSortPredicate: {
 				threshold: 30
 			},
-			itemDraggingClass: 'drag-item'
+			itemDraggingClass: 'drag-item',
+			dragContainer: scrollContainer,
+			dragAutoScroll: {
+				targets: [
+					{ element: document.body, priority: 0 },
+					{ element: scrollContainer as HTMLElement, priority: 1 }
+				],
+				handle: null,
+				threshold: 40,
+				safeZone: 0.1,
+				speed: Muuri.AutoScroller.smoothSpeed(2000, 2700, 3200),
+				sortDuringScroll: true,
+				smoothStop: true
+			}
 		});
 		// Clear grid if not empty
 		dndList.remove(dndList.getItems());
@@ -74,12 +89,21 @@
 		// Grid events
 		dndList.on('dragInit', function (item, event) {
 			const itemEl = item.getElement();
+
+			// As drag item is moved to different container during drag, ensure it's size remains the same
+			if (itemEl) {
+				itemEl.style.width = item.getWidth() + 'px';
+				itemEl.style.height = item.getHeight() + 'px';
+			}
+			// Save index for reorder
 			if (itemEl) {
 				initialPosition = dndList.getItems().indexOf(item);
 			}
 		});
 		dndList.on('dragEnd', function (item, event) {
 			droppedPosition = dndList.getItems().indexOf(item);
+		});
+		dndList.on('dragReleaseEnd', (item) => {
 			if (initialPosition !== droppedPosition) {
 				reorderSeeds(initialPosition, droppedPosition);
 			}
