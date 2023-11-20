@@ -11,11 +11,12 @@ import { get } from 'svelte/store';
 export async function createDeck(newDeck: SeedsDeckType) {
 	const batch = writeBatch(db);
 	const deckSize = sizeof(newDeck);
+	const usrDocs = get(userDocs);
 	let deckCreated = false;
 
 	// Check to which doc add new deck
-	for (let i = 0; i < get(userDocs).length; i++) {
-		const document = get(userDocs)[i];
+	for (let i = 0; i < usrDocs.length; i++) {
+		const document = usrDocs[i];
 		const documentId = document.docID;
 		const documentSize = document.remainingSpace;
 		const spaceLeft = documentSize - deckSize;
@@ -60,10 +61,11 @@ export async function createDeck(newDeck: SeedsDeckType) {
 
 export async function deleteDeck(deckToDeleteOrder: number) {
 	const batch = writeBatch(db);
+	const usrDocs = get(userDocs);
 
 	// Find deck location in docs
-	for (let i = 0; i < get(userDocs).length; i++) {
-		const document = get(userDocs)[i];
+	for (let i = 0; i < usrDocs.length; i++) {
+		const document = usrDocs[i];
 		const documentId = document.docID;
 		const decksArray = document.doc.seedsData.decks;
 		const updatedDecksArray = cloneDeep(decksArray);
