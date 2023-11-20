@@ -1,11 +1,25 @@
 import Muuri from 'muuri';
 
-export function initializeDnd(listContainer: HTMLElement) {
+export function initializeDnd(listContainer: HTMLElement, scrollContainer:HTMLElement) {
 	// Initialize drag & drop
 	const grid = new Muuri(listContainer, {
 		dragEnabled: true,
 		dragAxis: 'y',
-		dragStartPredicate: { distance: 1 },
+		dragStartPredicate: (item, e) => {
+			const htmlEl = item.getElement();
+
+			if (e.isFinal) {
+				Muuri.ItemDrag.defaultStartPredicate(item, e);
+				return;
+			}
+
+			// Disable dnd for decks in editMode
+			if (htmlEl && htmlEl.dataset.editMode === 'true') {
+				return false;
+			} else if (e.distance > 2) {
+				return true;
+			}
+		},
 		dragSortHeuristics: {
 			sortInterval: 0,
 			minDragDistance: 0
@@ -13,7 +27,20 @@ export function initializeDnd(listContainer: HTMLElement) {
 		dragSortPredicate: {
 			threshold: 30
 		},
-		itemDraggingClass: 'drag-item'
+		itemDraggingClass: 'drag-item',
+		dragContainer: scrollContainer,
+		dragAutoScroll: {
+			targets: [
+				{ element: document.body, priority: 0 },
+				{ element: scrollContainer as HTMLElement, priority: 1 }
+			],
+			handle: null,
+			threshold: 40,
+			safeZone: 0.1,
+			speed: Muuri.AutoScroller.smoothSpeed(2000, 2700, 3200),
+			sortDuringScroll: true,
+			smoothStop: true
+		}
 	});
 	// Clear grid if not empty
 	grid.remove(grid.getItems());

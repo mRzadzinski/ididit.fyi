@@ -1,9 +1,9 @@
 <script lang="ts">
 	import SeedsDeck from '$components/seeds/SeedsDeck.svelte';
-	import { seedsData, userDocs } from '$lib/stores/dbStores';
+	import { seedsData } from '$lib/stores/dbStores';
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
-	import Muuri from 'muuri';
-	import { sortListDnd, syncDnd } from '$lib/dnd/verticalList';
+	import type Muuri from 'muuri';
+	import { initializeDnd, syncDnd } from '$lib/dnd/verticalList';
 	import { createDeck, deckFactory, deleteDeck, fillDocs, reorderSeeds } from './decksLogic';
 
 	const scrollContainer = document.getElementById('dnd-scroll-container');
@@ -43,48 +43,9 @@
 
 	onMount(() => {
 		// Initialize drag & drop
-		dndList = new Muuri(listContainer, {
-			dragEnabled: true,
-			dragAxis: 'y',
-			dragStartPredicate: (item, e) => {
-				const htmlEl = item.getElement();
-
-				if (e.isFinal) {
-					Muuri.ItemDrag.defaultStartPredicate(item, e);
-					return;
-				}
-
-				// Disable dnd for decks in editMode
-				if (htmlEl && htmlEl.dataset.editMode === 'true') {
-					return false;
-				} else {
-					return true;
-				}
-			},
-			dragSortHeuristics: {
-				sortInterval: 0,
-				minDragDistance: 0
-			},
-			dragSortPredicate: {
-				threshold: 30
-			},
-			itemDraggingClass: 'drag-item',
-			dragContainer: scrollContainer,
-			dragAutoScroll: {
-				targets: [
-					{ element: document.body, priority: 0 },
-					{ element: scrollContainer as HTMLElement, priority: 1 }
-				],
-				handle: null,
-				threshold: 40,
-				safeZone: 0.1,
-				speed: Muuri.AutoScroller.smoothSpeed(2000, 2700, 3200),
-				sortDuringScroll: true,
-				smoothStop: true
-			}
-		});
-		// Clear grid if not empty
-		dndList.remove(dndList.getItems());
+		if (scrollContainer) {
+			dndList = initializeDnd(listContainer, scrollContainer);
+		}
 
 		// Grid events
 		dndList.on('dragInit', function (item, event) {
@@ -92,8 +53,9 @@
 
 			// As drag item is moved to different container during drag, ensure it's size remains the same
 			if (itemEl) {
-				itemEl.style.width = item.getWidth() + 'px';
-				itemEl.style.height = item.getHeight() + 'px';
+				const htmlEL = itemEl.children[0] as HTMLElement;
+				htmlEL.style.width = item.getWidth() + 'px';
+				htmlEL.style.height = item.getHeight() + 'px';
 			}
 			// Save index for reorder
 			if (itemEl) {
