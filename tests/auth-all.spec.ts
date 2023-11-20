@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 import { getFirebaseAuthLink, loginWithEmailAndPassword } from './helpers';
-import { generateRandomEmail, generateRandomPassword } from '$lib/helpers';
+import { generateRandomEmail, generateRandomPassword } from '../src/lib/helpers';
 
 let email: string;
 let password: string;

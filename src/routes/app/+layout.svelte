@@ -6,6 +6,7 @@
 	import DropdownMenuItems from '$components/app-layout/DropdownMenuItems.svelte';
 	import SidebarItems from '$components/app-layout/SidebarItems.svelte';
 
+	console.log($user)
 	$: if ($user === null) {
 		goto('/auth/login');
 	}

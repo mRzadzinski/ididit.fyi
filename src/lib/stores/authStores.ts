@@ -4,6 +4,7 @@ import { writable } from 'svelte/store';
 export const user = writable<User | null | undefined>(undefined);
 export const firstLogin = writable<boolean | undefined>(undefined);
 export const emailLinkLogin = writable<boolean | undefined>(false);
+export const loggedWithEmailLink = writable<boolean>(false);
 export const loggedIn = writable(false);
 
 export const registerError = writable<string>('');

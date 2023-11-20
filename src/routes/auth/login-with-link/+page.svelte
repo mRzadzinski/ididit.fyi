@@ -3,10 +3,11 @@
 	import { getAdditionalUserInfo, isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
 	import WarningMessage from '$components/general/WarningMessage.svelte';
 	import ErrorMessage from '$components/general/ErrorMessage.svelte';
-	import { loginError, firstLogin } from '$lib/stores/authStores';
+	import { loggedWithEmailLink, loginError } from '$lib/stores/authStores';
 	import { goto } from '$app/navigation';
 	import { user } from '$lib/stores/authStores';
 	import { logout } from '$lib/firebase/auth/logout';
+	import { onMount } from 'svelte';
 
 	let inputValue: string;
 	let email: string | null;
@@ -14,13 +15,11 @@
 	let wrongLink = false;
 	let inProgress = false;
 
-	// function timeout(ms: number) {
-	// 	return new Promise((resolve) => setTimeout(resolve, ms));
-	// }
-
 	async function confirmLogin() {
 		try {
-			if ($user) logout();
+			if ($user) {
+				logout();
+			}
 
 			if (!linkEvaluated) {
 				if (isSignInWithEmailLink(auth, window.location.href)) {
@@ -32,15 +31,17 @@
 					return;
 				}
 			}
+
 			if (email) {
-				// await timeout(1500);
 				const userInfo = await signInWithEmailLink(auth, email);
-				firstLogin.set(getAdditionalUserInfo(userInfo)?.isNewUser);
+				const newUser = getAdditionalUserInfo(userInfo)?.isNewUser;
+				loggedWithEmailLink.set(true)
 				loginError.set('');
 
-				if ($firstLogin) {
+				if (newUser) {
 					goto('/auth/set-password');
 				} else {
+					console.log('going to app');
 					goto('/app');
 				}
 			}
@@ -56,11 +57,17 @@
 			}
 		}
 	}
-	confirmLogin();
 
 	$: if ($loginError) {
 		wrongLink = true;
 	}
+
+	onMount(async () => {
+		// Put guard against double mounting page
+		if (!$loggedWithEmailLink) {
+			await confirmLogin();
+		}
+	});
 </script>
 
 {#if wrongLink}

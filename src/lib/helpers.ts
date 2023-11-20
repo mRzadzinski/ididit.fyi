@@ -6,8 +6,7 @@ export const uniqueID = init({
 });
 
 export function generateRandomPassword(passLength: number) {
-	const strValues = 'abcdefghijklmnopqrstuvwxyz';
-	// 1234567890!@#$%^&*()_+-=';
+	const strValues = 'abcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()_+-=';
 	let password = '';
 	let tempStr: string;
 	for (let i = 0; i < passLength; i++) {
