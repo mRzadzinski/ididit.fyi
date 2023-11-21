@@ -3,7 +3,7 @@
 	import { seedsData } from '$lib/stores/dbStores';
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
 	import type Muuri from 'muuri';
-	import { initializeDnd, syncDnd } from '$lib/dnd/verticalList';
+	import { initializeDnd, sortListDnd, syncDnd } from '$lib/dnd/verticalList';
 	import { createDeck, deckFactory, deleteDeck, fillDocs, reorderSeeds } from './decksLogic';
 
 	const scrollContainer = document.getElementById('dnd-scroll-container');
@@ -12,6 +12,7 @@
 	let dndItems: (Element | null)[] = [];
 	let dndInitialListFill = true;
 	let dndItemWidth: number;
+	let syncTimeoutId: NodeJS.Timeout;
 	let initialPosition: number;
 	let droppedPosition: number;
 	let newDeckId: string;
@@ -39,6 +40,18 @@
 		}
 	}
 
+	// In case of animation glitch during too fast dnd actions
+	function fallbackSyncDnd() {
+		clearTimeout(syncTimeoutId);
+
+		syncTimeoutId = setTimeout(() => {
+			const dndSyncInfo = syncDnd(listContainer, dndList, dndItems, dndInitialListFill);
+			dndItems = dndSyncInfo.updatedDndItems;
+			dndInitialListFill = dndSyncInfo.initialListFill;
+			console.log('synced');
+		}, 1500);
+	}
+
 	// Allow only one deck to have edit mode enabled
 	function manageEditedDeckId(action: string, id: string) {
 		if (action === 'enable') {
@@ -58,12 +71,6 @@
 		dndList.on('dragInit', function (item, event) {
 			const itemEl = item.getElement();
 
-			// As drag item is moved to different container during drag, ensure it's size remains the same
-			if (itemEl) {
-				// const htmlEL = itemEl.children[0] as HTMLElement;
-				// htmlEL.style.width = item.getWidth() + 'px';
-				// htmlEL.style.height = item.getHeight() + 'px';
-			}
 			// Save index for reorder
 			if (itemEl) {
 				initialPosition = dndList.getItems().indexOf(item);
@@ -76,6 +83,7 @@
 			if (initialPosition !== droppedPosition) {
 				reorderSeeds(initialPosition, droppedPosition);
 			}
+			fallbackSyncDnd();
 		});
 		dndList.on('showEnd', () => {
 			keepScrollContainerWidthInSyncWithDecks();
@@ -99,6 +107,11 @@
 <main class="h-full w-full p-10 m-0">
 	<h1 class="text-3xl mb-5">Decks</h1>
 	<button class="btn mb-6" on:click={handleCreateDeck}>New Deck</button>
+	<button
+		class="btn mb-6"
+		on:click={() => syncDnd(listContainer, dndList, dndItems, dndInitialListFill)}>sync</button
+	>
+	<button class="btn mb-6" on:click={() => sortListDnd(dndList)}>sort</button>
 	<div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
 		{#each $seedsData.decks as deck (deck.id)}
 			{#if newDeckId === deck.id}

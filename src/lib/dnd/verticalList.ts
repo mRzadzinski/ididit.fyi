@@ -1,10 +1,12 @@
 import Muuri from 'muuri';
 
-export function initializeDnd(listContainer: HTMLElement, scrollContainer:HTMLElement) {
+export function initializeDnd(listContainer: HTMLElement, scrollContainer: HTMLElement) {
 	// Initialize drag & drop
 	const grid = new Muuri(listContainer, {
 		dragEnabled: true,
 		dragAxis: 'y',
+		itemDraggingClass: 'drag-item',
+		dragContainer: scrollContainer,
 		dragStartPredicate: (item, e) => {
 			const htmlEl = item.getElement();
 
@@ -27,8 +29,11 @@ export function initializeDnd(listContainer: HTMLElement, scrollContainer:HTMLEl
 		dragSortPredicate: {
 			threshold: 30
 		},
-		itemDraggingClass: 'drag-item',
-		dragContainer: scrollContainer,
+		dragRelease: {
+			// duration: 200,
+			// easing: 'ease-out',
+			useDragContainer: false
+		},
 		dragAutoScroll: {
 			targets: [
 				{ element: document.body, priority: 0 },
