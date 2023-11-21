@@ -32,6 +32,13 @@
 		deleteDeck(itemOrder);
 	}
 
+	function keepScrollContainerWidthInSyncWithDecks() {
+		const dndItemWidth = dndList.getItem(0)?.getElement()?.children[0].clientWidth;
+		if (scrollContainer) {
+			scrollContainer.style.width = `${dndItemWidth}px`;
+		}
+	}
+
 	// Allow only one deck to have edit mode enabled
 	function manageEditedDeckId(action: string, id: string) {
 		if (action === 'enable') {
@@ -53,9 +60,9 @@
 
 			// As drag item is moved to different container during drag, ensure it's size remains the same
 			if (itemEl) {
-				const htmlEL = itemEl.children[0] as HTMLElement;
-				htmlEL.style.width = item.getWidth() + 'px';
-				htmlEL.style.height = item.getHeight() + 'px';
+				// const htmlEL = itemEl.children[0] as HTMLElement;
+				// htmlEL.style.width = item.getWidth() + 'px';
+				// htmlEL.style.height = item.getHeight() + 'px';
 			}
 			// Save index for reorder
 			if (itemEl) {
@@ -69,6 +76,9 @@
 			if (initialPosition !== droppedPosition) {
 				reorderSeeds(initialPosition, droppedPosition);
 			}
+		});
+		dndList.on('showEnd', () => {
+			keepScrollContainerWidthInSyncWithDecks();
 		});
 	});
 
@@ -85,6 +95,7 @@
 	});
 </script>
 
+<svelte:window on:resize={keepScrollContainerWidthInSyncWithDecks} />
 <main class="h-full w-full p-10 m-0">
 	<h1 class="text-3xl mb-5">Decks</h1>
 	<button class="btn mb-6" on:click={handleCreateDeck}>New Deck</button>
