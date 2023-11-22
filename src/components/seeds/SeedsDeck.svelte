@@ -7,7 +7,7 @@
 	export let newDeck = false;
 	export let editedDeckId: string;
 	export let manageEditedDeckId: (action: string, id: string) => void;
-	export let handleDeleteDeck: (dndItem: HTMLElement, itemOrder: number) => void;
+	export let handleDeleteDeck: (dndItem: HTMLElement, itemId: string) => void;
 
 	let dndItem: HTMLElement;
 	let nameInput: HTMLElement;
@@ -78,7 +78,7 @@
 				<button
 					class="btn"
 					on:click={async () => {
-						handleDeleteDeck(dndItem, deck.order);
+						handleDeleteDeck(dndItem, deck.id);
 					}}>Delete</button
 				>
 			</div>

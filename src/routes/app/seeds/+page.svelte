@@ -32,10 +32,10 @@
 		createDeck(newDeck);
 	}
 
-	function handleDeleteDeck(dndItem: HTMLElement, itemOrder: number) {
+	function handleDeleteDeck(dndItem: HTMLElement, itemId: string) {
 		// Removing dnd item first before modifying data, to avoid duplicated HTMLelement from Muuri
 		dndList.remove(dndList.getItems(dndItem), { removeElements: true });
-		deleteDeck(itemOrder);
+		deleteDeck(itemId);
 	}
 
 	function keepScrollContainerWidthInSyncWithDecks() {

@@ -59,7 +59,7 @@ export async function createDeck(newDeck: SeedsDeckType) {
 	syncInProgress.set(false);
 }
 
-export async function deleteDeck(deckToDeleteOrder: number) {
+export async function deleteDeck(deckId: string) {
 	const batch = writeBatch(db);
 	const usrDocs = get(userDocs);
 
@@ -72,14 +72,10 @@ export async function deleteDeck(deckToDeleteOrder: number) {
 
 		for (let j = 0; j < updatedDecksArray.length; j++) {
 			const scannedDeck = updatedDecksArray[j];
-			const scannedDeckOrder = scannedDeck.order;
+			const scannedDeckId = scannedDeck.id;
 			// Delete deck
-			if (scannedDeckOrder === deckToDeleteOrder) {
+			if (scannedDeckId === deckId) {
 				updatedDecksArray.splice(j, 1);
-			}
-			// Reorder decks
-			else if (scannedDeckOrder > deckToDeleteOrder) {
-				scannedDeck.order -= 1;
 			}
 		}
 		// If anything changed in deck, add to batch update
