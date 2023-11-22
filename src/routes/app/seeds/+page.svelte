@@ -126,6 +126,7 @@
 	});
 
 	onDestroy(() => {
+		dndList.remove(dndList.getItems());
 		dndList.destroy();
 		// fillDocs();
 	});
@@ -143,6 +144,7 @@
 		}}>reorder</button
 	> -->
 	<div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
+		{(console.log($seedsData.decks))}
 		{#each $seedsData.decks as deck (deck.id)}
 			{#if newDeckId === deck.id}
 				<SeedsDeck {deck} {handleDeleteDeck} {manageEditedDeckId} {editedDeckId} newDeck={true} />

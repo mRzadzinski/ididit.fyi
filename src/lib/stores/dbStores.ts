@@ -80,4 +80,5 @@ onAuthStateChanged(auth, async (currentUser) => {
 export function clearAppData() {
 	unsubscribeDocs();
 	subscription.set({});
+	userDocs.set([]);
 }
