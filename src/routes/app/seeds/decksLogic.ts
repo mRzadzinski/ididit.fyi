@@ -174,9 +174,12 @@ export async function updateDeck(updatedDeck: SeedsDeckType) {
 	}
 }
 
-export async function reorderSeeds(initialPosition: number, droppedPosition: number) {
-	const dbInitialPosition = initialPosition;
-	const dbdroppedPosition = droppedPosition;
+export async function reorderSeeds(
+	reorderData: {
+		id: string;
+		order: number;
+	}[]
+) {
 	const batch = writeBatch(db);
 
 	// Scan all user docs
@@ -187,21 +190,11 @@ export async function reorderSeeds(initialPosition: number, droppedPosition: num
 
 		// Scan all decks in each document
 		for (let i = 0; i < decksClone.length; i++) {
-			const scannedDeckPosition = decksClone[i].order;
-
-			// Reorder dropped deck
-			if (scannedDeckPosition === dbInitialPosition) {
-				decksClone[i].order = dbdroppedPosition;
-			}
-
-			// Reorder decks in between
-			if (dbInitialPosition < dbdroppedPosition) {
-				if (scannedDeckPosition > dbInitialPosition && scannedDeckPosition <= dbdroppedPosition) {
-					decksClone[i].order--;
-				}
-			} else if (dbInitialPosition > dbdroppedPosition) {
-				if (scannedDeckPosition < dbInitialPosition && scannedDeckPosition >= dbdroppedPosition) {
-					decksClone[i].order++;
+			const scannedDeck = decksClone[i];
+			for (let j = 0; j < reorderData.length; j++) {
+				if (scannedDeck.id === reorderData[j].id) {
+					scannedDeck.order = reorderData[j].order;
+					reorderData.splice(j, 1);
 				}
 			}
 		}

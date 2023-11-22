@@ -3,7 +3,7 @@
 	import { seedsData } from '$lib/stores/dbStores';
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
 	import type Muuri from 'muuri';
-	import { initializeDnd, sortListDnd, syncDnd } from '$lib/dnd/verticalList';
+	import { initializeDnd, syncDnd } from '$lib/dnd/verticalList';
 	import { createDeck, deckFactory, deleteDeck, fillDocs, reorderSeeds } from './decksLogic';
 
 	const scrollContainer = document.getElementById('dnd-scroll-container');
@@ -12,6 +12,11 @@
 	let dndItems: (Element | null)[] = [];
 	let dndInitialListFill = true;
 	let dndItemWidth: number;
+	let dragInProgress = false;
+	let reorderData: {
+		id: string;
+		order: number;
+	}[] = [];
 	let syncTimeoutId: NodeJS.Timeout;
 	let initialPosition: number;
 	let droppedPosition: number;
@@ -40,15 +45,18 @@
 		}
 	}
 
-	// In case of animation glitch during too fast dnd actions
+	// Sync dnd in case of animation glitch after too fast dnd actions
 	function fallbackSyncDnd() {
 		clearTimeout(syncTimeoutId);
 
 		syncTimeoutId = setTimeout(() => {
-			const dndSyncInfo = syncDnd(listContainer, dndList, dndItems, dndInitialListFill);
-			dndItems = dndSyncInfo.updatedDndItems;
-			dndInitialListFill = dndSyncInfo.initialListFill;
-			console.log('synced');
+			if (!dragInProgress) {
+				const dndSyncInfo = syncDnd(listContainer, dndList, dndItems, dndInitialListFill);
+				dndItems = dndSyncInfo.updatedDndItems;
+				dndInitialListFill = dndSyncInfo.initialListFill;
+			} else {
+				fallbackSyncDnd();
+			}
 		}, 1500);
 	}
 
@@ -58,6 +66,21 @@
 			editedDeckId = id;
 		} else if (action === 'disable' && editedDeckId === id) {
 			editedDeckId = '';
+		}
+	}
+
+	function refreshReorderData() {
+		// Save dndList items' positions in pair with their IDs
+		const items = dndList.getItems();
+		reorderData = [];
+		for (let i = 0; i < items.length; i++) {
+			const el = items[i].getElement();
+			if (el) {
+				reorderData.push({
+					id: el.id,
+					order: i
+				});
+			}
 		}
 	}
 
@@ -76,14 +99,19 @@
 				initialPosition = dndList.getItems().indexOf(item);
 			}
 		});
+		dndList.on('dragStart', () => {
+			dragInProgress = true;
+		});
 		dndList.on('dragEnd', function (item, event) {
 			droppedPosition = dndList.getItems().indexOf(item);
 		});
 		dndList.on('dragReleaseEnd', (item) => {
 			if (initialPosition !== droppedPosition) {
-				reorderSeeds(initialPosition, droppedPosition);
+				refreshReorderData();
+				reorderSeeds(reorderData);
 			}
 			fallbackSyncDnd();
+			dragInProgress = false;
 		});
 		dndList.on('showEnd', () => {
 			keepScrollContainerWidthInSyncWithDecks();
@@ -107,11 +135,13 @@
 <main class="h-full w-full p-10 m-0">
 	<h1 class="text-3xl mb-5">Decks</h1>
 	<button class="btn mb-6" on:click={handleCreateDeck}>New Deck</button>
-	<button
+	<!-- <button
 		class="btn mb-6"
-		on:click={() => syncDnd(listContainer, dndList, dndItems, dndInitialListFill)}>sync</button
-	>
-	<button class="btn mb-6" on:click={() => sortListDnd(dndList)}>sort</button>
+		on:click={() => {
+			refreshReorderData();
+			reorderSeeds(reorderData);
+		}}>reorder</button
+	> -->
 	<div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
 		{#each $seedsData.decks as deck (deck.id)}
 			{#if newDeckId === deck.id}
