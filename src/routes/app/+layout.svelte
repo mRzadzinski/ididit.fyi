@@ -14,13 +14,12 @@
 {#if $user}
 	<div class="drawer h-screen">
 		<input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
+		<!-- Sidebar -->
+		<SidebarItems />
 		<div class="drawer-content flex flex-col">
-			<Navbar />
-			<div class="flex h-full">
-				<!-- Sidebar -->
-				<ul class="menu p-4 w-60 min-h-full bg-base-300 hidden md:flex">
-					<SidebarItems />
-				</ul>
+			<div class="flex flex-col h-full">
+				<!-- Navbar -->
+				<Navbar />
 				<!-- Page content -->
 				<div class="h-full w-full">
 					{#if $user}

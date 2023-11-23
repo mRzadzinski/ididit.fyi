@@ -1,12 +1,11 @@
 <script>
 	import { goto } from '$app/navigation';
-	import { syncInProgress } from '$lib/stores/dbStores';
-	import Avatar from './Avatar.svelte';
-	import SyncComplete from '~icons/fluent/cloud-sync-complete-28-regular';
-	import DropdownMenuItems from './DropdownMenuItems.svelte';
+	import { addNewItem } from '$lib/stores/helperStores';
+	import PlusIcon from '~icons/uil/plus';
 </script>
 
-<div class="w-full navbar bg-base-300">
+<div class="w-full navbar bg-base-100 mt-3">
+	<!-- Content to show on small screen -->
 	<div class="flex-none md:hidden">
 		<label for="my-drawer-3" aria-label="open sidebar" class="btn btn-square btn-ghost">
 			<svg
@@ -23,35 +22,26 @@
 			>
 		</label>
 	</div>
-	<div class="prose max-w-none flex-1 px-2 mx-2">
-		<button on:click={() => goto('/app')}><h2 class="m-0">ididit.fyi</h2></button>
+	<div class="max-w-none flex-1 px-2 mx-2 flex justify-between">
+		<button class="btn h-10 w-40 bg-[#ffcd4c] daily-review" on:click={() => goto('/app')}
+			>Daily Review</button
+		>
+		<div class="flex-none items-center hidden md:block">
+			<button class="btn" on:click={() => $addNewItem()}>
+				<PlusIcon />
+				New Deck
+			</button>
+		</div>
 	</div>
-	<div class="flex-none items-center hidden md:block">
-		<ul class="menu menu-horizontal p-0 mr-3 flex items-center">
-			<!-- Navbar menu content here -->
-			{#if $syncInProgress}
-			<span class="loading loading-spinner loading-md mr-4 text-error"></span>
-			{:else}
-				<SyncComplete style="font-size: 1.7rem; color: hsl(var(--su)); margin-right: 1rem;" />
-			{/if}
-			<li>
-				<button class="p-0 focus:bg-current" id="avatar-nav-dropdown">
-					<div class="dropdown dropdown-end">
-						<label tabindex="-1" for="avatar-nav-dropdown">
-							<Avatar />
-						</label>
-						<ul class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-							<DropdownMenuItems />
-						</ul>
-					</div>
-				</button>
-			</li>
-		</ul>
-	</div>
+	<!-- Content to hide on small screen -->
 </div>
 
 <style>
 	ul.dropdown-content {
 		top: 62px;
+	}
+
+	.daily-review {
+		background-color: #ffcd4c;
 	}
 </style>

@@ -5,6 +5,7 @@
 	import type Muuri from 'muuri';
 	import { initializeDnd, syncDnd } from '$lib/dnd/verticalList';
 	import { createDeck, deckFactory, deleteDeck, fillDocs, reorderSeeds } from './decksLogic';
+	import { addNewItem } from '$lib/stores/helperStores';
 
 	const scrollContainer = document.getElementById('dnd-scroll-container');
 	let listContainer: HTMLElement;
@@ -31,6 +32,7 @@
 		editedDeckId = newDeck.id;
 		createDeck(newDeck);
 	}
+	addNewItem.set(handleCreateDeck);
 
 	function handleDeleteDeck(dndItem: HTMLElement, itemId: string) {
 		// Removing dnd item first before modifying data, to avoid duplicated HTMLelement from Muuri
@@ -135,16 +137,7 @@
 <svelte:window on:resize={keepScrollContainerWidthInSyncWithDecks} />
 <main class="h-full w-full p-10 m-0">
 	<h1 class="text-3xl mb-5">Decks</h1>
-	<button class="btn mb-6" on:click={handleCreateDeck}>New Deck</button>
-	<!-- <button
-		class="btn mb-6"
-		on:click={() => {
-			refreshReorderData();
-			reorderSeeds(reorderData);
-		}}>reorder</button
-	> -->
 	<div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
-		{(console.log($seedsData.decks))}
 		{#each $seedsData.decks as deck (deck.id)}
 			{#if newDeckId === deck.id}
 				<SeedsDeck {deck} {handleDeleteDeck} {manageEditedDeckId} {editedDeckId} newDeck={true} />
