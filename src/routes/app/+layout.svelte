@@ -15,7 +15,9 @@
 	<div class="drawer h-screen">
 		<input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
 		<!-- Sidebar -->
-		<SidebarItems />
+		<div class="w-60 h-full px-12 hidden md:flex flex-col justify-between">
+			<SidebarItems />
+		</div>
 		<div class="drawer-content flex flex-col">
 			<div class="flex flex-col h-full">
 				<!-- Navbar -->
@@ -32,22 +34,9 @@
 		<!-- Drawer -->
 		<div class="drawer-side">
 			<label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay" />
-			<ul class="menu p-4 min-w-fit w-80 min-h-full bg-base-200 flex">
+			<ul class="menu px-14 py-0 min-w-fit w-80 min-h-full bg-base-100 flex">
 				<!-- Sidebar content here -->
 				<SidebarItems />
-				<!-- Avatar -->
-				<li class="w-16 h-16 flex items-center self-end mt-auto mb-4">
-					<button class="p-0" id="avatar-sidebar-dropdown">
-						<div class="dropdown dropdown-top dropdown-end">
-							<label tabindex="-1" for="avatar-sidebar-dropdown">
-								<Avatar />
-							</label>
-							<ul class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-								<DropdownMenuItems />
-							</ul>
-						</div>
-					</button>
-				</li>
 			</ul>
 		</div>
 	</div>

@@ -23,17 +23,16 @@
 		</label>
 	</div>
 	<div class="max-w-none flex-1 px-2 mx-2 flex justify-between">
-		<button class="btn h-10 w-40 bg-[#ffcd4c] daily-review" on:click={() => goto('/app')}
+		<button class="btn h-10 min-w-fit bg-[#ffcd4c] daily-review" on:click={() => goto('/app')}
 			>Daily Review</button
 		>
-		<div class="flex-none items-center hidden md:block">
+		<div class="flex-none items-center">
 			<button class="btn" on:click={() => $addNewItem()}>
 				<PlusIcon />
 				New Deck
 			</button>
 		</div>
 	</div>
-	<!-- Content to hide on small screen -->
 </div>
 
 <style>
