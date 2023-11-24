@@ -5,7 +5,7 @@
 	import type Muuri from 'muuri';
 	import { initializeDnd, syncDnd } from '$lib/dnd/verticalList';
 	import { createDeck, deckFactory, deleteDeck, fillDocs, reorderSeeds } from './decksLogic';
-	import { addNewItem } from '$lib/stores/helperStores';
+	import { addNewItem, newItemBtnName } from '$lib/stores/helperStores';
 
 	const scrollContainer = document.getElementById('dnd-scroll-container');
 	let listContainer: HTMLElement;
@@ -14,16 +14,16 @@
 	let dndInitialListFill = true;
 	let dndItemWidth: number;
 	let dragInProgress = false;
-	let reorderData: {
-		id: string;
-		order: number;
-	}[] = [];
 	let syncTimeoutId: NodeJS.Timeout;
 	let initialPosition: number;
 	let droppedPosition: number;
 	let newDeckId: string;
 	let editedDeckId = '';
 	let newDeck: SeedsDeckType;
+	let reorderData: {
+		id: string;
+		order: number;
+	}[] = [];
 
 	function handleCreateDeck() {
 		newDeck = deckFactory();
@@ -32,7 +32,6 @@
 		editedDeckId = newDeck.id;
 		createDeck(newDeck);
 	}
-	addNewItem.set(handleCreateDeck);
 
 	function handleDeleteDeck(dndItem: HTMLElement, itemId: string) {
 		// Removing dnd item first before modifying data, to avoid duplicated HTMLelement from Muuri
@@ -87,6 +86,9 @@
 	}
 
 	onMount(() => {
+		addNewItem.set(handleCreateDeck);
+		newItemBtnName.set('Deck');
+
 		// Initialize drag & drop
 		if (scrollContainer) {
 			dndList = initializeDnd(listContainer, scrollContainer);
@@ -130,13 +132,22 @@
 	onDestroy(() => {
 		dndList.remove(dndList.getItems());
 		dndList.destroy();
+		newItemBtnName.set('');
 		// fillDocs();
 	});
 </script>
 
 <svelte:window on:resize={keepScrollContainerWidthInSyncWithDecks} />
 <main class="h-full w-full p-10 m-0">
-	<h1 class="text-3xl mb-5">Decks</h1>
+	<div class="flex gap-4 mb-5">
+		<h1 class="text-3xl">Decks</h1>
+		<div class="text-sm breadcrumbs pt-0 pb-0.5 self-end">
+			<ul>
+				<li><a href="/app">Daily Review</a></li>
+				<li>Decks</li>
+			</ul>
+		</div>
+	</div>
 	<div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
 		{#each $seedsData.decks as deck (deck.id)}
 			{#if newDeckId === deck.id}

@@ -1,6 +1,6 @@
 <script>
 	import { goto } from '$app/navigation';
-	import { addNewItem } from '$lib/stores/helperStores';
+	import { addNewItem, newItemBtnName } from '$lib/stores/helperStores';
 	import PlusIcon from '~icons/uil/plus';
 </script>
 
@@ -27,10 +27,12 @@
 			>Daily Review</button
 		>
 		<div class="flex-none items-center">
-			<button class="btn" on:click={() => $addNewItem()}>
-				<PlusIcon />
-				New Deck
-			</button>
+			{#if $newItemBtnName.length > 0}
+				<button class="btn" on:click={() => $addNewItem()}>
+					<PlusIcon />
+					New {$newItemBtnName}
+				</button>
+			{/if}
 		</div>
 	</div>
 </div>
