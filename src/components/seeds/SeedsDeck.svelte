@@ -64,7 +64,8 @@
 	bind:this={dndItem}
 >
 	<div
-		class="flex justify-between items-center w-full h-10 pl-8 pr-1 bg-[#FEF6DE] rounded-full hover:bg-[#FFCD4C]"
+		class="flex justify-between items-center w-full h-10 pl-8 pr-1
+		bg-[#FEF6DE] rounded-full hover:bg-[#FFCD4C] transition-all ease-in duration-75"
 	>
 		{#if !editMode}
 			<span class="text-sm">{deck.name}</span>

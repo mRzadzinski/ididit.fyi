@@ -28,7 +28,7 @@
 					<label tabindex="-1" for="avatar-sidebar-dropdown">
 						<Avatar />
 					</label>
-					<ul class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+					<ul class="dropdown-content z-[1] menu p-2 shadow bg-white rounded-box w-52">
 						<DropdownMenuItems />
 					</ul>
 				</div>
