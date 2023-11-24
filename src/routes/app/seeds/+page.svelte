@@ -139,15 +139,22 @@
 
 <svelte:window on:resize={keepScrollContainerWidthInSyncWithDecks} />
 <main class="h-full w-full p-10 m-0">
-	<div class="flex gap-4 mb-5">
-		<h1 class="text-3xl">Decks</h1>
-		<div class="text-sm breadcrumbs pt-0 pb-0.5 self-end">
-			<ul>
-				<li><a href="/app">Daily Review</a></li>
-				<li>Decks</li>
-			</ul>
+	<div class="flex justify-between mb-5">
+		<div class="flex gap-4">
+			<h1 class="text-3xl">Decks</h1>
+			<div class="text-sm breadcrumbs pt-0 pb-0.5 self-end">
+				<ul>
+					<li><a href="/app">Daily Review</a></li>
+					<li>Decks</li>
+				</ul>
+			</div>
 		</div>
+		<select class="select select-bordered select-xs max-w-xs self-end bg-white">
+			<option>Custom</option>
+			<option>Name</option>
+		  </select>
 	</div>
+	
 	<div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
 		{#each $seedsData.decks as deck (deck.id)}
 			{#if newDeckId === deck.id}
