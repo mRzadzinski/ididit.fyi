@@ -12,7 +12,7 @@
 </script>
 
 {#if $user}
-	<div class="drawer h-screen">
+	<div class="drawer h-screen bg-white">
 		<input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
 		<!-- Sidebar -->
 		<div class="w-60 h-full px-12 hidden md:flex flex-col justify-between">

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import SeedsDeck from '$components/seeds/SeedsDeck.svelte';
 	import { seedsData } from '$lib/stores/dbStores';
-	import { afterUpdate, onDestroy, onMount } from 'svelte';
+	import { afterUpdate, onDestroy, onMount, setContext } from 'svelte';
 	import type Muuri from 'muuri';
 	import { initializeDnd, syncDnd } from '$lib/dnd/verticalList';
 	import { createDeck, deckFactory, deleteDeck, fillDocs, reorderSeeds } from './decksLogic';
@@ -24,6 +24,10 @@
 		id: string;
 		order: number;
 	}[] = [];
+
+	setContext('handleDeleteDeck', {
+		handleDeleteDeck
+	});
 
 	function handleCreateDeck() {
 		newDeck = deckFactory();
@@ -127,6 +131,8 @@
 		const dndSyncInfo = syncDnd(listContainer, dndList, dndItems, dndInitialListFill);
 		dndItems = dndSyncInfo.updatedDndItems;
 		dndInitialListFill = dndSyncInfo.initialListFill;
+		// Synchronize to handle stacking order of absolutely positioned deck menus
+		dndList.synchronize();
 	});
 
 	onDestroy(() => {
@@ -139,7 +145,7 @@
 
 <svelte:window on:resize={keepScrollContainerWidthInSyncWithDecks} />
 <main class="h-full w-full p-10 m-0">
-	<div class="flex justify-between mb-5">
+	<div class="flex justify-between mb-10">
 		<div class="flex gap-4">
 			<h1 class="text-3xl">Decks</h1>
 			<div class="text-sm breadcrumbs pt-0 pb-0.5 self-end">
@@ -152,16 +158,16 @@
 		<select class="select select-bordered select-xs max-w-xs self-end bg-white">
 			<option>Custom</option>
 			<option>Name</option>
-		  </select>
+		</select>
 	</div>
-	
+
 	<div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
 		{#each $seedsData.decks as deck (deck.id)}
 			{#if newDeckId === deck.id}
-				<SeedsDeck {deck} {handleDeleteDeck} {manageEditedDeckId} {editedDeckId} newDeck={true} />
+				<SeedsDeck {deck} {manageEditedDeckId} {editedDeckId} newDeck={true} />
 				{(newDeckId = '')}
 			{:else}
-				<SeedsDeck {deck} {handleDeleteDeck} {manageEditedDeckId} {editedDeckId} />
+				<SeedsDeck {deck} {manageEditedDeckId} {editedDeckId} />
 			{/if}
 		{/each}
 	</div>

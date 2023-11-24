@@ -2,12 +2,12 @@
 	import { cloneDeep } from 'lodash';
 	import { updateDeck } from '../../routes/app/seeds/decksLogic';
 	import { beforeUpdate, onMount } from 'svelte';
+	import DeckOptions from './DeckOptions.svelte';
 
 	export let deck: SeedsDeckType;
 	export let newDeck = false;
 	export let editedDeckId: string;
 	export let manageEditedDeckId: (action: string, id: string) => void;
-	export let handleDeleteDeck: (dndItem: HTMLElement, itemId: string) => void;
 
 	let dndItem: HTMLElement;
 	let nameInput: HTMLElement;
@@ -37,6 +37,11 @@
 		}
 	}
 
+	function handleEdit() {
+		manageEditedDeckId('enable', deck.id);
+		editMode = true;
+	}
+
 	onMount(() => {
 		if (newDeck) {
 			nameInput.focus();
@@ -52,36 +57,18 @@
 </script>
 
 <div
-	class="absolute mb-6 w-full z-0"
+	class="absolute mb-4 w-full z-0"
 	data-order={deck.order}
 	data-edit-mode={editMode}
 	id={deck.id}
 	bind:this={dndItem}
 >
-	<button
-		class="btn no-animation h-auto flex items-center justify-between w-full p-2 rounded-xl font-normal normal-case"
+	<div
+		class="flex justify-between items-center w-full h-10 pl-8 pr-1 bg-[#FEF6DE] rounded-full hover:bg-[#FFCD4C]"
 	>
 		{#if !editMode}
-			<div class="flex gap-1 w-1/3">
-				<span class="mr-8 ml-3 w-full text-left">{deck.name}</span>
-				<!-- <span class="w-24">limit: {deck.dailyLimit}</span> -->
-				<span class="w-32">order: {deck.order}</span>
-			</div>
-			<div>
-				<button
-					class="btn"
-					on:click={() => {
-						manageEditedDeckId('enable', deck.id);
-						editMode = true;
-					}}>Edit</button
-				>
-				<button
-					class="btn"
-					on:click={async () => {
-						handleDeleteDeck(dndItem, deck.id);
-					}}>Delete</button
-				>
-			</div>
+			<span class="text-sm">{deck.name}</span>
+			<DeckOptions deckId={deck.id} {dndItem} {handleEdit} />
 		{:else}
 			<form
 				class="flex items-center justify-between w-full"
@@ -124,5 +111,5 @@
 				</div>
 			</form>
 		{/if}
-	</button>
+	</div>
 </div>

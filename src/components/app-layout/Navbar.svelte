@@ -4,7 +4,7 @@
 	import PlusIcon from '~icons/uil/plus';
 </script>
 
-<div class="w-full navbar bg-base-100 mt-3">
+<div class="w-full navbar mt-3">
 	<!-- Content to show on small screen -->
 	<div class="flex-none md:hidden">
 		<label for="my-drawer-3" aria-label="open sidebar" class="btn btn-square btn-ghost">
