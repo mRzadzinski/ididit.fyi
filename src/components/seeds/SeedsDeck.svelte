@@ -3,10 +3,12 @@
 	import { updateDeck } from '../../routes/app/seeds/decksLogic';
 	import { beforeUpdate, onMount } from 'svelte';
 	import DeckOptions from './DeckOptions.svelte';
+	import type Muuri from 'muuri';
 
 	export let deck: SeedsDeckType;
 	export let newDeck = false;
 	export let editedDeckId: string;
+	export let dndList: Muuri;
 	export let manageEditedDeckId: (action: string, id: string) => void;
 
 	let dndItem: HTMLElement;
@@ -52,9 +54,22 @@
 		}
 	}
 
-	function handleEdit() {
-		manageEditedDeckId('enable', deck.id);
-		editMode = true;
+	function handleToggleEdit(action: string) {
+		if (action === 'enable') {
+			editMode = true;
+		} else {
+			editMode = false;
+		}
+		// Refresh dndList asynchronously to wait for applied UI changes
+		const intervalID = setInterval(() => {
+			dndList.refreshItems();
+			dndList.layout();
+		}, 5);
+		// manageEditedDeckId triggers props update from parent component which collides with UI animation, wait for animation end
+		setTimeout(() => {
+			clearInterval(intervalID);
+			manageEditedDeckId(action, deck.id);
+		}, 300);
 	}
 
 	onMount(() => {
@@ -75,17 +90,17 @@
 </script>
 
 <div
-	class="absolute mb-4 w-full z-0"
+	class="absolute mb-4 w-full z-0 {editMode ? 'h-24' : ''}"
 	data-order={deck.order}
 	data-edit-mode={editMode}
 	id={deck.id}
 	bind:this={dndItem}
 >
 	<div
-		class="flex justify-between items-center w-full h-10 pl-8 pr-1 rounded-full transition-all ease-in duration-75 bg-[#FEF6DE] {otherDeckInEditMode
+		class="flex justify-between items-center w-full h-10 bg-[#FEF6DE] pl-8 pr-1 rounded-3xl custom-transitions {otherDeckInEditMode
 			? ''
-			: 'hover:bg-[#FFCD4C]'}"
-		class:highlight={editMode}
+			: 'hover:bg-[#FFCD4C]'}
+			{editMode ? 'h-24 bg-[#FFCD4C]' : ''}"
 		role="listitem"
 		on:mouseenter={() => {
 			if (!otherDeckInEditMode) toggleDeckOptionsVisibility(true);
@@ -95,11 +110,11 @@
 		{#if !editMode}
 			<span class="text-sm">{deck.name}</span>
 			{#if showDeckOptions}
-				<DeckOptions deckId={deck.id} {dndItem} {handleEdit} />
+				<DeckOptions deckId={deck.id} {dndItem} {handleToggleEdit} />
 			{/if}
 		{:else}
 			<form
-				class="flex items-center justify-between w-full"
+				class="flex flex-col w-full"
 				on:submit|preventDefault={async () => {
 					editMode = false;
 					if (newName !== deck.name || newLimit !== deck.dailyLimit) {
@@ -108,34 +123,39 @@
 					}
 				}}
 			>
-				<div class="flex gap-1">
-					<input
-						class="input input-bordered w-full max-w-xs input-sm"
-						type="text"
-						placeholder="Deck name"
-						bind:value={newName}
-						bind:this={nameInput}
-					/>
+				<input
+					class="input input-bordered w-full max-w-xs input-sm"
+					type="text"
+					placeholder="Deck name"
+					bind:value={newName}
+					bind:this={nameInput}
+				/>
+				<div class="flex justify-between gap-1">
 					<input
 						class="input input-bordered w-24 max-w-xs input-sm"
 						type="number"
 						placeholder="Daily limit"
 						bind:value={newLimit}
 					/>
-				</div>
-				<div>
-					<button class="btn" type="submit" on:click={() => manageEditedDeckId('disable', deck.id)}
-						>Save</button
-					>
-					<button
-						class="btn"
-						type="reset"
-						on:click={() => {
-							editMode = false;
-							manageEditedDeckId('disable', deck.id);
-							cancelChanges();
-						}}>Cancel</button
-					>
+					<div>
+						<button
+							class="btn"
+							type="reset"
+							on:click={() => {
+								handleToggleEdit('disable');
+								cancelChanges();
+								toggleDeckOptionsVisibility(false);
+							}}>Cancel</button
+						>
+						<button
+							class="btn"
+							type="submit"
+							on:click={() => {
+								handleToggleEdit('disable');
+								toggleDeckOptionsVisibility(false);
+							}}>Save</button
+						>
+					</div>
 				</div>
 			</form>
 		{/if}
@@ -143,7 +163,7 @@
 </div>
 
 <style>
-	.highlight {
-		background-color: #ffcd4c;
+	.custom-transitions {
+		transition: height 300ms ease, background-color 75ms ease-in;
 	}
 </style>

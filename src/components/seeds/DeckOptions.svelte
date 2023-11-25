@@ -4,7 +4,7 @@
 
 	export let deckId: string;
 	export let dndItem: HTMLElement;
-	export let handleEdit: () => void;
+	export let handleToggleEdit: (action: string) => void;
 	const { handleDeleteDeck } = getContext<{
 		handleDeleteDeck: (dndItem: HTMLElement, itemId: string) => void;
 	}>('handleDeleteDeck');
@@ -31,10 +31,10 @@
 								role="button"
 								tabindex="0"
 								on:click={() => {
-									handleEdit();
+									handleToggleEdit('enable');
 								}}
 								on:keydown={() => {
-									handleEdit();
+									handleToggleEdit('enable');
 								}}
 							>
 								Edit

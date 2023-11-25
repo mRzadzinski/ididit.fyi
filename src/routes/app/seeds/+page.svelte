@@ -133,6 +133,9 @@
 		dndInitialListFill = dndSyncInfo.initialListFill;
 		// Synchronize to handle stacking order of absolutely positioned deck menus
 		dndList.synchronize();
+		// Refresh dnd items dimensions after resizing
+		dndList.refreshItems();
+		dndList.layout();
 	});
 
 	onDestroy(() => {
@@ -167,10 +170,10 @@
 	<div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
 		{#each $seedsData.decks as deck (deck.id)}
 			{#if newDeckId === deck.id}
-				<SeedsDeck {deck} {manageEditedDeckId} {editedDeckId} newDeck={true} />
+				<SeedsDeck {deck} {dndList} {manageEditedDeckId} {editedDeckId} newDeck={true} />
 				{(newDeckId = '')}
 			{:else}
-				<SeedsDeck {deck} {manageEditedDeckId} {editedDeckId} />
+				<SeedsDeck {deck} {dndList} {manageEditedDeckId} {editedDeckId} />
 			{/if}
 		{/each}
 	</div>
