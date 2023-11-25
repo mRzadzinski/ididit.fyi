@@ -155,10 +155,13 @@
 				</ul>
 			</div>
 		</div>
-		<select class="select select-bordered select-xs max-w-xs self-end bg-white">
-			<option>Custom</option>
-			<option>Name</option>
-		</select>
+		<div>
+			<span class="text-xs mr-1">Order by:</span>
+			<select class="select select-bordered select-xs max-w-xs self-end bg-white">
+				<option>Custom</option>
+				<option>Name</option>
+			</select>
+		</div>
 	</div>
 
 	<div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
