@@ -139,7 +139,7 @@
 							placeholder="Daily limit"
 							bind:value={newLimit}
 						/>
-						<span>in Daily Review</span>
+						<span>seeds in Daily Review</span>
 					</div>
 					<div>
 						<button
