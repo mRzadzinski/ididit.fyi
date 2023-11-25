@@ -131,12 +131,16 @@
 					bind:this={nameInput}
 				/>
 				<div class="flex justify-between gap-1">
-					<input
-						class="input input-bordered w-24 max-w-xs input-sm"
-						type="number"
-						placeholder="Daily limit"
-						bind:value={newLimit}
-					/>
+					<div  class="text-sm">
+						<span>Show</span>
+						<input
+							class="input input-bordered w-24 max-w-xs input-sm"
+							type="number"
+							placeholder="Daily limit"
+							bind:value={newLimit}
+						/>
+						<span>in Daily Review</span>
+					</div>
 					<div>
 						<button
 							class="btn"
