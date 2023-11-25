@@ -158,12 +158,14 @@
 				</ul>
 			</div>
 		</div>
-		<div>
-			<span class="text-xs mr-1">Order by:</span>
-			<select class="select select-bordered select-xs max-w-xs self-end bg-white">
-				<option>Custom</option>
-				<option>Name</option>
-			</select>
+		<div class="flex items-end">
+			<div class="flex items-center">
+				<span class="text-xs mr-2">Order by:</span>
+				<select class="select select-bordered select-xs max-w-xs self-end bg-white">
+					<option>Custom</option>
+					<option>Name</option>
+				</select>
+			</div>
 		</div>
 	</div>
 
