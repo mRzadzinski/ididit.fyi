@@ -12,6 +12,7 @@
 	let dndItem: HTMLElement;
 	let nameInput: HTMLElement;
 	let editMode = false;
+	let otherDeckInEditMode = false;
 	let updatedDeck = deck;
 	let newName = deck.name;
 	let newLimit = deck.dailyLimit;
@@ -64,8 +65,11 @@
 
 	beforeUpdate(() => {
 		if (editedDeckId.length > 0 && editedDeckId !== deck.id) {
+			otherDeckInEditMode = true;
 			editMode = false;
 			cancelChanges();
+		} else {
+			otherDeckInEditMode = false;
 		}
 	});
 </script>
@@ -78,9 +82,14 @@
 	bind:this={dndItem}
 >
 	<div
-		class="flex justify-between items-center w-full h-10 pl-8 pr-1 bg-[#FEF6DE] rounded-full hover:bg-[#FFCD4C] transition-all ease-in duration-75"
+		class="flex justify-between items-center w-full h-10 pl-8 pr-1 rounded-full transition-all ease-in duration-75 bg-[#FEF6DE] {otherDeckInEditMode
+			? ''
+			: 'hover:bg-[#FFCD4C]'}"
+		class:highlight={editMode}
 		role="listitem"
-		on:mouseenter={() => toggleDeckOptionsVisibility(true)}
+		on:mouseenter={() => {
+			if (!otherDeckInEditMode) toggleDeckOptionsVisibility(true);
+		}}
 		on:mouseleave={() => toggleDeckOptionsVisibility(false)}
 	>
 		{#if !editMode}
@@ -132,3 +141,9 @@
 		{/if}
 	</div>
 </div>
+
+<style>
+	.highlight {
+		background-color: #ffcd4c;
+	}
+</style>
