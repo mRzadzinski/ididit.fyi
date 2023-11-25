@@ -15,9 +15,23 @@
 	let updatedDeck = deck;
 	let newName = deck.name;
 	let newLimit = deck.dailyLimit;
+	let showDeckOptions = false;
 
 	if (newDeck) {
 		editMode = true;
+	}
+
+	function toggleDeckOptionsVisibility(bool: boolean) {
+		// Timeout to sync with highlight animation
+		if (bool) {
+			setTimeout(() => {
+				showDeckOptions = true;
+			}, 75);
+		} else {
+			setTimeout(() => {
+				showDeckOptions = false;
+			}, 75);
+		}
 	}
 
 	function cancelChanges() {
@@ -64,12 +78,16 @@
 	bind:this={dndItem}
 >
 	<div
-		class="flex justify-between items-center w-full h-10 pl-8 pr-1
-		bg-[#FEF6DE] rounded-full hover:bg-[#FFCD4C] transition-all ease-in duration-75"
+		class="flex justify-between items-center w-full h-10 pl-8 pr-1 bg-[#FEF6DE] rounded-full hover:bg-[#FFCD4C] transition-all ease-in duration-75"
+		role="listitem"
+		on:mouseenter={() => toggleDeckOptionsVisibility(true)}
+		on:mouseleave={() => toggleDeckOptionsVisibility(false)}
 	>
 		{#if !editMode}
 			<span class="text-sm">{deck.name}</span>
-			<DeckOptions deckId={deck.id} {dndItem} {handleEdit} />
+			{#if showDeckOptions}
+				<DeckOptions deckId={deck.id} {dndItem} {handleEdit} />
+			{/if}
 		{:else}
 			<form
 				class="flex items-center justify-between w-full"
