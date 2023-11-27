@@ -155,16 +155,9 @@
 							on:click={() => {
 								handleToggleEdit('disable');
 								cancelChanges();
-								toggleDeckOptionsVisibility(false);
 							}}>Cancel</button
 						>
-						<button
-							class="btn"
-							type="submit"
-							on:click={() => {
-								toggleDeckOptionsVisibility(false);
-							}}>Save</button
-						>
+						<button class="btn" type="submit">Save</button>
 					</div>
 				</div>
 			</form>

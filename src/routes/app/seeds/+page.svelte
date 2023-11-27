@@ -147,7 +147,7 @@
 </script>
 
 <svelte:window on:resize={keepScrollContainerWidthInSyncWithDecks} />
-<main class="h-full w-full p-10 m-0">
+<main class="h-full w-full py-10 m-0">
 	<div class="flex justify-between mb-10">
 		<h1 class="text-3xl">Decks</h1>
 		<div class="flex items-end">

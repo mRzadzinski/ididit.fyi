@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+	display: flex;
+	justify-content: center;
+	background-color: white;
+}
+
 .drag-item {
 	z-index: 1;
 }

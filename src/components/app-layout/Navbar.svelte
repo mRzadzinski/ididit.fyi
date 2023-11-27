@@ -4,7 +4,7 @@
 	import PlusIcon from '~icons/uil/plus';
 </script>
 
-<div class="w-full navbar mt-3">
+<div class="w-full navbar mt-3 px-0">
 	<!-- Content to show on small screen -->
 	<div class="flex-none md:hidden">
 		<label for="my-drawer-3" aria-label="open sidebar" class="btn btn-square btn-ghost">
@@ -22,7 +22,7 @@
 			>
 		</label>
 	</div>
-	<div class="max-w-none flex-1 px-2 mx-2 flex justify-between">
+	<div class="max-w-none flex-1 flex justify-between">
 		<button class="btn h-10 min-w-fit bg-[#ffcd4c] daily-review" on:click={() => goto('/app')}
 			>Daily Review</button
 		>
