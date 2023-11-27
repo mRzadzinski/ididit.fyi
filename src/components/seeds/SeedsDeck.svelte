@@ -157,7 +157,13 @@
 								cancelChanges();
 							}}>Cancel</button
 						>
-						<button class="btn" type="submit">Save</button>
+						{#if newName !== deck.name || newLimit !== deck.dailyLimit}
+							<button class="btn" type="submit">Save</button>
+						{:else}
+							<button class="btn btn-disabled" tabindex="-1" aria-disabled="true" type="submit"
+								>Save</button
+							>
+						{/if}
 					</div>
 				</div>
 			</form>
