@@ -51,6 +51,8 @@
 		color: black;
 		background-color: white;
 		width: 100%;
+		height: 2.5rem;
+		min-height: unset;
 	}
 
 	.active {

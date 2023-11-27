@@ -23,12 +23,12 @@
 		</label>
 	</div>
 	<div class="max-w-none flex-1 flex justify-between">
-		<button class="btn h-10 min-w-fit bg-[#ffcd4c] daily-review" on:click={() => goto('/app')}
+		<button class="btn min-w-fit bg-[#ffcd4c] daily-review" on:click={() => goto('/app')}
 			>Daily Review</button
 		>
 		<div class="flex-none items-center">
 			{#if $newItemBtnName.length > 0}
-				<button class="btn" on:click={() => $addNewItem()}>
+				<button class="btn bg-white" on:click={() => $addNewItem()}>
 					<PlusIcon />
 					New {$newItemBtnName}
 				</button>
@@ -38,8 +38,9 @@
 </div>
 
 <style>
-	ul.dropdown-content {
-		top: 62px;
+	.btn {
+		height: 2.5rem;
+		min-height: unset;
 	}
 
 	.daily-review {

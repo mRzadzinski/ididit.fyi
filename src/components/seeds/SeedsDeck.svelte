@@ -103,10 +103,10 @@
 	bind:this={dndItem}
 >
 	<div
-		class="flex justify-between items-center w-full h-10 bg-[#FEF6DE] pl-8 pr-1 rounded-3xl custom-transitions
+		class="flex justify-between items-center min-w-[490px] w-full h-10 pl-8 pr-1 rounded-3xl custom-transitions
 		{newDeck && newDeckInitEditMode ? 'h-0' : ''} 
 		{otherDeckInEditMode ? '' : 'hover:bg-[#FFCD4C]'}
-		{editMode ? 'h-24 overflow-hidden bg-[#FFCD4C]' : ''}"
+		{editMode ? 'h-24 overflow-hidden bg-[#FFCD4C]' : 'bg-[#FEF6DE]'}"
 		role="listitem"
 		on:mouseenter={() => {
 			if (!otherDeckInEditMode) toggleDeckOptionsVisibility(true);
@@ -120,7 +120,7 @@
 			{/if}
 		{:else}
 			<form
-				class="flex flex-col w-full"
+				class="flex flex-col gap-2 w-full"
 				on:submit|preventDefault={async () => {
 					if (newName !== deck.name || newLimit !== deck.dailyLimit) {
 						prepareDeckUpdate();
@@ -130,17 +130,17 @@
 				}}
 			>
 				<input
-					class="input input-bordered w-full max-w-xs input-sm"
+					class="input input-sm input-bordered w-full max-w-xs rounded-lg"
 					type="text"
 					placeholder="Deck name"
 					bind:value={newName}
 					bind:this={nameInput}
 				/>
 				<div class="flex justify-between gap-1">
-					<div class="text-sm">
+					<div class="flex items-center gap-2 text-sm">
 						<span>Show</span>
 						<input
-							class="input input-bordered w-24 max-w-xs input-sm"
+							class="input input-sm input-bordered w-[4.5rem] max-w-xs rounded-lg"
 							type="number"
 							placeholder="Daily limit"
 							min="0"
@@ -148,9 +148,9 @@
 						/>
 						<span>seeds in Daily Review</span>
 					</div>
-					<div>
+					<div class="flex gap-2 mr-2">
 						<button
-							class="btn"
+							class="btn btn-sm bg-white"
 							type="reset"
 							on:click={() => {
 								handleToggleEdit('disable');
@@ -158,10 +158,13 @@
 							}}>Cancel</button
 						>
 						{#if newName !== deck.name || newLimit !== deck.dailyLimit}
-							<button class="btn" type="submit">Save</button>
+							<button class="btn btn-sm btn-neutral bg-black" type="submit">Save</button>
 						{:else}
-							<button class="btn btn-disabled" tabindex="-1" aria-disabled="true" type="submit"
-								>Save</button
+							<button
+								class="btn btn-sm btn-neutral btn-disabled"
+								tabindex="-1"
+								aria-disabled="true"
+								type="submit">Save</button
 							>
 						{/if}
 					</div>
@@ -174,5 +177,10 @@
 <style>
 	.custom-transitions {
 		transition: height 300ms ease, background-color 75ms ease-in;
+	}
+
+	.btn {
+		width: 5.5rem;
+		font-size: small;
 	}
 </style>
