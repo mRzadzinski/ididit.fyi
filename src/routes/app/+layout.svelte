@@ -2,8 +2,6 @@
 	import { user } from '$lib/stores/authStores';
 	import { goto } from '$app/navigation';
 	import Navbar from '$components/app-layout/Navbar.svelte';
-	import Avatar from '$components/app-layout/Avatar.svelte';
-	import DropdownMenuItems from '$components/app-layout/DropdownMenuItems.svelte';
 	import SidebarItems from '$components/app-layout/SidebarItems.svelte';
 
 	$: if ($user === null) {
@@ -43,10 +41,6 @@
 {/if}
 
 <style>
-	ul.dropdown-content {
-		bottom: 64px;
-	}
-
 	ul.menu {
 		max-width: 280px;
 	}
