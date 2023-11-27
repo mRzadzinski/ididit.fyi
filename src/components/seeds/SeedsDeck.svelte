@@ -14,15 +14,12 @@
 	let dndItem: HTMLElement;
 	let nameInput: HTMLElement;
 	let editMode = false;
+	let newDeckInitEditMode = true;
 	let otherDeckInEditMode = false;
 	let updatedDeck = deck;
 	let newName = deck.name;
 	let newLimit = deck.dailyLimit;
 	let showDeckOptions = false;
-
-	if (newDeck) {
-		editMode = true;
-	}
 
 	function toggleDeckOptionsVisibility(bool: boolean) {
 		// Timeout to sync with highlight animation
@@ -61,20 +58,28 @@
 			editMode = false;
 		}
 		// Refresh dndList asynchronously to wait for applied UI changes
-		const intervalID = setInterval(() => {
+		const intervalID = setTimeout(() => {
 			dndList.refreshItems();
 			dndList.layout();
-		}, 5);
+		}, 0);
 		// manageEditedDeckId triggers props update from parent component which collides with UI animation, wait for animation end
 		setTimeout(() => {
-			clearInterval(intervalID);
 			manageEditedDeckId(action, deck.id);
 		}, 300);
 	}
 
 	onMount(() => {
+		// Handle new deck animation - apply changes asynchronously
 		if (newDeck) {
-			nameInput.focus();
+			setTimeout(() => {
+				newDeckInitEditMode = false;
+				editMode = true;
+				setTimeout(() => {
+					dndList.refreshItems();
+					dndList.layout();
+					nameInput.focus();
+				}, 0);
+			}, 0);
 		}
 	});
 
@@ -83,10 +88,12 @@
 			otherDeckInEditMode = true;
 			editMode = false;
 			cancelChanges();
+			toggleDeckOptionsVisibility(false);
 		} else {
 			otherDeckInEditMode = false;
 		}
 	});
+	// {newDeck ? 'h-0' : 'h-10'}
 </script>
 
 <div
@@ -97,10 +104,10 @@
 	bind:this={dndItem}
 >
 	<div
-		class="flex justify-between items-center w-full h-10 bg-[#FEF6DE] pl-8 pr-1 rounded-3xl custom-transitions {otherDeckInEditMode
-			? ''
-			: 'hover:bg-[#FFCD4C]'}
-			{editMode ? 'h-24 bg-[#FFCD4C]' : ''}"
+		class="flex justify-between items-center w-full h-10 bg-[#FEF6DE] pl-8 pr-1 rounded-3xl custom-transitions
+		{newDeck && newDeckInitEditMode ? 'h-0' : ''} 
+		{otherDeckInEditMode ? '' : 'hover:bg-[#FFCD4C]'}
+		{editMode ? 'h-24 overflow-hidden bg-[#FFCD4C]' : ''}"
 		role="listitem"
 		on:mouseenter={() => {
 			if (!otherDeckInEditMode) toggleDeckOptionsVisibility(true);
@@ -131,7 +138,7 @@
 					bind:this={nameInput}
 				/>
 				<div class="flex justify-between gap-1">
-					<div  class="text-sm">
+					<div class="text-sm">
 						<span>Show</span>
 						<input
 							class="input input-bordered w-24 max-w-xs input-sm"
@@ -139,7 +146,7 @@
 							placeholder="Daily limit"
 							bind:value={newLimit}
 						/>
-						<span>in Daily Review</span>
+						<span>seeds in Daily Review</span>
 					</div>
 					<div>
 						<button
