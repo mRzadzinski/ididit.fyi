@@ -149,15 +149,7 @@
 <svelte:window on:resize={keepScrollContainerWidthInSyncWithDecks} />
 <main class="h-full w-full p-10 m-0">
 	<div class="flex justify-between mb-10">
-		<div class="flex gap-4">
-			<h1 class="text-3xl">Decks</h1>
-			<div class="text-sm breadcrumbs pt-0 pb-0.5 self-end">
-				<ul>
-					<li><a href="/app">Daily Review</a></li>
-					<li>Decks</li>
-				</ul>
-			</div>
-		</div>
+		<h1 class="text-3xl">Decks</h1>
 		<div class="flex items-end">
 			<div class="flex items-center">
 				<span class="text-xs mr-2">Order by:</span>
