@@ -43,7 +43,7 @@
 		updatedDeck = cloneDeep(deck);
 		updatedDeck.name = newName;
 
-		if (newLimit === null) {
+		if (newLimit < 0 || newLimit === null) {
 			updatedDeck.dailyLimit = 0;
 			newLimit = 0;
 		} else {
@@ -93,7 +93,6 @@
 			otherDeckInEditMode = false;
 		}
 	});
-	// {newDeck ? 'h-0' : 'h-10'}
 </script>
 
 <div
@@ -123,11 +122,11 @@
 			<form
 				class="flex flex-col w-full"
 				on:submit|preventDefault={async () => {
-					editMode = false;
 					if (newName !== deck.name || newLimit !== deck.dailyLimit) {
 						prepareDeckUpdate();
 						updateDeck(updatedDeck);
 					}
+					handleToggleEdit('disable');
 				}}
 			>
 				<input
@@ -144,6 +143,7 @@
 							class="input input-bordered w-24 max-w-xs input-sm"
 							type="number"
 							placeholder="Daily limit"
+							min="0"
 							bind:value={newLimit}
 						/>
 						<span>seeds in Daily Review</span>
@@ -162,7 +162,6 @@
 							class="btn"
 							type="submit"
 							on:click={() => {
-								handleToggleEdit('disable');
 								toggleDeckOptionsVisibility(false);
 							}}>Save</button
 						>
