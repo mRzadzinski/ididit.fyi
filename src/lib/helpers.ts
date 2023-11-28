@@ -1,7 +1,7 @@
 import { init } from '@paralleldrive/cuid2';
 
 export const uniqueID = init({
-	length: 12,
+	length: 24,
 	fingerprint: 'a-custom-host-fingerprint'
 });
 
