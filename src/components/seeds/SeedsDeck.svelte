@@ -138,7 +138,7 @@
 	bind:this={dndItem}
 >
 	<div
-		class="flex justify-between items-center min-w-[490px] w-full h-10 pl-8 pr-1 rounded-3xl custom-transitions
+		class="flex justify-between items-center min-w-[496px] w-full h-10 pl-8 pr-1 rounded-3xl custom-transitions
 		{newDeck && newDeckInitEditMode ? 'h-0' : ''} 
 		{otherDeckInEditMode ? '' : 'hover:bg-[#FFCD4C]'}
 		{editMode ? 'h-24 overflow-hidden bg-[#FFCD4C]' : 'bg-[#FEF6DE]'}"
@@ -176,7 +176,8 @@
 					<div class="flex items-center gap-2 text-sm">
 						<span>Show</span>
 						<input
-							class="input input-sm input-bordered w-[4.5rem] max-w-xs rounded-lg"
+							class="input input-sm input-bordered w-16 rounded-lg"
+							id="daily-review-limit-input"
 							type="number"
 							min="0"
 							bind:value={newLimit}
@@ -223,5 +224,10 @@
 	.btn {
 		width: 5.5rem;
 		font-size: small;
+	}
+
+	.input.input-sm {
+		padding-right: 0;
+		padding-left: 0.75rem;
 	}
 </style>
