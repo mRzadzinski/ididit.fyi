@@ -38,7 +38,7 @@
 	{#if $syncInProgress}
 		<span class="loading loading-spinner loading-md mr-4 text-error" />
 	{:else}
-		<SyncCompleteIcon style="font-size: 1.7rem; color: hsl(var(--su)); margin-right: 1rem;" />
+		<SyncCompleteIcon style="font-size: 1.7rem; color: oklch(var(--su)); margin-right: 1rem;" />
 	{/if}
 </div>
 

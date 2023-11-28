@@ -193,6 +193,6 @@
 <style>
 	.select {
 		/* Arrow position */
-		background-position: calc(100% - 15px) calc(1px + 50%), calc(100% - 11px) calc(1px + 50%);
+		background-position: calc(100% - 13px) calc(1px + 50%), calc(100% - 9px) calc(1px + 50%);
 	}
 </style>
