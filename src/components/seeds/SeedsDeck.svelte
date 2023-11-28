@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { cloneDeep } from 'lodash';
 	import { updateDeck } from '../../routes/app/seeds/decksLogic';
-	import { afterUpdate, beforeUpdate, onMount } from 'svelte';
+	import { beforeUpdate, onMount } from 'svelte';
 	import DeckOptions from './DeckOptions.svelte';
 	import type Muuri from 'muuri';
 	import { seedsData } from '$lib/stores/dbStores';
@@ -81,7 +81,7 @@
 			disableNewItemBtn.set(false);
 		}
 		// Refresh dndList asynchronously to wait for applied UI changes
-		const intervalID = setTimeout(() => {
+		setTimeout(() => {
 			dndList.refreshItems();
 			dndList.layout();
 		}, 0);
@@ -96,13 +96,24 @@
 			disableNewItemBtn.set(true);
 			// Handle new deck animation - apply changes asynchronously
 			setTimeout(() => {
+				// Set edit mode asynchronously to trigger conditional class changes
 				newDeckInitEditMode = false;
 				editMode = true;
-				setTimeout(() => {
+
+				// Refresh dndList constantly for 1 sec to enable animation in case of edit mode enabled for new deck on page load
+				let counter = 0;
+				const intervalID = setInterval(() => {
+					// When going to another page, interval runs indefinitely - terminate loop when input is destroyed
+					if (counter > 1000 || !nameInput) {
+						clearInterval(intervalID);
+						return;
+					}
 					dndList.refreshItems();
 					dndList.layout();
 					nameInput.focus();
-				}, 0);
+
+					counter += 50;
+				}, 50);
 			}, 0);
 		}
 	});
@@ -115,12 +126,6 @@
 			toggleDeckOptionsVisibility(false);
 		} else {
 			otherDeckInEditMode = false;
-		}
-	});
-
-	afterUpdate(() => {
-		if (editMode) {
-			validateDeckName();
 		}
 	});
 </script>
@@ -175,6 +180,7 @@
 							type="number"
 							min="0"
 							bind:value={newLimit}
+							on:change={validateDeckName}
 						/>
 						<span>seeds in Daily Review</span>
 					</div>

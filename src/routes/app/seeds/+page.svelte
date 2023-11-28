@@ -25,16 +25,25 @@
 		order: number;
 	}[] = [];
 
+	// When deck name is an empty string, automatically set it in edit mode
+	// (this could happen when reloading page while creating new deck)
+	for (let i = 0; i < $seedsData.decks.length; i++) {
+		if ($seedsData.decks[i].name === '') {
+			editedDeckId = $seedsData.decks[i].id;
+			newDeckId = $seedsData.decks[i].id;
+		}
+	}
+
 	setContext('handleDeleteDeck', {
 		handleDeleteDeck
 	});
 
 	function handleCreateDeck() {
-			newDeck = deckFactory();
-			newDeckId = newDeck.id;
-			// New deck is automatically in edit mode
-			editedDeckId = newDeck.id;
-			createDeck(newDeck);
+		newDeck = deckFactory();
+		newDeckId = newDeck.id;
+		// New deck is automatically in edit mode
+		editedDeckId = newDeck.id;
+		createDeck(newDeck);
 	}
 
 	function handleDeleteDeck(dndItem: HTMLElement, itemId: string) {
