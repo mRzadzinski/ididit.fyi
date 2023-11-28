@@ -1,16 +1,18 @@
 <script lang="ts">
 	import { cloneDeep } from 'lodash';
 	import { updateDeck } from '../../routes/app/seeds/decksLogic';
-	import { beforeUpdate, onMount } from 'svelte';
+	import { afterUpdate, beforeUpdate, onMount } from 'svelte';
 	import DeckOptions from './DeckOptions.svelte';
 	import type Muuri from 'muuri';
 	import { seedsData } from '$lib/stores/dbStores';
+	import { disableNewItemBtn } from '$lib/stores/helperStores';
 
 	export let deck: SeedsDeckType;
 	export let newDeck = false;
 	export let editedDeckId: string;
 	export let dndList: Muuri;
 	export let manageEditedDeckId: (action: string, id: string) => void;
+	export let handleDeleteDeck: (dndItem: HTMLElement, itemId: string) => void;
 
 	let dndItem: HTMLElement;
 	let nameInput: HTMLInputElement;
@@ -40,12 +42,17 @@
 		newLimit = deck.dailyLimit;
 	}
 
-	function checkUniquenessDeckName() {
+	function validateDeckName() {
+		// Ensure deck name is not empty
+		if (newName === '') {
+			nameInput.setCustomValidity(`Name your deck.`);
+			return;
+		}
+
 		for (let i = 0; i < $seedsData.decks.length; i++) {
-			if ($seedsData.decks[i].name === newName) {
-				nameInput.setCustomValidity(
-					`Deck '${newName}' already exists - try something different.`
-				);
+			// Ensure deck name in unique
+			if ($seedsData.decks[i].name === newName && newName !== deck.name) {
+				nameInput.setCustomValidity(`Deck '${newName}' already exists - try something different.`);
 				return;
 			} else {
 				nameInput.setCustomValidity('');
@@ -68,8 +75,10 @@
 	function handleToggleEdit(action: string) {
 		if (action === 'enable') {
 			editMode = true;
+			disableNewItemBtn.set(true);
 		} else {
 			editMode = false;
+			disableNewItemBtn.set(false);
 		}
 		// Refresh dndList asynchronously to wait for applied UI changes
 		const intervalID = setTimeout(() => {
@@ -83,8 +92,9 @@
 	}
 
 	onMount(() => {
-		// Handle new deck animation - apply changes asynchronously
 		if (newDeck) {
+			disableNewItemBtn.set(true);
+			// Handle new deck animation - apply changes asynchronously
 			setTimeout(() => {
 				newDeckInitEditMode = false;
 				editMode = true;
@@ -105,6 +115,12 @@
 			toggleDeckOptionsVisibility(false);
 		} else {
 			otherDeckInEditMode = false;
+		}
+	});
+
+	afterUpdate(() => {
+		if (editMode) {
+			validateDeckName();
 		}
 	});
 </script>
@@ -149,7 +165,7 @@
 					placeholder="Deck name"
 					bind:value={newName}
 					bind:this={nameInput}
-					on:input={checkUniquenessDeckName}
+					on:input={validateDeckName}
 				/>
 				<div class="flex justify-between gap-1">
 					<div class="flex items-center gap-2 text-sm">
@@ -167,8 +183,13 @@
 							class="btn btn-sm bg-white"
 							type="reset"
 							on:click={() => {
+								// Delete new deck without name on cancel
+								if (newDeck && deck.name === '') {
+									handleDeleteDeck(dndItem, deck.id);
+								} else {
+									cancelChanges();
+								}
 								handleToggleEdit('disable');
-								cancelChanges();
 							}}>Cancel</button
 						>
 						{#if newName !== deck.name || newLimit !== deck.dailyLimit}

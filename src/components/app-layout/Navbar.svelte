@@ -1,6 +1,6 @@
 <script>
 	import { goto } from '$app/navigation';
-	import { addNewItem, newItemBtnName } from '$lib/stores/helperStores';
+	import { addNewItem, disableNewItemBtn, newItemBtnName } from '$lib/stores/helperStores';
 	import PlusIcon from '~icons/uil/plus';
 </script>
 
@@ -28,10 +28,22 @@
 		>
 		<div class="flex-none items-center">
 			{#if $newItemBtnName.length > 0}
-				<button class="btn bg-white" on:click={() => $addNewItem()}>
-					<PlusIcon />
-					New {$newItemBtnName}
-				</button>
+				{#if !$disableNewItemBtn}
+					<button class="btn bg-white" on:click={() => $addNewItem()}>
+						<PlusIcon />
+						New {$newItemBtnName}
+					</button>
+				{:else}
+					<button
+						class="btn btn-disabled bg-white"
+						tabindex="-1"
+						aria-disabled="true"
+						on:click={() => $addNewItem()}
+					>
+						<PlusIcon />
+						New {$newItemBtnName}
+					</button>
+				{/if}
 			{/if}
 		</div>
 	</div>

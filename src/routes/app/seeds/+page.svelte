@@ -5,7 +5,7 @@
 	import type Muuri from 'muuri';
 	import { initializeDnd, syncDnd } from '$lib/dnd/verticalList';
 	import { createDeck, deckFactory, deleteDeck, fillDocs, reorderSeeds } from './decksLogic';
-	import { addNewItem, newItemBtnName } from '$lib/stores/helperStores';
+	import { addNewItem, disableNewItemBtn, newItemBtnName } from '$lib/stores/helperStores';
 
 	const scrollContainer = document.getElementById('dnd-scroll-container');
 	let listContainer: HTMLElement;
@@ -30,11 +30,11 @@
 	});
 
 	function handleCreateDeck() {
-		newDeck = deckFactory();
-		newDeckId = newDeck.id;
-		// New deck is automatically in edit mode
-		editedDeckId = newDeck.id;
-		createDeck(newDeck);
+			newDeck = deckFactory();
+			newDeckId = newDeck.id;
+			// New deck is automatically in edit mode
+			editedDeckId = newDeck.id;
+			createDeck(newDeck);
 	}
 
 	function handleDeleteDeck(dndItem: HTMLElement, itemId: string) {
@@ -142,6 +142,7 @@
 		dndList.remove(dndList.getItems());
 		dndList.destroy();
 		newItemBtnName.set('');
+		disableNewItemBtn.set(false);
 		// fillDocs();
 	});
 </script>
@@ -164,10 +165,17 @@
 	<div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
 		{#each $seedsData.decks as deck (deck.id)}
 			{#if newDeckId === deck.id}
-				<SeedsDeck {deck} {dndList} {manageEditedDeckId} {editedDeckId} newDeck={true} />
+				<SeedsDeck
+					{deck}
+					{dndList}
+					{manageEditedDeckId}
+					{handleDeleteDeck}
+					{editedDeckId}
+					newDeck={true}
+				/>
 				{(newDeckId = '')}
 			{:else}
-				<SeedsDeck {deck} {dndList} {manageEditedDeckId} {editedDeckId} />
+				<SeedsDeck {deck} {dndList} {manageEditedDeckId} {handleDeleteDeck} {editedDeckId} />
 			{/if}
 		{/each}
 	</div>
