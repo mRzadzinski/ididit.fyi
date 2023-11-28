@@ -163,7 +163,7 @@
 		<div class="flex items-end">
 			<div class="flex items-center">
 				<span class="text-xs mr-2">Order by:</span>
-				<select class="select select-bordered select-xs max-w-xs self-end bg-white">
+				<select class="select select-bordered select-xs max-w-xs self-end pl-3 pr-6 bg-white">
 					<option>Custom</option>
 					<option>Name</option>
 				</select>
@@ -189,3 +189,10 @@
 		{/each}
 	</div>
 </main>
+
+<style>
+	.select {
+		/* Arrow position */
+		background-position: calc(100% - 15px) calc(1px + 50%), calc(100% - 11.1px) calc(1px + 50%);
+	}
+</style>
