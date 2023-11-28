@@ -4,6 +4,7 @@
 	import { beforeUpdate, onMount } from 'svelte';
 	import DeckOptions from './DeckOptions.svelte';
 	import type Muuri from 'muuri';
+	import { seedsData } from '$lib/stores/dbStores';
 
 	export let deck: SeedsDeckType;
 	export let newDeck = false;
@@ -12,7 +13,7 @@
 	export let manageEditedDeckId: (action: string, id: string) => void;
 
 	let dndItem: HTMLElement;
-	let nameInput: HTMLElement;
+	let nameInput: HTMLInputElement;
 	let editMode = false;
 	let newDeckInitEditMode = true;
 	let otherDeckInEditMode = false;
@@ -37,6 +38,19 @@
 	function cancelChanges() {
 		newName = deck.name;
 		newLimit = deck.dailyLimit;
+	}
+
+	function checkUniquenessDeckName() {
+		for (let i = 0; i < $seedsData.decks.length; i++) {
+			if ($seedsData.decks[i].name === newName) {
+				nameInput.setCustomValidity(
+					`Deck '${newName}' already exists - try something different.`
+				);
+				return;
+			} else {
+				nameInput.setCustomValidity('');
+			}
+		}
 	}
 
 	function prepareDeckUpdate() {
@@ -135,6 +149,7 @@
 					placeholder="Deck name"
 					bind:value={newName}
 					bind:this={nameInput}
+					on:input={checkUniquenessDeckName}
 				/>
 				<div class="flex justify-between gap-1">
 					<div class="flex items-center gap-2 text-sm">
@@ -142,7 +157,6 @@
 						<input
 							class="input input-sm input-bordered w-[4.5rem] max-w-xs rounded-lg"
 							type="number"
-							placeholder="Daily limit"
 							min="0"
 							bind:value={newLimit}
 						/>
