@@ -58,7 +58,6 @@ export function syncDnd(
 	dndList: Muuri,
 	dndItems: (Element | null)[],
 	dndInitialListFill: boolean,
-	sortMethod: string
 ) {
 	let updatedDndItems = [...dndItems];
 	let initialListFill = dndInitialListFill;
@@ -98,8 +97,6 @@ export function syncDnd(
 			updatedDndItems = updatedDndItems.filter((item) => item !== dndItem);
 		}
 	}
-
-	sortListDnd(dndList, sortMethod);
 
 	return {
 		updatedDndItems,

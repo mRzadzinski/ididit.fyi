@@ -7,6 +7,7 @@ import { arrayUnion, collection, doc, updateDoc, writeBatch } from 'firebase/fir
 import sizeof from 'firestore-size';
 import { cloneDeep, isEqual } from 'lodash';
 import { get } from 'svelte/store';
+import type { ReorderDecksData } from './+page.svelte';
 
 export async function createDeck(newDeck: SeedsDeckType) {
 	const batch = writeBatch(db);
@@ -170,12 +171,7 @@ export async function updateDeck(updatedDeck: SeedsDeckType) {
 	}
 }
 
-export async function reorderSeeds(
-	reorderData: {
-		id: string;
-		order: number;
-	}[]
-) {
+export async function reorderSeeds(reorderData: ReorderDecksData[]) {
 	const batch = writeBatch(db);
 
 	// Scan all user docs
@@ -247,7 +243,7 @@ export function deckFactory() {
 export async function changeDeckSortMethod(sortMethod: string) {
 	// Get parent doc that contains settings
 	const document = get(userDocs).filter((d) => d.doc.settings)[0];
-	const id = document.docID
+	const id = document.docID;
 
 	const docRef = doc(db, 'users', id);
 	syncInProgress.set(true);

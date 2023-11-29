@@ -1,9 +1,20 @@
+<script lang="ts" context="module">
+	export interface ReorderDecksData {
+		id: string;
+		order: number;
+	}
+	export interface SortDndData {
+		id: string;
+		data: number | string;
+	}
+</script>
+
 <script lang="ts">
 	import SeedsDeck from '$components/seeds/SeedsDeck.svelte';
 	import { seedsData, settings } from '$lib/stores/dbStores';
 	import { afterUpdate, onDestroy, onMount, setContext } from 'svelte';
 	import type Muuri from 'muuri';
-	import { initializeDnd, syncDnd } from '$lib/dnd/verticalList';
+	import { initializeDnd, sortListDnd, syncDnd } from '$lib/dnd/verticalList';
 	import {
 		changeDeckSortMethod,
 		createDeck,
@@ -28,10 +39,8 @@
 	let newDeckId: string;
 	let editedDeckId = '';
 	let newDeck: SeedsDeckType;
-	let reorderData: {
-		id: string;
-		order: number;
-	}[] = [];
+	let sortData: SortDndData[];
+	let reorderData: ReorderDecksData[] = [];
 
 	// When deck name is an empty string, automatically set it in edit mode
 	// (this could happen when reloading page while creating new deck)
@@ -45,6 +54,28 @@
 	setContext('handleDeleteDeck', {
 		handleDeleteDeck
 	});
+
+	function updateDecksSortDndData() {
+		const dataSort: SortDndData[] = [];
+		const items = dndList.getItems();
+
+		for (let i = 0; i < items.length; i++) {
+			if ($settings.decksOrderBy === 'Custom') {
+				const id = items[i].getElement()?.id;
+				const data = items[i].getElement()?.getAttribute('data-order');
+				if (id && data) {
+					dataSort.push({ id, data: parseInt(data) });
+				}
+			} else if ($settings.decksOrderBy === 'Name') {
+				const id = items[i].getElement()?.id;
+				const data = items[i].getElement()?.children[0].children[0].textContent;
+				if (id && data) {
+					dataSort.push({ id, data });
+				}
+			}
+		}
+		sortData = dataSort;
+	}
 
 	function handleCreateDeck() {
 		newDeck = deckFactory();
@@ -67,21 +98,24 @@
 		}
 	}
 
+	function syncAndSortDnd() {
+		// Keep dnd list in sync with listContainer and update reference array
+		const dndSyncInfo = syncDnd(listContainer, dndList, dndItems, dndInitialListFill);
+		dndItems = dndSyncInfo.updatedDndItems;
+		dndInitialListFill = dndSyncInfo.initialListFill;
+
+		updateDecksSortDndData();
+		console.log(sortData)
+		// sortListDnd()
+	}
+
 	// Sync dnd in case of animation glitch after too fast dnd actions
 	function fallbackSyncDnd() {
 		clearTimeout(syncTimeoutId);
 
 		syncTimeoutId = setTimeout(() => {
 			if (!dragInProgress) {
-				const dndSyncInfo = syncDnd(
-					listContainer,
-					dndList,
-					dndItems,
-					dndInitialListFill,
-					$settings.decksOrderBy
-				);
-				dndItems = dndSyncInfo.updatedDndItems;
-				dndInitialListFill = dndSyncInfo.initialListFill;
+				syncAndSortDnd();
 			} else {
 				fallbackSyncDnd();
 			}
@@ -152,16 +186,7 @@
 	afterUpdate(async () => {
 		selectOrderInput.value = $settings.decksOrderBy;
 
-		// Keep dnd list in sync with listContainer and update reference array
-		const dndSyncInfo = syncDnd(
-			listContainer,
-			dndList,
-			dndItems,
-			dndInitialListFill,
-			$settings.decksOrderBy
-		);
-		dndItems = dndSyncInfo.updatedDndItems;
-		dndInitialListFill = dndSyncInfo.initialListFill;
+		syncAndSortDnd();
 		// Synchronize to handle stacking order of absolutely positioned deck menus
 		dndList.synchronize();
 		// Refresh dnd items dimensions after resizing
