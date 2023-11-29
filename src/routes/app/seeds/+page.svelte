@@ -3,10 +3,6 @@
 		id: string;
 		order: number;
 	}
-	export interface SortDndData {
-		id: string;
-		data: number | string;
-	}
 </script>
 
 <script lang="ts">
@@ -105,8 +101,7 @@
 		dndInitialListFill = dndSyncInfo.initialListFill;
 
 		updateDecksSortDndData();
-		console.log(sortData)
-		// sortListDnd()
+		sortListDnd(dndList, $settings.decksOrderBy, sortData);
 	}
 
 	// Sync dnd in case of animation glitch after too fast dnd actions

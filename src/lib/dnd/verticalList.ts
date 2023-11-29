@@ -57,7 +57,7 @@ export function syncDnd(
 	listContainer: HTMLElement,
 	dndList: Muuri,
 	dndItems: (Element | null)[],
-	dndInitialListFill: boolean,
+	dndInitialListFill: boolean
 ) {
 	let updatedDndItems = [...dndItems];
 	let initialListFill = dndInitialListFill;
@@ -104,24 +104,33 @@ export function syncDnd(
 	};
 }
 
-export function sortListDnd(dndList: Muuri, sortMethod: string) {
-	// Sort by item order (Custom)
-	if (sortMethod === 'Custom') {
-		dndList.sort(function (itemA, itemB) {
-			const elA = itemA.getElement();
-			const elB = itemB.getElement();
-			const orderAttrA = elA ? elA.getAttribute('data-order') : null;
-			const orderAttrB = elB ? elB.getAttribute('data-order') : null;
+export function sortListDnd(dndList: Muuri, sortMethod: string, sortData: SortDndData[]) {
+	dndList.sort((itemA, itemB) => {
+		const elA = itemA.getElement();
+		const elB = itemB.getElement();
+		let dataA: string | number = '';
+		let dataB: string | number = '';
 
-			if (orderAttrA && orderAttrB) {
-				return parseInt(orderAttrA) - parseInt(orderAttrB);
-			} else {
-				return 0;
+		for (let i = 0; i < sortData.length; i++) {
+			if (elA?.id === sortData[i].id) {
+				dataA = sortData[i].data;
+				sortData.splice(i, 1);
+			} else if (elB?.id === sortData[i].id) {
+				dataB = sortData[i].data;
+				sortData.splice(i, 1);
 			}
-		});
-	}
-	// Sort by name
-	else if (sortMethod === 'Name') {
-		console.log('sorting by name');
-	}
+		}
+		console.log(sortData.length)
+
+		if (sortMethod === 'Custom') {
+			if (typeof dataA === 'number' && typeof dataB === 'number') {
+				return dataA - dataB;
+			}
+		} else if (sortMethod === 'Name') {
+			if (typeof dataA === 'string' && typeof dataB === 'string') {
+				return dataA.localeCompare(dataB);
+			}
+		}
+		return 0;
+	});
 }

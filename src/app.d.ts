@@ -55,6 +55,11 @@ declare global {
 	interface Settings {
 		decksOrderBy: string;
 	}
+
+	export interface SortDndData {
+		id: string;
+		data: number | string;
+	}
 }
 
 export {};
