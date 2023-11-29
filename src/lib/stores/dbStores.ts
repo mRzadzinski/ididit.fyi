@@ -6,7 +6,17 @@ import sizeof from 'firestore-size';
 
 export const syncInProgress = writable<boolean>(false);
 export const userDocs = writable<UserDoc[]>([]);
-export const subscription = writable();
+export const settings = writable<Settings>();
+export const subscription = derived(userDocs, ($userDocs) => {
+	let data: Subscription | undefined;
+	for (let i = 0; i < $userDocs.length; i++) {
+		if ($userDocs[i].doc.settings) {
+			data = $userDocs[i].doc.subscription;
+			settings.set($userDocs[i].doc.settings)
+		}
+	}
+	return data;
+});
 export const seedsData = derived(userDocs, ($userDocs) => {
 	const data: Seeds = {
 		decks: [],
@@ -61,12 +71,6 @@ onAuthStateChanged(auth, async (currentUser) => {
 				}
 			});
 
-			// Save subscription info
-			for (let i = 0; i < docs.length; i++) {
-				if (docs[i].doc.subscription) {
-					subscription.set(docs[i].doc.subscription);
-				}
-			}
 			// Sort docs by remainingSpace ascending
 			docs.sort((prev, next) => {
 				return prev.remainingSpace - next.remainingSpace;
@@ -79,6 +83,5 @@ onAuthStateChanged(auth, async (currentUser) => {
 
 export function clearAppData() {
 	unsubscribeDocs();
-	subscription.set({});
 	userDocs.set([]);
 }

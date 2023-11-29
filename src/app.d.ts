@@ -38,6 +38,23 @@ declare global {
 		decks: SeedsDeckType[];
 		seeds: object[];
 	}
+
+	interface Subscription {
+		status: boolean;
+		counters: {
+			img: number;
+			goals: number;
+			seeds: number;
+			vision: number;
+			dreams: number;
+			wishlist: number;
+			books: number;
+		};
+	}
+
+	interface Settings {
+		decksOrderBy: string;
+	}
 }
 
 export {};

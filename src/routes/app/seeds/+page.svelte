@@ -1,14 +1,22 @@
 <script lang="ts">
 	import SeedsDeck from '$components/seeds/SeedsDeck.svelte';
-	import { seedsData } from '$lib/stores/dbStores';
+	import { seedsData, settings } from '$lib/stores/dbStores';
 	import { afterUpdate, onDestroy, onMount, setContext } from 'svelte';
 	import type Muuri from 'muuri';
 	import { initializeDnd, syncDnd } from '$lib/dnd/verticalList';
-	import { createDeck, deckFactory, deleteDeck, fillDocs, reorderSeeds } from './decksLogic';
+	import {
+		changeDeckSortMethod,
+		createDeck,
+		deckFactory,
+		deleteDeck,
+		fillDocs,
+		reorderSeeds
+	} from './decksLogic';
 	import { addNewItem, disableNewItemBtn, newItemBtnName } from '$lib/stores/helperStores';
 
 	const scrollContainer = document.getElementById('dnd-scroll-container');
 	let listContainer: HTMLElement;
+	let selectOrderInput: HTMLSelectElement;
 	let dndList: Muuri;
 	let dndItems: (Element | null)[] = [];
 	let dndInitialListFill = true;
@@ -65,7 +73,13 @@
 
 		syncTimeoutId = setTimeout(() => {
 			if (!dragInProgress) {
-				const dndSyncInfo = syncDnd(listContainer, dndList, dndItems, dndInitialListFill);
+				const dndSyncInfo = syncDnd(
+					listContainer,
+					dndList,
+					dndItems,
+					dndInitialListFill,
+					$settings.decksOrderBy
+				);
 				dndItems = dndSyncInfo.updatedDndItems;
 				dndInitialListFill = dndSyncInfo.initialListFill;
 			} else {
@@ -136,8 +150,16 @@
 	});
 
 	afterUpdate(async () => {
+		selectOrderInput.value = $settings.decksOrderBy;
+
 		// Keep dnd list in sync with listContainer and update reference array
-		const dndSyncInfo = syncDnd(listContainer, dndList, dndItems, dndInitialListFill);
+		const dndSyncInfo = syncDnd(
+			listContainer,
+			dndList,
+			dndItems,
+			dndInitialListFill,
+			$settings.decksOrderBy
+		);
 		dndItems = dndSyncInfo.updatedDndItems;
 		dndInitialListFill = dndSyncInfo.initialListFill;
 		// Synchronize to handle stacking order of absolutely positioned deck menus
@@ -163,7 +185,11 @@
 		<div class="flex items-end">
 			<div class="flex items-center">
 				<span class="text-xs mr-2">Order by:</span>
-				<select class="select select-bordered select-xs max-w-xs self-end pl-3 pr-6 bg-white">
+				<select
+					class="select select-bordered select-xs max-w-xs self-end pl-3 pr-6 bg-white"
+					bind:this={selectOrderInput}
+					on:input={() => changeDeckSortMethod(selectOrderInput.value)}
+				>
 					<option>Custom</option>
 					<option>Name</option>
 				</select>

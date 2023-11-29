@@ -13,39 +13,22 @@ export const userMainDocFactory = (uid: string) => {
 				books: 0
 			}
 		},
-		// goalsData: {
-		// 	categories: [],
-		// 	goals: []
-		// },
+		settings: {
+			decksOrderBy: 'Custom'
+		},
 		seedsData: {
 			decks: [],
 			seeds: []
 		} as Seeds
-		// visionData: {},
-		// dreamsData: {},
-		// wishlistData: {},
-		// booksData: {},
-		// proudBoardData: {},
-		// friendsData: {}
 	};
 };
 
 export const userDataDocFactory = (uid: string) => {
 	return {
 		uid,
-		// goalsData: {
-		// 	categories: [],
-		// 	goals: []
-		// },
 		seedsData: {
 			decks: [],
 			seeds: []
 		} as Seeds
-		// visionData: {},
-		// dreamsData: {},
-		// wishlistData: {},
-		// booksData: {},
-		// proudBoardData: {},
-		// friendsData: {}
 	};
 };

@@ -244,6 +244,20 @@ export function deckFactory() {
 	};
 }
 
+export async function changeDeckSortMethod(sortMethod: string) {
+	// Get parent doc that contains settings
+	const document = get(userDocs).filter((d) => d.doc.settings)[0];
+	const id = document.docID
+
+	const docRef = doc(db, 'users', id);
+	syncInProgress.set(true);
+	await updateDoc(docRef, {
+		'settings.decksOrderBy': sortMethod
+	});
+	syncInProgress.set(false);
+	return;
+}
+
 export function getDocInfoByDeckID(seedID: string) {
 	const docs = get(userDocs);
 	for (let i = 0; i < docs.length; i++) {

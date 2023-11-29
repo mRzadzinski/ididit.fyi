@@ -57,7 +57,8 @@ export function syncDnd(
 	listContainer: HTMLElement,
 	dndList: Muuri,
 	dndItems: (Element | null)[],
-	dndInitialListFill: boolean
+	dndInitialListFill: boolean,
+	sortMethod: string
 ) {
 	let updatedDndItems = [...dndItems];
 	let initialListFill = dndInitialListFill;
@@ -98,7 +99,7 @@ export function syncDnd(
 		}
 	}
 
-	sortListDnd(dndList);
+	sortListDnd(dndList, sortMethod);
 
 	return {
 		updatedDndItems,
@@ -106,18 +107,24 @@ export function syncDnd(
 	};
 }
 
-export function sortListDnd(dndList: Muuri) {
-	// Sort dnd list by item order
-	dndList.sort(function (itemA, itemB) {
-		const elA = itemA.getElement();
-		const elB = itemB.getElement();
-		const orderAttrA = elA ? elA.getAttribute('data-order') : null;
-		const orderAttrB = elB ? elB.getAttribute('data-order') : null;
+export function sortListDnd(dndList: Muuri, sortMethod: string) {
+	// Sort by item order (Custom)
+	if (sortMethod === 'Custom') {
+		dndList.sort(function (itemA, itemB) {
+			const elA = itemA.getElement();
+			const elB = itemB.getElement();
+			const orderAttrA = elA ? elA.getAttribute('data-order') : null;
+			const orderAttrB = elB ? elB.getAttribute('data-order') : null;
 
-		if (orderAttrA && orderAttrB) {
-			return parseInt(orderAttrA) - parseInt(orderAttrB);
-		} else {
-			return 0;
-		}
-	});
+			if (orderAttrA && orderAttrB) {
+				return parseInt(orderAttrA) - parseInt(orderAttrB);
+			} else {
+				return 0;
+			}
+		});
+	}
+	// Sort by name
+	else if (sortMethod === 'Name') {
+		console.log('sorting by name');
+	}
 }
