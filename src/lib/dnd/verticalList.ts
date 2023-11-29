@@ -114,13 +114,10 @@ export function sortListDnd(dndList: Muuri, sortMethod: string, sortData: SortDn
 		for (let i = 0; i < sortData.length; i++) {
 			if (elA?.id === sortData[i].id) {
 				dataA = sortData[i].data;
-				sortData.splice(i, 1);
 			} else if (elB?.id === sortData[i].id) {
 				dataB = sortData[i].data;
-				sortData.splice(i, 1);
 			}
 		}
-		console.log(sortData.length)
 
 		if (sortMethod === 'Custom') {
 			if (typeof dataA === 'number' && typeof dataB === 'number') {
