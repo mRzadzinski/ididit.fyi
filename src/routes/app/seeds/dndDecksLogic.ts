@@ -10,11 +10,12 @@ export interface ReorderDecksData {
 	order: number;
 }
 
-let dndList: Muuri;
-let dndInitialListFill = true;
-let dndItems: (Element | null)[] = [];
 let listContainer: HTMLElement;
 let scrollContainer: HTMLElement | null;
+let dndList: Muuri;
+
+let dndInitialListFill = true;
+let dndItems: (Element | null)[] = [];
 let initialPosition: number;
 let droppedPosition: number;
 let reorderData: ReorderDecksData[] = [];
@@ -25,53 +26,6 @@ let sortData: SortDndData[];
 decksDndList.subscribe((list) => (dndList = list));
 decksListContainer.subscribe((container) => (listContainer = container));
 decksScrollContainer.subscribe((container) => (scrollContainer = container));
-
-export function decksDndOnMount() {
-	// Initialize drag & drop
-	if (scrollContainer) {
-		decksDndList.set(initializeDndVerticalList(listContainer, scrollContainer));
-	}
-
-	// Grid events
-	dndList.on('dragInit', function (item) {
-		const itemEl = item.getElement();
-
-		// Save index for reorder
-		if (itemEl) {
-			initialPosition = dndList.getItems().indexOf(item);
-		}
-	});
-	dndList.on('dragStart', () => {
-		dragInProgress = true;
-	});
-	dndList.on('dragEnd', function (item) {
-		droppedPosition = dndList.getItems().indexOf(item);
-	});
-	dndList.on('dragReleaseEnd', () => {
-		if (initialPosition !== droppedPosition) {
-			refreshReorderData();
-			reorderSeeds(reorderData);
-		}
-		fallbackSyncDnd();
-		dragInProgress = false;
-	});
-	dndList.on('showEnd', () => {
-		keepScrollContainerWidthInSyncWithDecks();
-	});
-}
-
-export function decksDndAfterUpdate() {
-	syncAndSortDnd();
-	// Synchronize to handle stacking order of absolutely positioned deck menus
-	dndList.synchronize();
-	// Refresh dnd items dimensions after resizing
-	dndList.refreshItems();
-	dndList.layout();
-}
-export function decksDndOnDestroy() {
-	dndList.remove(dndList.getItems());
-	dndList.destroy();
-}
 
 export function keepScrollContainerWidthInSyncWithDecks() {
 	const dndItemWidth = dndList.getItem(0)?.getElement()?.children[0].clientWidth;
@@ -138,4 +92,52 @@ function syncAndSortDnd() {
 
 	updateDecksSortDndData();
 	sortListDnd(dndList, get(settings).decksOrderBy, sortData);
+}
+
+export function decksDndOnMount() {
+	// Initialize drag & drop
+	if (scrollContainer) {
+		decksDndList.set(initializeDndVerticalList(listContainer, scrollContainer));
+	}
+
+	// Grid events
+	dndList.on('dragInit', function (item) {
+		const itemEl = item.getElement();
+
+		// Save index for reorder
+		if (itemEl) {
+			initialPosition = dndList.getItems().indexOf(item);
+		}
+	});
+	dndList.on('dragStart', () => {
+		dragInProgress = true;
+	});
+	dndList.on('dragEnd', function (item) {
+		droppedPosition = dndList.getItems().indexOf(item);
+	});
+	dndList.on('dragReleaseEnd', () => {
+		if (initialPosition !== droppedPosition) {
+			refreshReorderData();
+			reorderSeeds(reorderData);
+		}
+		fallbackSyncDnd();
+		dragInProgress = false;
+	});
+	dndList.on('showEnd', () => {
+		keepScrollContainerWidthInSyncWithDecks();
+	});
+}
+
+export function decksDndAfterUpdate() {
+	syncAndSortDnd();
+	// Synchronize to handle stacking order of absolutely positioned deck menus
+	dndList.synchronize();
+	// Refresh dnd items dimensions after resizing
+	dndList.refreshItems();
+	dndList.layout();
+}
+
+export function decksDndOnDestroy() {
+	dndList.remove(dndList.getItems());
+	dndList.destroy();
 }
