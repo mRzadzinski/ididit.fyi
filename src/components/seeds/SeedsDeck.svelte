@@ -157,11 +157,14 @@
 			<form
 				class="flex flex-col gap-2 w-full"
 				on:submit|preventDefault={async () => {
-					if (newName !== deck.name || newLimit !== deck.dailyLimit) {
-						prepareDeckUpdate();
-						updateDeck(updatedDeck);
-					}
 					handleToggleEdit('disable');
+					if (newName !== deck.name || newLimit !== deck.dailyLimit) {
+						// Wait for animation end
+						setTimeout(() => {
+							prepareDeckUpdate();
+							updateDeck(updatedDeck);
+						}, 300);
+					}
 				}}
 			>
 				<input
