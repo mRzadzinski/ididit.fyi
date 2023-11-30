@@ -1,35 +1,26 @@
 <script lang="ts" context="module">
-	export interface ReorderDecksData {
-		id: string;
-		order: number;
-	}
 </script>
 
 <script lang="ts">
 	import SeedsDeck from '$components/seeds/SeedsDeck.svelte';
 	import { seedsData, settings } from '$lib/stores/dbStores';
 	import { afterUpdate, onDestroy, onMount, setContext } from 'svelte';
-	import type Muuri from 'muuri';
-	import { initializeDnd, sortListDnd, syncDnd } from '$lib/dnd/verticalList';
-	import { createDeck, deckFactory, deleteDeck, fillDocs, reorderSeeds } from './decksLogic';
+	import { createDeck, deckFactory, deleteDeck, fillDocs } from './decksLogic';
 	import { addNewItem, disableNewItemBtn, newItemBtnName } from '$lib/stores/helperStores';
 	import PageHeader from '$components/app-layout/PageHeader.svelte';
+	import { decksDndList, decksListContainer, decksScrollContainer } from '$lib/stores/decksStores';
+	import {
+		decksDndAfterUpdate,
+		decksDndOnDestroy,
+		decksDndOnMount,
+		keepScrollContainerWidthInSyncWithDecks
+	} from './dndDecksLogic';
 
 	const scrollContainer = document.getElementById('dnd-scroll-container');
 	let listContainer: HTMLElement;
-	let dndList: Muuri;
-	let dndItems: (Element | null)[] = [];
-	let dndInitialListFill = true;
-	let dndItemWidth: number;
-	let dragInProgress = false;
-	let syncTimeoutId: NodeJS.Timeout;
-	let initialPosition: number;
-	let droppedPosition: number;
 	let newDeckId: string;
 	let editedDeckId = '';
 	let newDeck: SeedsDeckType;
-	let sortData: SortDndData[];
-	let reorderData: ReorderDecksData[] = [];
 
 	// When deck name is an empty string, automatically set it in edit mode
 	// (this could happen when reloading page while creating new deck)
@@ -44,28 +35,6 @@
 		handleDeleteDeck
 	});
 
-	function updateDecksSortDndData() {
-		const dataSort: SortDndData[] = [];
-		const items = dndList.getItems();
-
-		for (let i = 0; i < items.length; i++) {
-			if ($settings.decksOrderBy === 'Custom') {
-				const id = items[i].getElement()?.id;
-				const data = items[i].getElement()?.getAttribute('data-order');
-				if (id && data) {
-					dataSort.push({ id, data: parseInt(data) });
-				}
-			} else if ($settings.decksOrderBy === 'Name') {
-				const id = items[i].getElement()?.id;
-				const data = items[i].getElement()?.children[0].children[0].textContent;
-				if (id && data) {
-					dataSort.push({ id, data });
-				}
-			}
-		}
-		sortData = dataSort;
-	}
-
 	function handleCreateDeck() {
 		newDeck = deckFactory();
 		newDeckId = newDeck.id;
@@ -76,38 +45,8 @@
 
 	function handleDeleteDeck(dndItem: HTMLElement, itemId: string) {
 		// Removing dnd item first before modifying data, to avoid duplicated HTMLelement from Muuri
-		dndList.remove(dndList.getItems(dndItem), { removeElements: true });
+		$decksDndList.remove($decksDndList.getItems(dndItem), { removeElements: true });
 		deleteDeck(itemId);
-	}
-
-	function keepScrollContainerWidthInSyncWithDecks() {
-		const dndItemWidth = dndList.getItem(0)?.getElement()?.children[0].clientWidth;
-		if (scrollContainer) {
-			scrollContainer.style.width = `${dndItemWidth}px`;
-		}
-	}
-
-	function syncAndSortDnd() {
-		// Keep dnd list in sync with listContainer and update reference array
-		const dndSyncInfo = syncDnd(listContainer, dndList, dndItems, dndInitialListFill);
-		dndItems = dndSyncInfo.updatedDndItems;
-		dndInitialListFill = dndSyncInfo.initialListFill;
-
-		updateDecksSortDndData();
-		sortListDnd(dndList, $settings.decksOrderBy, sortData);
-	}
-
-	// Sync dnd in case of animation glitch after too fast dnd actions
-	function fallbackSyncDnd() {
-		clearTimeout(syncTimeoutId);
-
-		syncTimeoutId = setTimeout(() => {
-			if (!dragInProgress) {
-				syncAndSortDnd();
-			} else {
-				fallbackSyncDnd();
-			}
-		}, 1500);
 	}
 
 	// Allow only one deck to have edit mode enabled
@@ -119,77 +58,28 @@
 		}
 	}
 
-	function refreshReorderData() {
-		// Save dndList items' positions in pair with their IDs
-		const items = dndList.getItems();
-		reorderData = [];
-		for (let i = 0; i < items.length; i++) {
-			const el = items[i].getElement();
-			if (el) {
-				reorderData.push({
-					id: el.id,
-					order: i
-				});
-			}
-		}
-	}
-
 	onMount(() => {
 		addNewItem.set(handleCreateDeck);
 		newItemBtnName.set('Deck');
 
-		// Initialize drag & drop
-		if (scrollContainer) {
-			dndList = initializeDnd(listContainer, scrollContainer);
-		}
-
-		// Grid events
-		dndList.on('dragInit', function (item, event) {
-			const itemEl = item.getElement();
-
-			// Save index for reorder
-			if (itemEl) {
-				initialPosition = dndList.getItems().indexOf(item);
-			}
-		});
-		dndList.on('dragStart', () => {
-			dragInProgress = true;
-		});
-		dndList.on('dragEnd', function (item, event) {
-			droppedPosition = dndList.getItems().indexOf(item);
-		});
-		dndList.on('dragReleaseEnd', (item) => {
-			if (initialPosition !== droppedPosition) {
-				refreshReorderData();
-				reorderSeeds(reorderData);
-			}
-			fallbackSyncDnd();
-			dragInProgress = false;
-		});
-		dndList.on('showEnd', () => {
-			keepScrollContainerWidthInSyncWithDecks();
-		});
+		if (scrollContainer) decksScrollContainer.set(scrollContainer);
+		decksListContainer.set(listContainer);
+		decksDndOnMount();
 	});
 
 	afterUpdate(async () => {
-		syncAndSortDnd();
-		// Synchronize to handle stacking order of absolutely positioned deck menus
-		dndList.synchronize();
-		// Refresh dnd items dimensions after resizing
-		dndList.refreshItems();
-		dndList.layout();
+		decksDndAfterUpdate();
 	});
 
 	onDestroy(() => {
-		dndList.remove(dndList.getItems());
-		dndList.destroy();
+		decksDndOnDestroy();
 		newItemBtnName.set('');
 		disableNewItemBtn.set(false);
 		// fillDocs();
 	});
 </script>
 
-<svelte:window on:resize={keepScrollContainerWidthInSyncWithDecks} />
+<svelte:window on:resize={() => keepScrollContainerWidthInSyncWithDecks()} />
 <main class="h-full w-full py-10 m-0">
 	<PageHeader
 		pageName={'Decks'}
@@ -201,7 +91,7 @@
 			{#if newDeckId === deck.id}
 				<SeedsDeck
 					{deck}
-					{dndList}
+					dndList={$decksDndList}
 					{manageEditedDeckId}
 					{handleDeleteDeck}
 					{editedDeckId}
@@ -209,7 +99,13 @@
 				/>
 				{(newDeckId = '')}
 			{:else}
-				<SeedsDeck {deck} {dndList} {manageEditedDeckId} {handleDeleteDeck} {editedDeckId} />
+				<SeedsDeck
+					{deck}
+					dndList={$decksDndList}
+					{manageEditedDeckId}
+					{handleDeleteDeck}
+					{editedDeckId}
+				/>
 			{/if}
 		{/each}
 	</div>

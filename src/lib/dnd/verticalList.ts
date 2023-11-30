@@ -1,6 +1,9 @@
 import Muuri from 'muuri';
 
-export function initializeDnd(listContainer: HTMLElement, scrollContainer: HTMLElement) {
+export function initializeDndVerticalList(
+	listContainer: HTMLElement,
+	scrollContainer: HTMLElement
+) {
 	// Initialize drag & drop
 	const grid = new Muuri(listContainer, {
 		dragEnabled: true,
