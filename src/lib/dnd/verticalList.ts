@@ -56,7 +56,7 @@ export function initializeDndVerticalList(
 	return grid;
 }
 
-export function syncDnd(
+export function syncDndVerticalList(
 	listContainer: HTMLElement,
 	dndList: Muuri,
 	dndItems: (Element | null)[],
@@ -107,7 +107,7 @@ export function syncDnd(
 	};
 }
 
-export function sortListDnd(dndList: Muuri, sortMethod: string, sortData: SortDndData[]) {
+export function sortDndVerticalList(dndList: Muuri, sortMethod: string, sortData: SortDndData[]) {
 	dndList.sort((itemA, itemB) => {
 		const elA = itemA.getElement();
 		const elB = itemB.getElement();

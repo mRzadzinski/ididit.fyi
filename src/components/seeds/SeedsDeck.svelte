@@ -4,7 +4,7 @@
 	import { beforeUpdate, onMount } from 'svelte';
 	import DeckOptions from './DeckOptions.svelte';
 	import type Muuri from 'muuri';
-	import { seedsData } from '$lib/stores/dbStores';
+	import { seedsData, syncInProgress } from '$lib/stores/dbStores';
 	import { disableNewItemBtn } from '$lib/stores/helperStores';
 
 	export let deck: SeedsDeckType;
@@ -157,6 +157,9 @@
 			<form
 				class="flex flex-col gap-2 w-full"
 				on:submit|preventDefault={async () => {
+					// Enable sync animation on start of exit-edit-mode animation
+					// updateDeck disables sync animation when successful
+					syncInProgress.set(true)
 					handleToggleEdit('disable');
 					if (newName !== deck.name || newLimit !== deck.dailyLimit) {
 						// Wait for animation end

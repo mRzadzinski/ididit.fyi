@@ -1,4 +1,4 @@
-import { initializeDndVerticalList, sortListDnd, syncDnd } from '$lib/dnd/verticalList';
+import { initializeDndVerticalList, sortDndVerticalList, syncDndVerticalList } from '$lib/dnd/verticalList';
 import { settings } from '$lib/stores/dbStores';
 import { decksDndList, decksListContainer, decksScrollContainer } from '$lib/stores/decksStores';
 import type Muuri from 'muuri';
@@ -86,12 +86,12 @@ function updateDecksSortDndData() {
 
 function syncAndSortDnd() {
 	// Keep dnd list in sync with listContainer and update reference array
-	const dndSyncInfo = syncDnd(listContainer, dndList, dndItems, dndInitialListFill);
+	const dndSyncInfo = syncDndVerticalList(listContainer, dndList, dndItems, dndInitialListFill);
 	dndItems = dndSyncInfo.updatedDndItems;
 	dndInitialListFill = dndSyncInfo.initialListFill;
 
 	updateDecksSortDndData();
-	sortListDnd(dndList, get(settings).decksOrderBy, sortData);
+	sortDndVerticalList(dndList, get(settings).decksOrderBy, sortData);
 }
 
 export function decksDndOnMount() {
