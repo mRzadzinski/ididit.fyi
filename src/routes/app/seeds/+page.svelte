@@ -11,19 +11,12 @@
 	import { afterUpdate, onDestroy, onMount, setContext } from 'svelte';
 	import type Muuri from 'muuri';
 	import { initializeDnd, sortListDnd, syncDnd } from '$lib/dnd/verticalList';
-	import {
-		changeDeckSortMethod,
-		createDeck,
-		deckFactory,
-		deleteDeck,
-		fillDocs,
-		reorderSeeds
-	} from './decksLogic';
+	import { createDeck, deckFactory, deleteDeck, fillDocs, reorderSeeds } from './decksLogic';
 	import { addNewItem, disableNewItemBtn, newItemBtnName } from '$lib/stores/helperStores';
+	import PageHeader from '$components/app-layout/PageHeader.svelte';
 
 	const scrollContainer = document.getElementById('dnd-scroll-container');
 	let listContainer: HTMLElement;
-	let selectOrderInput: HTMLSelectElement;
 	let dndList: Muuri;
 	let dndItems: (Element | null)[] = [];
 	let dndInitialListFill = true;
@@ -179,8 +172,6 @@
 	});
 
 	afterUpdate(async () => {
-		selectOrderInput.value = $settings.decksOrderBy;
-
 		syncAndSortDnd();
 		// Synchronize to handle stacking order of absolutely positioned deck menus
 		dndList.synchronize();
@@ -200,23 +191,11 @@
 
 <svelte:window on:resize={keepScrollContainerWidthInSyncWithDecks} />
 <main class="h-full w-full py-10 m-0">
-	<div class="flex justify-between mb-10">
-		<h1 class="text-3xl">Decks</h1>
-		<div class="flex items-end">
-			<div class="flex items-center">
-				<span class="text-xs mr-2">Order by:</span>
-				<select
-					class="select select-bordered select-xs max-w-xs self-end pl-3 pr-6 bg-white"
-					bind:this={selectOrderInput}
-					on:input={() => changeDeckSortMethod(selectOrderInput.value)}
-				>
-					<option>Custom</option>
-					<option>Name</option>
-				</select>
-			</div>
-		</div>
-	</div>
-
+	<PageHeader
+		pageName={'Decks'}
+		orderBy={$settings.decksOrderBy}
+		orderByOptions={['Custom', 'Name']}
+	/>
 	<div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
 		{#each $seedsData.decks as deck (deck.id)}
 			{#if newDeckId === deck.id}
@@ -235,10 +214,3 @@
 		{/each}
 	</div>
 </main>
-
-<style>
-	.select {
-		/* Arrow position */
-		background-position: calc(100% - 13px) calc(1px + 50%), calc(100% - 9px) calc(1px + 50%);
-	}
-</style>
