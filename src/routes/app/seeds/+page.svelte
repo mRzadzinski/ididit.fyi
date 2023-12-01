@@ -1,19 +1,29 @@
 <script lang="ts">
 	import SeedsDeck from '$components/seeds/SeedsDeck.svelte';
 	import PageHeader from '$components/app-layout/PageHeader.svelte';
-	import { decksDndList, decksListContainer, decksScrollContainer } from '$lib/stores/decksStores';
+	import {
+		dndList,
+		dndListContainer,
+		dndReorderDbData,
+		whereDndIsActive
+	} from '$lib/stores/dndStores';
 	import { seedsData, settings } from '$lib/stores/dbStores';
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
-	import { createDeck, deckFactory, decksOrderByOptions, deleteDeck, fillDocs } from './decksLogic';
+	import {
+		createDeck,
+		deckFactory,
+		decksOrderByOptions,
+		deleteDeck,
+		fillDocs,
+		reorderDecks
+	} from './decksLogic';
 	import { addNewItem, disableNewItemBtn, newItemBtnName } from '$lib/stores/helperStores';
 	import {
-		decksDndAfterUpdate,
-		decksDndOnDestroy,
-		decksDndOnMount,
-		keepScrollContainerWidthInSyncWithDecks
-	} from './dndDecksLogic';
+		dndListAfterUpdate,
+		dndListOnDestroy,
+		dndListOnMount
+	} from '../../../lib/dnd/verticalListLifecycle';
 
-	const scrollContainer = document.getElementById('dnd-scroll-container');
 	let listContainer: HTMLElement;
 	let newDeckId: string;
 	let editedDeckId = '';
@@ -38,7 +48,7 @@
 
 	function handleDeleteDeck(itemId: string, dndItem: HTMLElement) {
 		// Removing dnd item first before modifying data, to avoid duplicated HTMLelement from Muuri
-		$decksDndList.remove($decksDndList.getItems(dndItem), { removeElements: true });
+		$dndList.remove($dndList.getItems(dndItem), { removeElements: true });
 		deleteDeck(itemId);
 	}
 
@@ -54,25 +64,24 @@
 	onMount(() => {
 		addNewItem.set(handleCreateDeck);
 		newItemBtnName.set('Deck');
-
-		if (scrollContainer) decksScrollContainer.set(scrollContainer);
-		decksListContainer.set(listContainer);
-		decksDndOnMount();
+		whereDndIsActive.set('decks');
+		dndReorderDbData.set(reorderDecks);
+		dndListContainer.set(listContainer);
+		dndListOnMount();
 	});
 
 	afterUpdate(async () => {
-		decksDndAfterUpdate();
+		dndListAfterUpdate();
 	});
 
 	onDestroy(() => {
-		decksDndOnDestroy();
 		newItemBtnName.set('');
 		disableNewItemBtn.set(false);
+		dndListOnDestroy();
 		// fillDocs();
 	});
 </script>
 
-<svelte:window on:resize={() => keepScrollContainerWidthInSyncWithDecks()} />
 <PageHeader
 	pageName="Decks"
 	orderBy={$settings.decksOrderBy}
@@ -84,7 +93,7 @@
 		{#if newDeckId === deck.id}
 			<SeedsDeck
 				{deck}
-				dndList={$decksDndList}
+				dndList={$dndList}
 				{handleDeleteDeck}
 				{manageEditedDeckId}
 				{editedDeckId}
@@ -92,13 +101,7 @@
 			/>
 			{(newDeckId = '')}
 		{:else}
-			<SeedsDeck
-				{deck}
-				dndList={$decksDndList}
-				{manageEditedDeckId}
-				{handleDeleteDeck}
-				{editedDeckId}
-			/>
+			<SeedsDeck {deck} dndList={$dndList} {manageEditedDeckId} {handleDeleteDeck} {editedDeckId} />
 		{/if}
 	{/each}
 </div>

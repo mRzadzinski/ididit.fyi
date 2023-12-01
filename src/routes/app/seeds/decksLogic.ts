@@ -7,7 +7,7 @@ import { arrayUnion, collection, doc, updateDoc, writeBatch } from 'firebase/fir
 import sizeof from 'firestore-size';
 import { cloneDeep, isEqual } from 'lodash';
 import { get } from 'svelte/store';
-import type { ReorderDecksData } from './dndDecksLogic';
+import type { DndReorderData } from '../../../lib/dnd/verticalListLifecycle';
 
 export const decksOrderByOptions = ['Custom', 'Name'];
 
@@ -173,7 +173,7 @@ export async function updateDeck(updatedDeck: SeedsDeckType) {
 	}
 }
 
-export async function reorderSeeds(reorderData: ReorderDecksData[]) {
+export async function reorderDecks(reorderData: DndReorderData[]) {
 	const batch = writeBatch(db);
 
 	// Scan all user docs

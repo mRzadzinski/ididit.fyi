@@ -4,12 +4,7 @@ import { doc, updateDoc } from 'firebase/firestore';
 import { get } from 'svelte/store';
 
 export async function updateSortMethod(target: string, sortMethod: string) {
-	let orderByProp = '';
-	if (target === 'decks') {
-		orderByProp = 'decksOrderBy';
-	} else if (target === 'seeds') {
-		orderByProp = 'seedsOrderBy';
-	}
+	const orderByProp = `${target}OrderBy`;
 
 	// Get parent doc that contains settings
 	const document = get(userDocs).filter((d) => d.doc.settings)[0];

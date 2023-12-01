@@ -3,12 +3,14 @@
 	import { goto } from '$app/navigation';
 	import Navbar from '$components/app-layout/Navbar.svelte';
 	import SidebarItems from '$components/app-layout/SidebarItems.svelte';
+	import { keepScrollContainerWidthInSyncWithDndItem } from '../../lib/dnd/verticalListLifecycle';
 
 	$: if ($user === null) {
 		goto('/auth/login');
 	}
 </script>
 
+<svelte:window on:resize={() => keepScrollContainerWidthInSyncWithDndItem()} />
 {#if $user}
 	<div class="drawer min-h-screen bg-white max-w-screen-xl">
 		<input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
