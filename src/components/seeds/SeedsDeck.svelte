@@ -44,7 +44,6 @@
 	}
 
 	function validateDeckName() {
-		console.log(nameInput.value.length);
 		// Ensure deck name is not empty
 		if (newName === '') {
 			nameInput.setCustomValidity(`Name your deck.`);
@@ -198,7 +197,7 @@
 					class="input input-sm input-bordered w-full max-w-xs rounded-lg"
 					type="text"
 					placeholder="Deck name"
-					maxlength="100"
+					maxlength="45"
 					bind:value={newName}
 					bind:this={nameInput}
 					on:input={validateDeckName}
