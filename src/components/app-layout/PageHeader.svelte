@@ -17,14 +17,16 @@
 </script>
 
 <div class="flex justify-between mb-10">
-	<div class="flex items-end gap-4">
+	<div class="flex items-end gap-5">
 		<h1 class="text-3xl">{pageName}</h1>
-		<div class="flex items-end text-xs breadcrumbs pt-0 pb-1">
-			<ul>
-				<li><a>Home</a></li>
-				<li>Document</li>
-			</ul>
-		</div>
+		{#if breadcrumbs}
+			<div class="flex items-end text-xs breadcrumbs pt-0 pb-1">
+				<ul>
+					<!-- Provide breadcrumbs li items with links to go back -->
+					<slot />
+				</ul>
+			</div>
+		{/if}
 	</div>
 	<div class="flex items-end">
 		<div class="flex items-center">
