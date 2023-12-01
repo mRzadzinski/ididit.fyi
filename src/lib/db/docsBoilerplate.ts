@@ -1,3 +1,4 @@
+import { seedsOrderByOptions } from "../../routes/app/seeds/[deck_id]/seedsLogic";
 import { decksOrderByOptions } from "../../routes/app/seeds/decksLogic";
 
 export const userMainDocFactory = (uid: string) => {
@@ -17,7 +18,7 @@ export const userMainDocFactory = (uid: string) => {
 		},
 		settings: {
 			decksOrderBy: decksOrderByOptions[0],
-			// seedsOrderBy: '',
+			seedsOrderBy: seedsOrderByOptions[0],
 		},
 		seedsData: {
 			decks: [],

@@ -54,6 +54,7 @@ declare global {
 
 	interface Settings {
 		decksOrderBy: string;
+		seedsOrderBy: string;
 	}
 
 	export interface SortDndData {

@@ -8,11 +8,7 @@
 	import { createDeck, deckFactory, decksOrderByOptions, deleteDeck, fillDocs } from './decksLogic';
 	import { addNewItem, disableNewItemBtn, newItemBtnName } from '$lib/stores/helperStores';
 	import PageHeader from '$components/app-layout/PageHeader.svelte';
-	import {
-		decksDndList,
-		decksListContainer,
-		decksScrollContainer
-	} from '$lib/stores/decksStores';
+	import { decksDndList, decksListContainer, decksScrollContainer } from '$lib/stores/decksStores';
 	import {
 		decksDndAfterUpdate,
 		decksDndOnDestroy,
@@ -84,33 +80,32 @@
 </script>
 
 <svelte:window on:resize={() => keepScrollContainerWidthInSyncWithDecks()} />
-<main class="h-full w-full py-10 m-0">
-	<PageHeader
-		pageName={'Decks'}
-		orderBy={$settings.decksOrderBy}
-		orderByOptions={decksOrderByOptions}
-	/>
-	<div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
-		{#each $seedsData.decks as deck (deck.id)}
-			{#if newDeckId === deck.id}
-				<SeedsDeck
-					{deck}
-					dndList={$decksDndList}
-					{manageEditedDeckId}
-					{handleDeleteDeck}
-					{editedDeckId}
-					newDeck={true}
-				/>
-				{(newDeckId = '')}
-			{:else}
-				<SeedsDeck
-					{deck}
-					dndList={$decksDndList}
-					{manageEditedDeckId}
-					{handleDeleteDeck}
-					{editedDeckId}
-				/>
-			{/if}
-		{/each}
-	</div>
-</main>
+<PageHeader
+	pageName="Decks"
+	orderBy={$settings.decksOrderBy}
+	orderByOptions={decksOrderByOptions}
+	orderBySettingsProp="decksOrderBy"
+/>
+<div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
+	{#each $seedsData.decks as deck (deck.id)}
+		{#if newDeckId === deck.id}
+			<SeedsDeck
+				{deck}
+				dndList={$decksDndList}
+				{manageEditedDeckId}
+				{handleDeleteDeck}
+				{editedDeckId}
+				newDeck={true}
+			/>
+			{(newDeckId = '')}
+		{:else}
+			<SeedsDeck
+				{deck}
+				dndList={$decksDndList}
+				{manageEditedDeckId}
+				{handleDeleteDeck}
+				{editedDeckId}
+			/>
+		{/if}
+	{/each}
+</div>

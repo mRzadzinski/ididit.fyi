@@ -1,10 +1,14 @@
 <script lang="ts">
 	import { afterUpdate } from 'svelte';
 	import { changeDeckSortMethod } from '../../routes/app/seeds/decksLogic';
+	import { updateSortMethod } from '$lib/common-logic/commonLogic';
 
 	export let pageName: string;
 	export let orderBy: string;
 	export let orderByOptions: string[];
+	export let orderBySettingsProp: string;
+	export let breadcrumbs = false;
+
 	let selectOrderInput: HTMLSelectElement;
 
 	afterUpdate(() => {
@@ -15,7 +19,12 @@
 <div class="flex justify-between mb-10">
 	<div class="flex items-end gap-4">
 		<h1 class="text-3xl">{pageName}</h1>
-		<slot />
+		<div class="flex items-end text-xs breadcrumbs pt-0 pb-1">
+			<ul>
+				<li><a>Home</a></li>
+				<li>Document</li>
+			</ul>
+		</div>
 	</div>
 	<div class="flex items-end">
 		<div class="flex items-center">
@@ -23,7 +32,7 @@
 			<select
 				class="select select-bordered select-xs max-w-xs self-end pl-3 pr-6 bg-white"
 				bind:this={selectOrderInput}
-				on:input={() => changeDeckSortMethod(selectOrderInput.value)}
+				on:input={() => updateSortMethod(orderBySettingsProp, selectOrderInput.value)}
 			>
 				{#each orderByOptions as option}
 					<option>{option}</option>
