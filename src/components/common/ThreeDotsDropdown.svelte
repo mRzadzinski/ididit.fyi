@@ -1,10 +1,15 @@
+<script lang="ts" context="module">
+	export interface ThreeDotsDropdownOptions {
+		name: string;
+		handlers: Function[];
+	}
+</script>
+
 <script lang="ts">
-	import { handleDeleteItem } from '$lib/stores/helperStores';
 	import VerticalDots from '~icons/heroicons-outline/dots-vertical';
 
 	export let itemId: string;
-	export let dndItem: HTMLElement = document.createElement('placeholder');
-	export let handleToggleEdit: (action: string) => void;
+	export let options: ThreeDotsDropdownOptions[];
 </script>
 
 <!-- Stop propagation to avoid triggering parent's click handler -->
@@ -30,32 +35,24 @@
 						<VerticalDots style="font-size: .75rem;" />
 					</label>
 					<ul class="dropdown-content z-[1] menu p-2 shadow bg-white rounded-box w-28">
-						<li>
-							<div
-								role="button"
-								tabindex="0"
-								on:click={(e) => {
-									e.stopPropagation();
-									handleToggleEdit('enable');
-								}}
-								on:keydown={(e) => {
-									e.stopPropagation();
-									handleToggleEdit('enable');
-								}}
-							>
-								Edit
-							</div>
-						</li>
-						<li>
-							<div
-								role="button"
-								tabindex="0"
-								on:click={() => $handleDeleteItem(itemId, dndItem)}
-								on:keydown={() => $handleDeleteItem(itemId, dndItem)}
-							>
-								Delete
-							</div>
-						</li>
+						{#each options as option (option.name)}
+							<li>
+								<div
+									role="button"
+									tabindex="0"
+									on:click={(e) => {
+										e.stopPropagation();
+										option.handlers.forEach((handler) => handler());
+									}}
+									on:keydown={(e) => {
+										e.stopPropagation();
+										option.handlers.forEach((handler) => handler());
+									}}
+								>
+									{option.name}
+								</div>
+							</li>
+						{/each}
 					</ul>
 				</div>
 			</div>

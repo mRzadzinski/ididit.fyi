@@ -1,6 +1,3 @@
-<script lang="ts" context="module">
-</script>
-
 <script lang="ts">
 	import SeedsDeck from '$components/seeds/SeedsDeck.svelte';
 	import PageHeader from '$components/app-layout/PageHeader.svelte';
@@ -8,12 +5,7 @@
 	import { seedsData, settings } from '$lib/stores/dbStores';
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
 	import { createDeck, deckFactory, decksOrderByOptions, deleteDeck, fillDocs } from './decksLogic';
-	import {
-		addNewItem,
-		disableNewItemBtn,
-		handleDeleteItem,
-		newItemBtnName
-	} from '$lib/stores/helperStores';
+	import { addNewItem, disableNewItemBtn, newItemBtnName } from '$lib/stores/helperStores';
 	import {
 		decksDndAfterUpdate,
 		decksDndOnDestroy,
@@ -62,7 +54,6 @@
 	onMount(() => {
 		addNewItem.set(handleCreateDeck);
 		newItemBtnName.set('Deck');
-		handleDeleteItem.set(handleDeleteDeck);
 
 		if (scrollContainer) decksScrollContainer.set(scrollContainer);
 		decksListContainer.set(listContainer);
@@ -77,7 +68,6 @@
 		decksDndOnDestroy();
 		newItemBtnName.set('');
 		disableNewItemBtn.set(false);
-		handleDeleteItem.set(() => {});
 		// fillDocs();
 	});
 </script>
@@ -95,13 +85,20 @@
 			<SeedsDeck
 				{deck}
 				dndList={$decksDndList}
+				{handleDeleteDeck}
 				{manageEditedDeckId}
 				{editedDeckId}
 				newDeck={true}
 			/>
 			{(newDeckId = '')}
 		{:else}
-			<SeedsDeck {deck} dndList={$decksDndList} {manageEditedDeckId} {editedDeckId} />
+			<SeedsDeck
+				{deck}
+				dndList={$decksDndList}
+				{manageEditedDeckId}
+				{handleDeleteDeck}
+				{editedDeckId}
+			/>
 		{/if}
 	{/each}
 </div>

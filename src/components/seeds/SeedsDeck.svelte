@@ -5,14 +5,15 @@
 	import ThreeDotsDropdown from '../common/ThreeDotsDropdown.svelte';
 	import type Muuri from 'muuri';
 	import { seedsData, syncInProgress } from '$lib/stores/dbStores';
-	import { disableNewItemBtn, handleDeleteItem } from '$lib/stores/helperStores';
+	import { disableNewItemBtn } from '$lib/stores/helperStores';
 	import { goto } from '$app/navigation';
 
 	export let deck: SeedsDeckType;
 	export let newDeck = false;
 	export let editedDeckId: string;
 	export let dndList: Muuri;
-	export let manageEditedDeckId: (action: string, id: string) => void;
+	export let manageEditedDeckId: Function;
+	export let handleDeleteDeck: Function;
 
 	let dndItem: HTMLElement;
 	let nameInput: HTMLInputElement;
@@ -159,7 +160,19 @@
 		{#if !editMode}
 			<span class="text-sm">{deck.name}</span>
 			{#if showDeckOptions}
-				<ThreeDotsDropdown itemId={deck.id} {dndItem} {handleToggleEdit} />
+				<ThreeDotsDropdown
+					itemId={deck.id}
+					options={[
+						{
+							name: 'Edit',
+							handlers: [() => handleToggleEdit('enable')]
+						},
+						{
+							name: 'Delete',
+							handlers: [() => handleDeleteDeck(deck.id, dndItem)]
+						}
+					]}
+				/>
 			{/if}
 		{:else}
 			<form
@@ -208,7 +221,7 @@
 
 								// Delete new deck without name on cancel
 								if (newDeck && deck.name === '') {
-									$handleDeleteItem(deck.id, dndItem);
+									handleDeleteDeck(deck.id, dndItem);
 								} else {
 									cancelChanges();
 								}
