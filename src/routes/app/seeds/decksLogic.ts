@@ -7,7 +7,9 @@ import { arrayUnion, collection, doc, updateDoc, writeBatch } from 'firebase/fir
 import sizeof from 'firestore-size';
 import { cloneDeep, isEqual } from 'lodash';
 import { get } from 'svelte/store';
-import type { ReorderDecksData } from './+page.svelte';
+import type { ReorderDecksData } from './dndDecksLogic';
+
+export const decksOrderByOptions = ['Custom', 'Name'];
 
 export async function createDeck(newDeck: SeedsDeckType) {
 	const batch = writeBatch(db);

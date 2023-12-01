@@ -140,7 +140,7 @@
 	role="button"
 	tabindex="0"
 	on:click={() => {
-		if (!editMode) goto(`/app/seeds/${deck.id}`);
+		if (!editMode) goto(`/app/seeds/${deck.name}_Seeds_${deck.id}`);
 	}}
 	on:keypress={() => {
 		if (!editMode) goto(`/app/seeds/${deck.id}`);

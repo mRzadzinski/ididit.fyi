@@ -5,10 +5,14 @@
 	import SeedsDeck from '$components/seeds/SeedsDeck.svelte';
 	import { seedsData, settings } from '$lib/stores/dbStores';
 	import { afterUpdate, onDestroy, onMount, setContext } from 'svelte';
-	import { createDeck, deckFactory, deleteDeck, fillDocs } from './decksLogic';
+	import { createDeck, deckFactory, decksOrderByOptions, deleteDeck, fillDocs } from './decksLogic';
 	import { addNewItem, disableNewItemBtn, newItemBtnName } from '$lib/stores/helperStores';
 	import PageHeader from '$components/app-layout/PageHeader.svelte';
-	import { decksDndList, decksListContainer, decksScrollContainer } from '$lib/stores/decksStores';
+	import {
+		decksDndList,
+		decksListContainer,
+		decksScrollContainer
+	} from '$lib/stores/decksStores';
 	import {
 		decksDndAfterUpdate,
 		decksDndOnDestroy,
@@ -84,7 +88,7 @@
 	<PageHeader
 		pageName={'Decks'}
 		orderBy={$settings.decksOrderBy}
-		orderByOptions={['Custom', 'Name']}
+		orderByOptions={decksOrderByOptions}
 	/>
 	<div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
 		{#each $seedsData.decks as deck (deck.id)}
