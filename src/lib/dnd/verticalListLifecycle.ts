@@ -5,6 +5,7 @@ import {
 } from '$lib/dnd/verticalList';
 import { settings } from '$lib/stores/dbStores';
 import {
+	dndDisabled,
 	dndList,
 	dndListContainer,
 	dndReorderDbData,
@@ -125,6 +126,12 @@ function fallbackSyncDnd() {
 function updateSortDndData() {
 	const dataSort: SortDndData[] = [];
 	const items = list.getItems();
+
+	if (sortMethod === 'Custom') {
+		dndDisabled.set(false);
+	} else {
+		dndDisabled.set(true);
+	}
 
 	for (let i = 0; i < items.length; i++) {
 		if (sortMethod === 'Custom') {

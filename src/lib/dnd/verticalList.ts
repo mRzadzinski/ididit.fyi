@@ -1,4 +1,6 @@
+import { dndDisabled } from '$lib/stores/dndStores';
 import Muuri from 'muuri';
+import { get } from 'svelte/store';
 
 export function initializeDndVerticalList(
 	listContainer: HTMLElement,
@@ -11,6 +13,10 @@ export function initializeDndVerticalList(
 		itemDraggingClass: 'drag-item',
 		dragContainer: scrollContainer,
 		dragStartPredicate: (item, e) => {
+			if (get(dndDisabled)) {
+				return false;
+			}
+
 			const htmlEl = item.getElement();
 
 			if (e.isFinal) {
