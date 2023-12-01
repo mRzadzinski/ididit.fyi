@@ -6,7 +6,7 @@
 	export let pageName: string;
 	export let orderBy: string;
 	export let orderByOptions: string[];
-	export let orderBySettingsProp: string;
+	export let whereToUpdateOrder: string;
 	export let breadcrumbs = false;
 
 	let selectOrderInput: HTMLSelectElement;
@@ -34,7 +34,7 @@
 			<select
 				class="select select-bordered select-xs max-w-xs self-end pl-3 pr-6 bg-white"
 				bind:this={selectOrderInput}
-				on:input={() => updateSortMethod(orderBySettingsProp, selectOrderInput.value)}
+				on:input={() => updateSortMethod(whereToUpdateOrder, selectOrderInput.value)}
 			>
 				{#each orderByOptions as option}
 					<option>{option}</option>

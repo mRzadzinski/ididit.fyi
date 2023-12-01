@@ -18,7 +18,7 @@
 	pageName="Seeds"
 	orderBy={$settings.seedsOrderBy}
 	orderByOptions={seedsOrderByOptions}
-	orderBySettingsProp="seedsOrderBy"
+	whereToUpdateOrder="seeds"
 	breadcrumbs={true}
 >
 	<li><a href="/app/seeds">Decks</a></li>

@@ -84,7 +84,7 @@
 	pageName="Decks"
 	orderBy={$settings.decksOrderBy}
 	orderByOptions={decksOrderByOptions}
-	orderBySettingsProp="decksOrderBy"
+	whereToUpdateOrder="decks"
 />
 <div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
 	{#each $seedsData.decks as deck (deck.id)}
