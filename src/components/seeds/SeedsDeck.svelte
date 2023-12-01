@@ -6,6 +6,7 @@
 	import type Muuri from 'muuri';
 	import { seedsData, syncInProgress } from '$lib/stores/dbStores';
 	import { disableNewItemBtn } from '$lib/stores/helperStores';
+	import { goto } from '$app/navigation';
 
 	export let deck: SeedsDeckType;
 	export let newDeck = false;
@@ -94,7 +95,7 @@
 	onMount(() => {
 		if (newDeck) {
 			disableNewItemBtn.set(true);
-			// Handle new deck animation - apply changes asynchronously
+			// Handle new deck animation
 			setTimeout(() => {
 				// Set edit mode asynchronously to trigger conditional class changes
 				newDeckInitEditMode = false;
@@ -103,7 +104,7 @@
 				// Refresh dndList constantly for 1 sec to enable animation in case of edit mode enabled for new deck on page load
 				let counter = 0;
 				const intervalID = setInterval(() => {
-					// When going to another page, interval runs indefinitely - terminate loop when input is destroyed
+					// When going to another page, interval isn't cleared - terminate loop when input is destroyed
 					if (counter > 1000 || !nameInput) {
 						clearInterval(intervalID);
 						return;
@@ -131,11 +132,19 @@
 </script>
 
 <div
-	class="absolute mb-4 w-full z-0 {editMode ? 'h-24' : ''}"
+	class="absolute mb-4 w-full z-0 {editMode ? 'h-24 cursor-default' : ''}"
 	data-order={deck.order}
 	data-edit-mode={editMode}
 	id={deck.id}
 	bind:this={dndItem}
+	role="button"
+	tabindex="0"
+	on:click={() => {
+		if (!editMode) goto(`/app/seeds/${deck.id}`);
+	}}
+	on:keypress={() => {
+		if (!editMode) goto(`/app/seeds/${deck.id}`);
+	}}
 >
 	<div
 		class="flex justify-between items-center min-w-[496px] w-full h-10 pl-8 pr-1 rounded-3xl custom-transitions
@@ -159,7 +168,7 @@
 				on:submit|preventDefault={async () => {
 					// Enable sync animation on start of exit-edit-mode animation
 					// updateDeck disables sync animation when successful
-					syncInProgress.set(true)
+					syncInProgress.set(true);
 					handleToggleEdit('disable');
 					if (newName !== deck.name || newLimit !== deck.dailyLimit) {
 						// Wait for animation end
@@ -195,7 +204,9 @@
 						<button
 							class="btn btn-sm bg-white"
 							type="reset"
-							on:click={() => {
+							on:click={(e) => {
+								e.stopPropagation();
+
 								// Delete new deck without name on cancel
 								if (newDeck && deck.name === '') {
 									handleDeleteDeck(dndItem, deck.id);

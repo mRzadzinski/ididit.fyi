@@ -10,7 +10,14 @@
 	}>('handleDeleteDeck');
 </script>
 
-<div class="flex items-center">
+<!-- Stop propagation to avoid triggering parent's click handler -->
+<div
+	class="flex items-center"
+	role="button"
+	tabindex="0"
+	on:click={(e) => e.stopPropagation()}
+	on:keypress={(e) => e.stopPropagation()}
+>
 	<ul class="menu min-w-fit flex p-0">
 		<li class="flex items-center">
 			<div
@@ -30,10 +37,12 @@
 							<div
 								role="button"
 								tabindex="0"
-								on:click={() => {
+								on:click={(e) => {
+									e.stopPropagation()
 									handleToggleEdit('enable');
 								}}
-								on:keydown={() => {
+								on:keydown={(e) => {
+									e.stopPropagation()
 									handleToggleEdit('enable');
 								}}
 							>
