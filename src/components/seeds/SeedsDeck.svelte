@@ -44,6 +44,7 @@
 	}
 
 	function validateDeckName() {
+		console.log(nameInput.value.length);
 		// Ensure deck name is not empty
 		if (newName === '') {
 			nameInput.setCustomValidity(`Name your deck.`);
@@ -158,8 +159,10 @@
 		on:mouseleave={() => toggleDeckOptionsVisibility(false)}
 	>
 		{#if !editMode}
-			<span class="text-sm">{deck.name}</span>
-			{#if showDeckOptions}
+			<span class="text-sm max-w-full whitespace-nowrap text-ellipsis truncate mr-8"
+				>{deck.name}</span
+			>
+			<div class={showDeckOptions ? '' : 'invisible'}>
 				<ThreeDotsDropdown
 					itemId={deck.id}
 					options={[
@@ -173,7 +176,7 @@
 						}
 					]}
 				/>
-			{/if}
+			</div>
 		{:else}
 			<form
 				class="flex flex-col gap-2 w-full"
@@ -195,6 +198,7 @@
 					class="input input-sm input-bordered w-full max-w-xs rounded-lg"
 					type="text"
 					placeholder="Deck name"
+					maxlength="100"
 					bind:value={newName}
 					bind:this={nameInput}
 					on:input={validateDeckName}
@@ -207,6 +211,7 @@
 							id="daily-review-limit-input"
 							type="number"
 							min="0"
+							max="9999"
 							bind:value={newLimit}
 							on:change={validateDeckName}
 						/>
