@@ -1,13 +1,10 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
+	import { handleDeleteItem } from '$lib/stores/helperStores';
 	import VerticalDots from '~icons/heroicons-outline/dots-vertical';
 
-	export let deckId: string;
-	export let dndItem: HTMLElement;
+	export let itemId: string;
+	export let dndItem: HTMLElement = document.createElement('placeholder');
 	export let handleToggleEdit: (action: string) => void;
-	const { handleDeleteDeck } = getContext<{
-		handleDeleteDeck: (dndItem: HTMLElement, itemId: string) => void;
-	}>('handleDeleteDeck');
 </script>
 
 <!-- Stop propagation to avoid triggering parent's click handler -->
@@ -22,13 +19,13 @@
 		<li class="flex items-center">
 			<div
 				class="p-0 w-7 h-7 flex justify-center items-center rounded-full"
-				id="menu-dropdown-{deckId}"
+				id="menu-dropdown-{itemId}"
 			>
 				<div class="dropdown dropdown-top dropdown-end w-full h-full">
 					<label
 						class="w-full h-full flex items-center justify-center z-[0]"
 						tabindex="-1"
-						for="menu-dropdown-{deckId}"
+						for="menu-dropdown-{itemId}"
 					>
 						<VerticalDots style="font-size: .75rem;" />
 					</label>
@@ -38,11 +35,11 @@
 								role="button"
 								tabindex="0"
 								on:click={(e) => {
-									e.stopPropagation()
+									e.stopPropagation();
 									handleToggleEdit('enable');
 								}}
 								on:keydown={(e) => {
-									e.stopPropagation()
+									e.stopPropagation();
 									handleToggleEdit('enable');
 								}}
 							>
@@ -53,8 +50,8 @@
 							<div
 								role="button"
 								tabindex="0"
-								on:click={() => handleDeleteDeck(dndItem, deckId)}
-								on:keydown={() => handleDeleteDeck(dndItem, deckId)}
+								on:click={() => $handleDeleteItem(itemId, dndItem)}
+								on:keydown={() => $handleDeleteItem(itemId, dndItem)}
 							>
 								Delete
 							</div>

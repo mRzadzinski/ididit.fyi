@@ -3,12 +3,17 @@
 
 <script lang="ts">
 	import SeedsDeck from '$components/seeds/SeedsDeck.svelte';
-	import { seedsData, settings } from '$lib/stores/dbStores';
-	import { afterUpdate, onDestroy, onMount, setContext } from 'svelte';
-	import { createDeck, deckFactory, decksOrderByOptions, deleteDeck, fillDocs } from './decksLogic';
-	import { addNewItem, disableNewItemBtn, newItemBtnName } from '$lib/stores/helperStores';
 	import PageHeader from '$components/app-layout/PageHeader.svelte';
 	import { decksDndList, decksListContainer, decksScrollContainer } from '$lib/stores/decksStores';
+	import { seedsData, settings } from '$lib/stores/dbStores';
+	import { afterUpdate, onDestroy, onMount } from 'svelte';
+	import { createDeck, deckFactory, decksOrderByOptions, deleteDeck, fillDocs } from './decksLogic';
+	import {
+		addNewItem,
+		disableNewItemBtn,
+		handleDeleteItem,
+		newItemBtnName
+	} from '$lib/stores/helperStores';
 	import {
 		decksDndAfterUpdate,
 		decksDndOnDestroy,
@@ -31,10 +36,6 @@
 		}
 	}
 
-	setContext('handleDeleteDeck', {
-		handleDeleteDeck
-	});
-
 	function handleCreateDeck() {
 		newDeck = deckFactory();
 		newDeckId = newDeck.id;
@@ -43,7 +44,7 @@
 		createDeck(newDeck);
 	}
 
-	function handleDeleteDeck(dndItem: HTMLElement, itemId: string) {
+	function handleDeleteDeck(itemId: string, dndItem: HTMLElement) {
 		// Removing dnd item first before modifying data, to avoid duplicated HTMLelement from Muuri
 		$decksDndList.remove($decksDndList.getItems(dndItem), { removeElements: true });
 		deleteDeck(itemId);
@@ -61,6 +62,7 @@
 	onMount(() => {
 		addNewItem.set(handleCreateDeck);
 		newItemBtnName.set('Deck');
+		handleDeleteItem.set(handleDeleteDeck);
 
 		if (scrollContainer) decksScrollContainer.set(scrollContainer);
 		decksListContainer.set(listContainer);
@@ -75,6 +77,7 @@
 		decksDndOnDestroy();
 		newItemBtnName.set('');
 		disableNewItemBtn.set(false);
+		handleDeleteItem.set(() => {});
 		// fillDocs();
 	});
 </script>
@@ -93,19 +96,12 @@
 				{deck}
 				dndList={$decksDndList}
 				{manageEditedDeckId}
-				{handleDeleteDeck}
 				{editedDeckId}
 				newDeck={true}
 			/>
 			{(newDeckId = '')}
 		{:else}
-			<SeedsDeck
-				{deck}
-				dndList={$decksDndList}
-				{manageEditedDeckId}
-				{handleDeleteDeck}
-				{editedDeckId}
-			/>
+			<SeedsDeck {deck} dndList={$decksDndList} {manageEditedDeckId} {editedDeckId} />
 		{/if}
 	{/each}
 </div>

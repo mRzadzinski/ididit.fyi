@@ -2,10 +2,10 @@
 	import { cloneDeep } from 'lodash';
 	import { updateDeck } from '../../routes/app/seeds/decksLogic';
 	import { beforeUpdate, onMount } from 'svelte';
-	import DeckOptions from './DeckOptions.svelte';
+	import ThreeDotsDropdown from '../common/ThreeDotsDropdown.svelte';
 	import type Muuri from 'muuri';
 	import { seedsData, syncInProgress } from '$lib/stores/dbStores';
-	import { disableNewItemBtn } from '$lib/stores/helperStores';
+	import { disableNewItemBtn, handleDeleteItem } from '$lib/stores/helperStores';
 	import { goto } from '$app/navigation';
 
 	export let deck: SeedsDeckType;
@@ -13,7 +13,6 @@
 	export let editedDeckId: string;
 	export let dndList: Muuri;
 	export let manageEditedDeckId: (action: string, id: string) => void;
-	export let handleDeleteDeck: (dndItem: HTMLElement, itemId: string) => void;
 
 	let dndItem: HTMLElement;
 	let nameInput: HTMLInputElement;
@@ -160,7 +159,7 @@
 		{#if !editMode}
 			<span class="text-sm">{deck.name}</span>
 			{#if showDeckOptions}
-				<DeckOptions deckId={deck.id} {dndItem} {handleToggleEdit} />
+				<ThreeDotsDropdown itemId={deck.id} {dndItem} {handleToggleEdit} />
 			{/if}
 		{:else}
 			<form
@@ -209,7 +208,7 @@
 
 								// Delete new deck without name on cancel
 								if (newDeck && deck.name === '') {
-									handleDeleteDeck(dndItem, deck.id);
+									$handleDeleteItem(deck.id, dndItem);
 								} else {
 									cancelChanges();
 								}
