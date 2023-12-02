@@ -6,4 +6,4 @@ export const whereDndIsActive = writable<string>('decks');
 export const dndList = writable<Muuri>();
 export const dndListContainer = writable<HTMLElement>();
 export const dndReorderDbData = writable<(reorderData: DndReorderData[]) => void>();
-export const dndDisabled = writable<boolean>()
+export const dndDisabled = writable<boolean>();

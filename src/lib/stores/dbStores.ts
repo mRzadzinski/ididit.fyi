@@ -37,7 +37,7 @@ onAuthStateChanged(auth, async (currentUser) => {
 		// Get user docs and listen to changes
 		const q = query(collection(db, 'users'), where('uid', '==', currentUser.uid));
 		unsubscribeDocs = onSnapshot(q, (querySnapshot) => {
-			const docs: UserDoc[] = get(userDocs);
+			let docs: UserDoc[] = get(userDocs);
 
 			// See what changed
 			querySnapshot.docChanges().forEach((change) => {
@@ -66,7 +66,7 @@ onAuthStateChanged(auth, async (currentUser) => {
 				}
 				// Remove
 				if (change.type === 'removed') {
-					docs.filter((doc) => doc.docID !== change.doc.id);
+					docs = docs.filter((doc) => doc.docID !== change.doc.id);
 					// console.log('Removed: ', change.doc.id);
 				}
 			});
