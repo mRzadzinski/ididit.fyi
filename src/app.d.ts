@@ -27,15 +27,17 @@ declare global {
 		docID: string;
 	}
 
+	interface Seed {
+		content: string;
+		author: string;
+		source: string;
+	}
+
 	interface SeedsDeckType {
 		id: string;
 		name: string;
 		dailyLimit: number;
 		order: number;
-	}
-
-	interface Seeds {
-		decks: SeedsDeckType[];
 		seeds: object[];
 	}
 

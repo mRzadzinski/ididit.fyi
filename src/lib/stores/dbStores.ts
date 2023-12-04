@@ -12,19 +12,15 @@ export const subscription = derived(userDocs, ($userDocs) => {
 	for (let i = 0; i < $userDocs.length; i++) {
 		if ($userDocs[i].doc.settings) {
 			data = $userDocs[i].doc.subscription;
-			settings.set($userDocs[i].doc.settings)
+			settings.set($userDocs[i].doc.settings);
 		}
 	}
 	return data;
 });
-export const seedsData = derived(userDocs, ($userDocs) => {
-	const data: Seeds = {
-		decks: [],
-		seeds: []
-	};
+export const seedsDecks = derived(userDocs, ($userDocs) => {
+	let data: SeedsDeckType[] = [];
 	for (let i = 0; i < $userDocs.length; i++) {
-		data.decks = data.decks.concat($userDocs[i].doc.seedsData.decks);
-		data.seeds = data.seeds.concat($userDocs[i].doc.seedsData.seeds);
+		data = data.concat($userDocs[i].doc.seedsDecks);
 	}
 	return data;
 });
