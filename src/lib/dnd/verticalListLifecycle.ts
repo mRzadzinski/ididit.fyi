@@ -127,20 +127,20 @@ function updateSortDndData() {
 	const dataSort: SortDndData[] = [];
 	const items = list.getItems();
 
-	if (sortMethod === 'Custom') {
+	if (sortMethod === 'custom') {
 		dndDisabled.set(false);
 	} else {
 		dndDisabled.set(true);
 	}
 
 	for (let i = 0; i < items.length; i++) {
-		if (sortMethod === 'Custom') {
+		if (sortMethod === 'custom') {
 			const id = items[i].getElement()?.id;
 			const data = items[i].getElement()?.getAttribute('data-order');
 			if (id && data) {
 				dataSort.push({ id, data: parseInt(data) });
 			}
-		} else if (sortMethod === 'Name') {
+		} else if (sortMethod === 'a-z') {
 			const id = items[i].getElement()?.id;
 			const data = items[i].getElement()?.children[0].children[0].textContent;
 			if (id && data) {

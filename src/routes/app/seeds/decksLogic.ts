@@ -9,7 +9,10 @@ import { cloneDeep, isEqual } from 'lodash';
 import { get } from 'svelte/store';
 import type { DndReorderData } from '../../../lib/dnd/verticalListLifecycle';
 
-export const decksOrderByOptions = ['Custom', 'Name'];
+export const decksOrderByOptions = [
+	{ name: 'Custom', value: 'custom' },
+	{ name: 'A - z', value: 'a-z' }
+];
 
 export async function createDeck(newDeck: SeedsDeckType) {
 	const batch = writeBatch(db);

@@ -5,7 +5,7 @@
 
 	export let pageName: string;
 	export let orderBy: string;
-	export let orderByOptions: string[];
+	export let orderByOptions: { name: string; value: string }[];
 	export let whereToUpdateOrder: string;
 	export let breadcrumbs = false;
 
@@ -37,7 +37,7 @@
 				on:input={() => updateSortMethod(whereToUpdateOrder, selectOrderInput.value)}
 			>
 				{#each orderByOptions as option}
-					<option>{option}</option>
+					<option value={option.value}>{option.name}</option>
 				{/each}
 			</select>
 		</div>

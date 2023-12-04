@@ -128,11 +128,11 @@ export function sortDndVerticalList(dndList: Muuri, sortMethod: string, sortData
 			}
 		}
 
-		if (sortMethod === 'Custom') {
+		if (sortMethod === 'custom') {
 			if (typeof dataA === 'number' && typeof dataB === 'number') {
 				return dataA - dataB;
 			}
-		} else if (sortMethod === 'Name') {
+		} else if (sortMethod === 'a-z') {
 			if (typeof dataA === 'string' && typeof dataB === 'string') {
 				return dataA.localeCompare(dataB);
 			}
