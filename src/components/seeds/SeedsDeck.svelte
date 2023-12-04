@@ -197,7 +197,7 @@
 					class="input input-sm input-bordered w-full max-w-xs rounded-lg"
 					type="text"
 					placeholder="Deck name"
-					maxlength="60"
+					maxlength="200"
 					bind:value={newName}
 					bind:this={nameInput}
 					on:input={validateDeckName}

@@ -28,6 +28,7 @@ declare global {
 	}
 
 	interface Seed {
+		id: string;
 		content: string;
 		author: string;
 		source: string;
@@ -38,7 +39,7 @@ declare global {
 		name: string;
 		dailyLimit: number;
 		order: number;
-		seeds: object[];
+		seeds: Seed[];
 	}
 
 	interface Subscription {

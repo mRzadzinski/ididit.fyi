@@ -4,9 +4,20 @@
 	import { addNewItem, newItemBtnName } from '$lib/stores/helperStores';
 	import PageHeader from '$components/app-layout/PageHeader.svelte';
 	import { seedsOrderByOptions } from './seedsLogic';
-	import { settings } from '$lib/stores/dbStores';
+	import { seedsDecks, settings, userDocs } from '$lib/stores/dbStores';
+	import Seed from '$components/seeds/Seed.svelte';
 
 	export let data: DeckData;
+	let seeds: Seed[];
+
+	// Get seeds array from user data
+	$: for (let i = 0; i < $seedsDecks.length; i++) {
+		if ($seedsDecks[i].id === data.deckId) {
+			seeds = $seedsDecks[i].seeds;
+		}
+	}
+
+
 
 	onMount(() => {
 		addNewItem.set(() => {});
@@ -24,4 +35,7 @@
 	<li><a href="/app/seeds">Decks</a></li>
 	<li>{data.deckName}</li>
 </PageHeader>
-<h1>{data.deckId}</h1>
+
+{#each seeds as seed (seed.id)}
+ <Seed {seed} />
+{/each}
