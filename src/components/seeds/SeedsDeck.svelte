@@ -147,7 +147,7 @@
 	}}
 >
 	<div
-		class="flex justify-between items-center min-w-[496px] w-full h-10 pl-8 pr-1 rounded-3xl custom-transitions
+		class="flex justify-between items-center min-w-[496px] w-full h-10 pl-8 pr-1 rounded-3xl list-el-transitions
 		{newDeck && newDeckInitEditMode ? 'h-0' : ''} 
 		{otherDeckInEditMode ? '' : 'hover:bg-[#FFCD4C]'}
 		{editMode ? 'h-24 overflow-hidden bg-[#FFCD4C]' : 'bg-[#FEF6DE]'}"
@@ -250,10 +250,6 @@
 </div>
 
 <style>
-	.custom-transitions {
-		transition: height 300ms ease, background-color 75ms ease-in;
-	}
-
 	.btn {
 		width: 5.5rem;
 		font-size: small;
