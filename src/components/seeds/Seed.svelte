@@ -1,16 +1,25 @@
 <script lang="ts">
 	import ThreeDotsDropdown from '$components/common/ThreeDotsDropdown.svelte';
-	import { afterUpdate } from 'svelte';
+	import { afterUpdate, onDestroy, onMount } from 'svelte';
+	import { expandedSeedId } from '../../routes/app/seeds/[deck_id]/seedsLogic';
 
 	export let seed: SeedType;
-	export let expandedSeedId: string;
-	export let manageExpandedSeedId: (action: string, id: string) => void;
 
 	let seedHtml: HTMLElement;
 	let seedContentHtml: HTMLElement;
 	let showSeedOptions = false;
 	let expandedMode = false;
 	let otherSeedInExpandedMode: boolean;
+	let initialHeight: number;
+	let fullHeight: number;
+
+	// Save which seed is in expandedMode
+	$: if ($expandedSeedId.length > 0 && $expandedSeedId !== seed.id) {
+		otherSeedInExpandedMode = true;
+		expandedMode = false;
+	} else {
+		otherSeedInExpandedMode = false;
+	}
 
 	function toggleSeedOptionsVisibility(bool: boolean) {
 		// Timeout to sync with highlight animation
@@ -25,20 +34,40 @@
 		}
 	}
 
+	onMount(() => {
+		initialHeight = seedHtml.scrollHeight;
+	});
+
 	afterUpdate(() => {
-		if (expandedSeedId.length > 0 && expandedSeedId !== seed.id) {
-			otherSeedInExpandedMode = true;
-			expandedMode = false;
+		// Manage seed height to handle animation
+		if (expandedMode) {
+			// Get height of hidden content
+			fullHeight = seedContentHtml.scrollHeight;
+
+			// Add margins to it
+			let newHeight = fullHeight;
+			newHeight += parseInt(
+				window.getComputedStyle(seedContentHtml).getPropertyValue('margin-top')
+			);
+			newHeight += parseInt(
+				window.getComputedStyle(seedContentHtml).getPropertyValue('margin-bottom')
+			);
+			// Update
+			seedHtml.style.height = newHeight.toString() + 'px';
 		} else {
-			otherSeedInExpandedMode = false;
+			seedHtml.style.height = initialHeight.toString() + 'px';
 		}
+	});
+
+	onDestroy(() => {
+		expandedSeedId.set('');
 	});
 </script>
 
 <div
-	class="flex justify-between items-center min-w-[496px] w-[100%] pl-8 mb-1 rounded-3xl bg-[#FEF6DE] overflow-hidden
+	class="flex justify-between items-center min-w-[496px] w-[100%] pl-8 mb-1 rounded-3xl bg-[#FEF6DE] overflow-hidden height-transition
 	{otherSeedInExpandedMode ? '' : 'hover:bg-[#FFCD4C]'}
-	{expandedMode ? 'bg-[#FFCD4C] pr-1 cursor-default' : 'h-8 cursor-pointer'}"
+	{expandedMode ? `bg-[#FFCD4C] pr-1 cursor-default` : 'cursor-pointer'}"
 	role="button"
 	tabindex="0"
 	bind:this={seedHtml}
@@ -46,11 +75,11 @@
 	on:mouseleave={() => (showSeedOptions = false)}
 	on:click={() => {
 		expandedMode = true;
-		manageExpandedSeedId('enable', seed.id);
+		expandedSeedId.set(seed.id);
 	}}
 	on:keydown={() => {
 		expandedMode = true;
-		manageExpandedSeedId('enable', seed.id);
+		expandedSeedId.set(seed.id);
 	}}
 >
 	<div class="text-xs mr-8 {expandedMode ? 'my-4' : 'line-clamp-1'}" bind:this={seedContentHtml}>
@@ -86,7 +115,7 @@
 
 <style>
 	.height-transition {
-		transition: height 300ms ease-out;
+		transition: all 250ms ease-out;
 	}
 
 	.color-transition {

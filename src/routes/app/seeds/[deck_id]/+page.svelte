@@ -3,14 +3,13 @@
 	import type { DeckData } from './+page';
 	import { addNewItem, newItemBtnName } from '$lib/stores/helperStores';
 	import PageHeader from '$components/app-layout/PageHeader.svelte';
-	import { seedsOrderByOptions } from './seedsLogic';
+	import { expandedSeedId, seedsOrderByOptions } from './seedsLogic';
 	import { seedsDecks, settings } from '$lib/stores/dbStores';
 	import Seed from '$components/seeds/Seed.svelte';
 
 	export let data: DeckData;
 
 	let seeds: SeedType[];
-	let expandedSeedId = '';
 
 	// Get seeds array from user data
 	$: for (let i = 0; i < $seedsDecks.length; i++) {
@@ -19,18 +18,10 @@
 		}
 	}
 
-	// Allow only one seed to be expanded
-	function manageExpandedSeedId(action: string, id: string) {
-		if (action === 'enable') {
-			expandedSeedId = id;
-		} else if (action === 'disable') {
-			expandedSeedId = '';
-		}
-	}
-
 	onMount(() => {
 		addNewItem.set(() => {});
 		newItemBtnName.set('Seed');
+		expandedSeedId.set('')
 	});
 </script>
 
@@ -46,5 +37,5 @@
 </PageHeader>
 
 {#each seeds as seed (seed.id)}
-	<Seed {seed} {expandedSeedId} {manageExpandedSeedId} />
+	<Seed {seed} />
 {/each}
