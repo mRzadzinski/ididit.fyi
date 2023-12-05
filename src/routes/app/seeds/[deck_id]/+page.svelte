@@ -10,7 +10,7 @@
 	export let data: DeckData;
 
 	let seeds: SeedType[];
-	let expandedSeedId = ''
+	let expandedSeedId = '';
 
 	// Get seeds array from user data
 	$: for (let i = 0; i < $seedsDecks.length; i++) {
@@ -19,8 +19,8 @@
 		}
 	}
 
-		// Allow only one seed to be expanded
-		function manageExpandedSeedId(action: string, id: string) {
+	// Allow only one seed to be expanded
+	function manageExpandedSeedId(action: string, id: string) {
 		if (action === 'enable') {
 			expandedSeedId = id;
 		} else if (action === 'disable') {
@@ -46,5 +46,5 @@
 </PageHeader>
 
 {#each seeds as seed (seed.id)}
- <Seed {seed} {expandedSeedId} {manageExpandedSeedId} />
+	<Seed {seed} {expandedSeedId} {manageExpandedSeedId} />
 {/each}

@@ -12,10 +12,6 @@ body {
 	z-index: 1;
 }
 
-.list-el-transitions {
-	transition: height 300ms ease, background-color 75ms ease-in;
-}
-
 .input {
 	background-color: white;
 }

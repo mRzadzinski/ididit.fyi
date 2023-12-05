@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ThreeDotsDropdown from '$components/common/ThreeDotsDropdown.svelte';
-	import { afterUpdate, beforeUpdate, onMount } from 'svelte';
+	import { afterUpdate } from 'svelte';
 
 	export let seed: SeedType;
 	export let expandedSeedId: string;
@@ -11,7 +11,6 @@
 	let showSeedOptions = false;
 	let expandedMode = false;
 	let otherSeedInExpandedMode: boolean;
-	let fullHeight: number;
 
 	function toggleSeedOptionsVisibility(bool: boolean) {
 		// Timeout to sync with highlight animation
@@ -30,28 +29,21 @@
 		if (expandedSeedId.length > 0 && expandedSeedId !== seed.id) {
 			otherSeedInExpandedMode = true;
 			expandedMode = false;
-			// toggleSeedOptionsVisibility(false);
 		} else {
 			otherSeedInExpandedMode = false;
 		}
 	});
-
-	// afterUpdate(() => {
-	// 	fullHeight = seedContentHtml.scrollHeight;
-	// });
 </script>
 
 <div
-	class="flex justify-between items-center min-w-[496px] w-[100%] pl-8 mb-1 rounded-3xl list-el-transitions bg-[#FEF6DE] cursor-pointer
+	class="flex justify-between items-center min-w-[496px] w-[100%] pl-8 mb-1 rounded-3xl bg-[#FEF6DE] overflow-hidden
 	{otherSeedInExpandedMode ? '' : 'hover:bg-[#FFCD4C]'}
-	{expandedMode ? `overflow-hidden py-4 bg-[#FFCD4C] pr-1` : 'h-8'}"
+	{expandedMode ? 'bg-[#FFCD4C] pr-1 cursor-default' : 'h-8 cursor-pointer'}"
 	role="button"
 	tabindex="0"
 	bind:this={seedHtml}
-	on:mouseenter={() => {
-		toggleSeedOptionsVisibility(true);
-	}}
-	on:mouseleave={() => toggleSeedOptionsVisibility(false)}
+	on:mouseenter={() => (showSeedOptions = true)}
+	on:mouseleave={() => (showSeedOptions = false)}
 	on:click={() => {
 		expandedMode = true;
 		manageExpandedSeedId('enable', seed.id);
@@ -61,14 +53,21 @@
 		manageExpandedSeedId('enable', seed.id);
 	}}
 >
-	<p class="text-xs mr-8 {expandedMode ? '' : 'line-clamp-1'}" bind:this={seedContentHtml}>
-		{seed.content}
+	<div class="text-xs mr-8 {expandedMode ? 'my-4' : 'line-clamp-1'}" bind:this={seedContentHtml}>
+		<span class="text-[0.78rem]">{seed.content}</span>
 		<br /><br />
-		{seed.author}
-		<br />
-		{seed.source}
-	</p>
-	<div class='scale-[85%] {showSeedOptions ? '' : 'invisible'} {expandedMode? 'self-end -mb-[0.6rem]' : ''}'>
+
+		<div class="custom-font-size italic opacity-60">
+			{seed.author}
+			<br />
+			{seed.source}
+		</div>
+	</div>
+	<div
+		class="scale-[85%] {showSeedOptions ? '' : 'invisible'} {expandedMode
+			? 'self-end mb-[0.3rem]'
+			: ''}"
+	>
 		<ThreeDotsDropdown
 			itemId={seed.id}
 			options={[
@@ -84,3 +83,18 @@
 		/>
 	</div>
 </div>
+
+<style>
+	.height-transition {
+		transition: height 300ms ease-out;
+	}
+
+	.color-transition {
+		transition: background-color 75ms ease-in;
+	}
+
+	.custom-font-size {
+		font-size: 0.73rem;
+		line-height: 0.95rem;
+	}
+</style>
