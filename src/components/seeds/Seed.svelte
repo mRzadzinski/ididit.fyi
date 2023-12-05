@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ThreeDotsDropdown from '$components/common/ThreeDotsDropdown.svelte';
 
-	export let seed: Seed;
+	export let seed: SeedType;
 
 	let showDeckOptions = false;
 

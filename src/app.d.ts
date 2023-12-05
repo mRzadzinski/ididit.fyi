@@ -27,7 +27,7 @@ declare global {
 		docID: string;
 	}
 
-	interface Seed {
+	interface SeedType {
 		id: string;
 		content: string;
 		author: string;
@@ -39,7 +39,7 @@ declare global {
 		name: string;
 		dailyLimit: number;
 		order: number;
-		seeds: Seed[];
+		seeds: SeedType[];
 	}
 
 	interface Subscription {

@@ -8,7 +8,7 @@
 	import Seed from '$components/seeds/Seed.svelte';
 
 	export let data: DeckData;
-	let seeds: Seed[];
+	let seeds: SeedType[];
 
 	// Get seeds array from user data
 	$: for (let i = 0; i < $seedsDecks.length; i++) {
