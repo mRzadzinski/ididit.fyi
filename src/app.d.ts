@@ -32,6 +32,7 @@ declare global {
 		content: string;
 		author: string;
 		source: string;
+		showEveryday: boolean;
 	}
 
 	interface SeedsDeckType {

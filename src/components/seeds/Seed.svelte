@@ -74,12 +74,24 @@
 	on:mouseenter={() => (showSeedOptions = true)}
 	on:mouseleave={() => (showSeedOptions = false)}
 	on:click={() => {
-		expandedMode = true;
-		expandedSeedId.set(seed.id);
+		const selection = window.getSelection()?.toString().length;
+
+		if (!expandedMode) {
+			expandedMode = true;
+			expandedSeedId.set(seed.id);
+		} else if (expandedMode && selection !== undefined && selection === 0) {
+			expandedMode = false;
+			expandedSeedId.set('');
+		}
 	}}
 	on:keydown={() => {
-		expandedMode = true;
-		expandedSeedId.set(seed.id);
+		if (!expandedMode) {
+			expandedMode = true;
+			expandedSeedId.set(seed.id);
+		} else {
+			expandedMode = false;
+			expandedSeedId.set('');
+		}
 	}}
 >
 	<div class="text-xs mr-8 {expandedMode ? 'my-4' : 'line-clamp-1'}" bind:this={seedContentHtml}>
@@ -93,27 +105,42 @@
 		</div>
 	</div>
 	<div
-		class="scale-[85%] {showSeedOptions ? '' : 'invisible'} {expandedMode
-			? 'self-end mb-[0.3rem]'
-			: ''}"
+		class="flex {showSeedOptions ? '' : 'invisible'} {expandedMode ? 'self-end mb-[0.3rem]' : ''}"
+		role="button"
+		tabindex="0"
+		on:click={(e) => e.stopImmediatePropagation()}
+		on:keydown={(e) => e.stopImmediatePropagation()}
 	>
-		<ThreeDotsDropdown
-			itemId={seed.id}
-			options={[
-				// {
-				// 	name: 'Edit',
-				// 	handlers: [() => handleToggleEdit('enable')]
-				// },
-				// {
-				// 	name: 'Delete',
-				// 	handlers: [() => handleDeleteDeck(deck.id, dndItem)]
-				// }
-			]}
+		<!-- class:unchecked={!seed.showEveryday} -->
+		<input
+			class="radio scale-[0.6] mt-[0.13rem] -mr-[0.2rem] checked:shadow-black"
+			type="radio"
+			name="radio-{seed.id}"
 		/>
+		<div class="scale-[85%]">
+			<ThreeDotsDropdown
+				itemId={seed.id}
+				options={[
+					// {
+					// 	name: 'Edit',
+					// 	handlers: [() => handleToggleEdit('enable')]
+					// },
+					// {
+					// 	name: 'Delete',
+					// 	handlers: [() => handleDeleteDeck(deck.id, dndItem)]
+					// }
+				]}
+			/>
+		</div>
 	</div>
 </div>
 
 <style>
+	.unchecked {
+		transform: scale(0.7);
+		border: white 2px solid;
+	}
+
 	.height-transition {
 		transition: all 250ms ease-out;
 	}
