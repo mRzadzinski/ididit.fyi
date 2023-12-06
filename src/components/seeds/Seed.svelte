@@ -7,8 +7,12 @@
 
 	let seedHtml: HTMLElement;
 	let seedContentHtml: HTMLElement;
+	let showEverydayToggleContainer: HTMLElement;
+	let dotsDropdown: HTMLElement;
+	let seedOptionsContainer: HTMLElement;
 	let showSeedOptions = false;
 	let expandedMode = false;
+	let showTooltip = false;
 	let otherSeedInExpandedMode: boolean;
 	let initialHeight: number;
 	let fullHeight: number;
@@ -17,21 +21,9 @@
 	$: if ($expandedSeedId.length > 0 && $expandedSeedId !== seed.id) {
 		otherSeedInExpandedMode = true;
 		expandedMode = false;
+		showSeedOptions = false;
 	} else {
 		otherSeedInExpandedMode = false;
-	}
-
-	function toggleSeedOptionsVisibility(bool: boolean) {
-		// Timeout to sync with highlight animation
-		if (bool) {
-			setTimeout(() => {
-				showSeedOptions = true;
-			}, 75);
-		} else {
-			setTimeout(() => {
-				showSeedOptions = false;
-			}, 75);
-		}
 	}
 
 	onMount(() => {
@@ -65,31 +57,43 @@
 </script>
 
 <div
-	class="flex justify-between items-center min-w-[496px] w-[100%] pl-8 mb-1 rounded-3xl bg-[#FEF6DE] overflow-hidden height-transition
+	class="flex justify-between items-center min-w-[496px] w-[100%] pl-8 mb-1 h-8 rounded-3xl bg-[#FEF6DE] overflow-hidden custom-transition
 	{otherSeedInExpandedMode ? '' : 'hover:bg-[#FFCD4C]'}
 	{expandedMode ? `bg-[#FFCD4C] pr-1 cursor-default` : 'cursor-pointer'}"
 	role="button"
 	tabindex="0"
 	bind:this={seedHtml}
-	on:mouseenter={() => (showSeedOptions = true)}
-	on:mouseleave={() => (showSeedOptions = false)}
+	on:mouseenter={() => {
+		if (!otherSeedInExpandedMode) {
+			showSeedOptions = true;
+		}
+	}}
+	on:mouseleave={() => {
+		if (!expandedMode) {
+			showSeedOptions = false;
+		}
+	}}
 	on:click={() => {
 		const selection = window.getSelection()?.toString().length;
 
 		if (!expandedMode) {
 			expandedMode = true;
+			showSeedOptions = true;
 			expandedSeedId.set(seed.id);
 		} else if (expandedMode && selection !== undefined && selection === 0) {
 			expandedMode = false;
+			showSeedOptions = false;
 			expandedSeedId.set('');
 		}
 	}}
 	on:keydown={() => {
 		if (!expandedMode) {
 			expandedMode = true;
+			showSeedOptions = true;
 			expandedSeedId.set(seed.id);
 		} else {
 			expandedMode = false;
+			showSeedOptions = false;
 			expandedSeedId.set('');
 		}
 	}}
@@ -105,19 +109,39 @@
 		</div>
 	</div>
 	<div
-		class="flex {showSeedOptions ? '' : 'invisible'} {expandedMode ? 'self-end mb-[0.3rem]' : ''}"
+		class="relative flex items-center gap-[0.1rem]
+		{showSeedOptions ? '' : 'invisible'} 
+		{expandedMode ? 'self-end mb-[0.3rem]' : ''}"
 		role="button"
 		tabindex="0"
 		on:click={(e) => e.stopImmediatePropagation()}
 		on:keydown={(e) => e.stopImmediatePropagation()}
+		bind:this={seedOptionsContainer}
 	>
-		<!-- class:unchecked={!seed.showEveryday} -->
-		<input
-			class="radio scale-[0.6] mt-[0.13rem] -mr-[0.2rem] checked:shadow-black"
-			type="radio"
-			name="radio-{seed.id}"
-		/>
-		<div class="scale-[85%]">
+		<!-- <div
+			class="tooltip tooltip-left {showTooltip ? 'visible' : 'invisible'} transition-all duration-300"
+			data-tip="Toggle: show everyday in Daily Review"
+			
+		/> -->
+		<div class="absolute bg-green-600 right-10">hello</div>
+		<div
+		class="w-3 h-3 rounded-full {seed.showEveryday
+			? 'visible'
+			: ''}"
+		class:unchecked={!seed.showEveryday}
+		class:checked-no-options={seed.showEveryday && !showSeedOptions}
+		class:checked-with-options={seed.showEveryday && showSeedOptions}
+		role="button"
+		tabindex="0"
+		on:mouseenter={() => {
+			setTimeout(() => {
+				showTooltip = true;
+			}, 1500);
+		}}
+		on:mouseleave={() => (showTooltip = false)}
+		bind:this={showEverydayToggleContainer}
+	/>
+		<div class="scale-[85%]" bind:this={dotsDropdown}>
 			<ThreeDotsDropdown
 				itemId={seed.id}
 				options={[
@@ -136,17 +160,28 @@
 </div>
 
 <style>
+	.tooltip:before,
+	.tooltip:after {
+		font-size: x-small;
+	}
+
 	.unchecked {
-		transform: scale(0.7);
-		border: white 2px solid;
+		width: 0.82rem;
+		height: 0.82rem;
+		border: solid 2px white;
+		background-color: none;
 	}
 
-	.height-transition {
+	.checked-with-options {
+		background-color: white;
+	}
+
+	.checked-no-options {
+		background-color: #ffcd4c;
+	}
+
+	.custom-transition {
 		transition: all 250ms ease-out;
-	}
-
-	.color-transition {
-		transition: background-color 75ms ease-in;
 	}
 
 	.custom-font-size {
