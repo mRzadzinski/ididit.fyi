@@ -149,7 +149,7 @@
 		>
 			Toggle: show every day in Daily Review
 		</div>
-		<div
+		<!-- <div
 			class="w-3 h-3 rounded-full {seed.showEveryday ? 'visible' : ''}"
 			class:unchecked={!seed.showEveryday}
 			class:checked-no-options={seed.showEveryday && !showSeedOptions}
@@ -169,7 +169,7 @@
 				toggleTooltip.style.display = 'none';
 			}}
 			bind:this={showEverydayToggleContainer}
-		/>
+		/> -->
 		<div class="scale-[85%]" bind:this={dotsDropdown}>
 			<ThreeDotsDropdown
 				itemId={seed.id}

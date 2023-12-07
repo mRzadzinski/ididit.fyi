@@ -13,24 +13,44 @@
 	class="fixed flex justify-center items-center w-screen h-screen bg-gray-500/60 z-10"
 	bind:this={modal}
 >
-	<div class="w-[36rem] h-[24rem] bg-[#FFCD4C] rounded-2xl">
+	<div class="w-[38rem] h-[24rem] p-5 bg-[#FFCD4C] rounded-2xl">
 		<div class="w-full">
-			<div>Content</div>
-			<textarea name="" id="" cols="30" rows="10" />
+			<label class="form-control">
+				<div class="label pt-0">
+					<span class="label-text text-xs">Content</span>
+				</div>
+				<textarea
+					class="textarea textarea-bordered h-40 rounded-lg border-gray-500 resize-none"
+					placeholder="New seed..."
+				/>
+			</label>
 		</div>
-		<div class="flex w-full">
-			<div>
-				<div>
-					<div>Author</div>
-					<input type="text" />
-				</div>
-				<div>
-					<div>Source</div>
-					<input type="text" />
-				</div>
-				<div><span>Show every day in Daily Review</span></div>
+		<div class="flex mt-4">
+			<div class="flex flex-col gap-[0.7rem] w-2/3">
+				<label class="form-control w-full max-w-xs">
+					<div class="label py-1">
+						<span class="label-text text-xs">Author</span>
+					</div>
+					<input
+						type="text"
+						placeholder="Author"
+						class="input input-xs input-bordered w-full max-w-xs rounded-lg border-gray-500"
+					/>
+				</label>
+				<label class="form-control w-full max-w-xs">
+					<div class="label py-1">
+						<span class="label-text text-xs">Source</span>
+					</div>
+					<input
+						type="text"
+						placeholder="Source"
+						class="input input-xs input-bordered w-full max-w-xs rounded-lg border-gray-500"
+					/>
+				</label>
+
+				<span class="text-xs mt-1">Show every day in Daily Review</span>
 			</div>
-			<div>
+			<div class="flex justify-end items-end">
 				<button class="btn">Cancel</button>
 				<button class="btn">Save</button>
 			</div>
