@@ -14,6 +14,7 @@
 	let showSeedOptions = false;
 	let expandedMode = false;
 	let showTooltip = false;
+	let seedHover = false;
 	let tooltipTimeout: NodeJS.Timeout;
 	let otherSeedInExpandedMode: boolean;
 	let initialHeight: number;
@@ -23,20 +24,30 @@
 	$: if ($expandedSeedId.length > 0 && $expandedSeedId !== seed.id) {
 		otherSeedInExpandedMode = true;
 		expandedMode = false;
-		// showSeedOptions = false;
+
+		// If expanded mode was disabled while mouse is inside element, options would disappear
+		if (!seedHover) {
+			showSeedOptions = false;
+		}
 	} else {
 		otherSeedInExpandedMode = false;
 	}
 
 	function handleSeedClick() {
 		const selection = window.getSelection()?.toString().length;
+
 		if (!expandedMode) {
 			expandedMode = true;
 			showSeedOptions = true;
 			expandedSeedId.set(seed.id);
-		} else if (expandedMode && selection !== undefined && selection === 0) {
+		}
+		// Don't allow seed to collapse when text is highlighted
+		else if (expandedMode && selection !== undefined && selection === 0) {
 			expandedMode = false;
-			showSeedOptions = false;
+			// If expanded mode was disabled while mouse is inside element, options would disappear
+			if (!seedHover) {
+				showSeedOptions = false;
+			}
 			expandedSeedId.set('');
 		}
 	}
@@ -72,18 +83,20 @@
 </script>
 
 <div
-	class="flex justify-between items-center min-w-[496px] w-[100%] pl-8 mb-1 h-8 rounded-3xl bg-[#FEF6DE] overflow-hidden custom-transition
+	class="flex justify-between items-center min-w-[496px] w-[100%] pl-8 mb-1 h-8 rounded-3xl overflow-hidden bg-[#FEF6DE] custom-transition
 	{otherSeedInExpandedMode ? '' : 'hover:bg-[#FFCD4C]'}
 	{expandedMode ? `bg-[#FFCD4C] pr-1 cursor-default` : 'cursor-pointer'}"
 	role="button"
 	tabindex="0"
 	bind:this={seedHtml}
 	on:mouseenter={() => {
+		seedHover = true;
 		if (!otherSeedInExpandedMode) {
 			showSeedOptions = true;
 		}
 	}}
 	on:mouseleave={() => {
+		seedHover = false;
 		if (!expandedMode) {
 			showSeedOptions = false;
 		}
@@ -95,10 +108,10 @@
 		handleSeedClick();
 	}}
 >
+	<!-- Constrain content to one line if not in expandedMode -->
 	<div class="text-xs mr-8 {expandedMode ? 'my-4' : 'line-clamp-1'}" bind:this={seedContentHtml}>
 		<span class="text-[0.78rem]">{seed.content}</span>
-		<br />
-		<br />
+		<br /><br />
 		<div class="author-source-font-size italic opacity-60">
 			{seed.author}
 			<br />
@@ -116,7 +129,7 @@
 		bind:this={seedOptionsContainer}
 	>
 		<div
-			class="absolute right-[2.85rem] hidden justify-center items-center text-[0.6rem] text-base-content h-6 w-[12.2rem] bg-base-100 rounded-lg cursor-default transition-all duration-300
+			class="absolute right-[2.85rem] hidden justify-center items-center text-[0.7rem] text-base-content h-6 w-56 bg-base-100 rounded-lg cursor-default transition-all duration-300
 			{showTooltip && showSeedOptions ? 'opacity-100' : 'opacity-0'}"
 			bind:this={toggleTooltip}
 		>
@@ -131,6 +144,7 @@
 			tabindex="0"
 			on:mouseenter={() => {
 				tooltipTimeout = setTimeout(() => {
+					// Invisible tooltip interferes with seed click handler, so it needs to be display:none before transitioning opacity
 					toggleTooltip.style.display = 'flex';
 					showTooltip = true;
 				}, 900);
