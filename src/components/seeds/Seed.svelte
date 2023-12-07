@@ -83,9 +83,9 @@
 </script>
 
 <div
-	class="flex justify-between items-center min-w-[496px] w-[100%] pl-8 mb-1 h-8 rounded-3xl overflow-hidden bg-[#FEF6DE] custom-transition
+	class="flex justify-between items-center min-w-[496px] w-[100%] pl-8 mb-1 h-8 rounded-3xl bg-[#FEF6DE] custom-transition
 	{otherSeedInExpandedMode ? '' : 'hover:bg-[#FFCD4C]'}
-	{expandedMode ? `bg-[#FFCD4C] pr-1 cursor-default` : 'cursor-pointer'}"
+	{expandedMode ? `bg-[#FFCD4C] pr-1 cursor-default overflow-hidden` : 'cursor-pointer'}"
 	role="button"
 	tabindex="0"
 	bind:this={seedHtml}
@@ -109,19 +109,27 @@
 	}}
 >
 	<!-- Constrain content to one line if not in expandedMode -->
-	<div class="text-xs mr-8 {expandedMode ? 'my-4' : 'line-clamp-1'}" bind:this={seedContentHtml}>
-		<span class="text-[0.78rem]">{seed.content}</span>
-		<br /><br />
+	<div
+		class="text-xs mr-8 w-full {expandedMode ? 'my-4' : 'line-clamp-1'}"
+		bind:this={seedContentHtml}
+	>
+		<span class="text-[0.78rem] w-full">{seed.content}</span>
 		<div class="author-source-font-size italic opacity-60">
-			{seed.author}
-			<br />
-			{seed.source}
+			{#if seed.author && expandedMode}
+				<br />
+				{seed.author}
+			{/if}
+			{#if seed.source}
+				<br />
+				{seed.source && expandedMode}
+			{/if}
 		</div>
 	</div>
+	<!-- Stay centered if not author or source -->
 	<div
 		class="relative flex items-center gap-[0.1rem] cursor-default
 		{showSeedOptions ? '' : 'invisible'} 
-		{expandedMode ? 'self-end mb-[0.3rem]' : ''}"
+		{expandedMode && (seed.author || seed.source) ? 'self-end mb-[0.3rem]' : ''}"
 		role="button"
 		tabindex="0"
 		on:click={(e) => e.stopImmediatePropagation()}
