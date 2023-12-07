@@ -137,7 +137,8 @@
 		bind:this={seedOptionsContainer}
 	>
 		<div
-			class="absolute right-[2.85rem] hidden justify-center items-center text-[0.7rem] text-base-content h-6 w-56 bg-base-100 rounded-lg cursor-default transition-all duration-300
+			class="absolute right-0 hidden justify-center items-center text-[0.7rem] text-base-300 h-6 w-60 bg-gray-600 rounded-full cursor-default transition-all duration-200
+			{expandedMode? 'bottom-6' : 'bottom-[1.90rem]'}
 			{showTooltip && showSeedOptions ? 'opacity-100' : 'opacity-0'}"
 			bind:this={toggleTooltip}
 		>
