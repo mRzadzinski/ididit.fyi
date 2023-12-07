@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { afterUpdate } from 'svelte';
-	import { changeDeckSortMethod } from '../../routes/app/seeds/decksLogic';
 	import { updateSortMethod } from '$lib/common-logic/commonLogic';
 
 	export let pageName: string;

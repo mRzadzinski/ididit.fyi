@@ -6,6 +6,7 @@
 	import { expandedSeedId, seedsOrderByOptions } from './seedsLogic';
 	import { seedsDecks, settings } from '$lib/stores/dbStores';
 	import Seed from '$components/seeds/Seed.svelte';
+	import SeedEditModal from '$components/seeds/SeedEditModal.svelte';
 
 	export let data: DeckData;
 
@@ -21,10 +22,11 @@
 	onMount(() => {
 		addNewItem.set(() => {});
 		newItemBtnName.set('Seed');
-		expandedSeedId.set('')
+		expandedSeedId.set('');
 	});
 </script>
 
+<SeedEditModal />
 <PageHeader
 	pageName="Seeds"
 	orderBy={$settings.seedsOrderBy}
