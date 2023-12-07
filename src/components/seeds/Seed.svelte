@@ -10,9 +10,11 @@
 	let showEverydayToggleContainer: HTMLElement;
 	let dotsDropdown: HTMLElement;
 	let seedOptionsContainer: HTMLElement;
+	let toggleTooltip: HTMLElement;
 	let showSeedOptions = false;
 	let expandedMode = false;
 	let showTooltip = false;
+	let tooltipTimeout: NodeJS.Timeout;
 	let otherSeedInExpandedMode: boolean;
 	let initialHeight: number;
 	let fullHeight: number;
@@ -21,9 +23,22 @@
 	$: if ($expandedSeedId.length > 0 && $expandedSeedId !== seed.id) {
 		otherSeedInExpandedMode = true;
 		expandedMode = false;
-		showSeedOptions = false;
+		// showSeedOptions = false;
 	} else {
 		otherSeedInExpandedMode = false;
+	}
+
+	function handleSeedClick() {
+		const selection = window.getSelection()?.toString().length;
+		if (!expandedMode) {
+			expandedMode = true;
+			showSeedOptions = true;
+			expandedSeedId.set(seed.id);
+		} else if (expandedMode && selection !== undefined && selection === 0) {
+			expandedMode = false;
+			showSeedOptions = false;
+			expandedSeedId.set('');
+		}
 	}
 
 	onMount(() => {
@@ -74,42 +89,24 @@
 		}
 	}}
 	on:click={() => {
-		const selection = window.getSelection()?.toString().length;
-
-		if (!expandedMode) {
-			expandedMode = true;
-			showSeedOptions = true;
-			expandedSeedId.set(seed.id);
-		} else if (expandedMode && selection !== undefined && selection === 0) {
-			expandedMode = false;
-			showSeedOptions = false;
-			expandedSeedId.set('');
-		}
+		handleSeedClick();
 	}}
 	on:keydown={() => {
-		if (!expandedMode) {
-			expandedMode = true;
-			showSeedOptions = true;
-			expandedSeedId.set(seed.id);
-		} else {
-			expandedMode = false;
-			showSeedOptions = false;
-			expandedSeedId.set('');
-		}
+		handleSeedClick();
 	}}
 >
 	<div class="text-xs mr-8 {expandedMode ? 'my-4' : 'line-clamp-1'}" bind:this={seedContentHtml}>
 		<span class="text-[0.78rem]">{seed.content}</span>
-		<br /><br />
-
-		<div class="custom-font-size italic opacity-60">
+		<br />
+		<br />
+		<div class="author-source-font-size italic opacity-60">
 			{seed.author}
 			<br />
 			{seed.source}
 		</div>
 	</div>
 	<div
-		class="relative flex items-center gap-[0.1rem]
+		class="relative flex items-center gap-[0.1rem] cursor-default
 		{showSeedOptions ? '' : 'invisible'} 
 		{expandedMode ? 'self-end mb-[0.3rem]' : ''}"
 		role="button"
@@ -118,41 +115,45 @@
 		on:keydown={(e) => e.stopImmediatePropagation()}
 		bind:this={seedOptionsContainer}
 	>
-		<!-- <div
-			class="tooltip tooltip-left {showTooltip ? 'visible' : 'invisible'} transition-all duration-300"
-			data-tip="Toggle: show everyday in Daily Review"
-			
-		/> -->
-		<div class="absolute bg-green-600 right-10">hello</div>
 		<div
-		class="w-3 h-3 rounded-full {seed.showEveryday
-			? 'visible'
-			: ''}"
-		class:unchecked={!seed.showEveryday}
-		class:checked-no-options={seed.showEveryday && !showSeedOptions}
-		class:checked-with-options={seed.showEveryday && showSeedOptions}
-		role="button"
-		tabindex="0"
-		on:mouseenter={() => {
-			setTimeout(() => {
-				showTooltip = true;
-			}, 1500);
-		}}
-		on:mouseleave={() => (showTooltip = false)}
-		bind:this={showEverydayToggleContainer}
-	/>
+			class="absolute right-[2.85rem] hidden justify-center items-center text-[0.6rem] text-base-content h-6 w-[12.2rem] bg-base-100 rounded-lg cursor-default transition-all duration-300
+			{showTooltip && showSeedOptions ? 'opacity-100' : 'opacity-0'}"
+			bind:this={toggleTooltip}
+		>
+			Toggle: show every day in Daily Review
+		</div>
+		<div
+			class="w-3 h-3 rounded-full {seed.showEveryday ? 'visible' : ''}"
+			class:unchecked={!seed.showEveryday}
+			class:checked-no-options={seed.showEveryday && !showSeedOptions}
+			class:checked-with-options={seed.showEveryday && showSeedOptions}
+			role="button"
+			tabindex="0"
+			on:mouseenter={() => {
+				tooltipTimeout = setTimeout(() => {
+					toggleTooltip.style.display = 'flex';
+					showTooltip = true;
+				}, 900);
+			}}
+			on:mouseleave={() => {
+				clearTimeout(tooltipTimeout);
+				showTooltip = false;
+				toggleTooltip.style.display = 'none';
+			}}
+			bind:this={showEverydayToggleContainer}
+		/>
 		<div class="scale-[85%]" bind:this={dotsDropdown}>
 			<ThreeDotsDropdown
 				itemId={seed.id}
 				options={[
-					// {
-					// 	name: 'Edit',
-					// 	handlers: [() => handleToggleEdit('enable')]
-					// },
-					// {
-					// 	name: 'Delete',
-					// 	handlers: [() => handleDeleteDeck(deck.id, dndItem)]
-					// }
+					{
+						name: 'Edit',
+						handlers: [() => {}]
+					},
+					{
+						name: 'Delete',
+						handlers: [() => {}]
+					}
 				]}
 			/>
 		</div>
@@ -160,11 +161,6 @@
 </div>
 
 <style>
-	.tooltip:before,
-	.tooltip:after {
-		font-size: x-small;
-	}
-
 	.unchecked {
 		width: 0.82rem;
 		height: 0.82rem;
@@ -184,7 +180,7 @@
 		transition: all 250ms ease-out;
 	}
 
-	.custom-font-size {
+	.author-source-font-size {
 		font-size: 0.73rem;
 		line-height: 0.95rem;
 	}
