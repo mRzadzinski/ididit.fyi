@@ -40,6 +40,11 @@
 			expandedMode = true;
 			showSeedOptions = true;
 			expandedSeedId.set(seed.id);
+
+			// Hide overflow only for duration of expand animation, otherwise options dropdown is clipped
+			setTimeout(() => {
+				seedHtml.classList.add('overflow-visible')
+			}, 300)
 		}
 		// Don't allow seed to collapse when text is highlighted
 		else if (expandedMode && selection !== undefined && selection === 0) {
