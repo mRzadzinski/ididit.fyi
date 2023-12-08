@@ -1,5 +1,18 @@
-<script>
+<script lang="ts">
 	import ToggleDot from '$components/common/ToggleDot.svelte';
+
+	let content = '';
+	let author = '';
+	let source = '';
+	let showEveryday = false;
+
+	function toggleShowEveryday() {
+		if (!showEveryday) {
+			showEveryday = true;
+		} else {
+			showEveryday = false;
+		}
+	}
 </script>
 
 <div class="w-[40rem] h-[24rem] p-5 bg-[#FFCD4C] rounded-2xl">
@@ -11,6 +24,7 @@
 			<textarea
 				class="textarea textarea-bordered h-40 rounded-lg border-gray-500 resize-none"
 				placeholder="New seed..."
+				bind:value={content}
 			/>
 		</label>
 	</div>
@@ -21,9 +35,10 @@
 					<span class="label-text text-xs">Author</span>
 				</div>
 				<input
+					class="input input-xs input-bordered w-full max-w-xs rounded-lg border-gray-500"
 					type="text"
 					placeholder="Author"
-					class="input input-xs input-bordered w-full max-w-xs rounded-lg border-gray-500"
+					bind:value={author}
 				/>
 			</label>
 			<label class="form-control w-full max-w-xs">
@@ -31,14 +46,17 @@
 					<span class="label-text text-xs">Source</span>
 				</div>
 				<input
+					class="input input-xs input-bordered w-full max-w-xs rounded-lg border-gray-500"
 					type="text"
 					placeholder="Source"
-					class="input input-xs input-bordered w-full max-w-xs rounded-lg border-gray-500"
+					bind:value={source}
 				/>
 			</label>
 
 			<div class="flex items-center gap-[0.68rem] mt-1">
-				<ToggleDot showEveryday={false} bright={true} />
+				<div>
+					<ToggleDot enabled={showEveryday} bright={true} clickHandler={toggleShowEveryday} />
+				</div>
 				<span class="text-xs">Show every day in Daily Review</span>
 			</div>
 		</div>
