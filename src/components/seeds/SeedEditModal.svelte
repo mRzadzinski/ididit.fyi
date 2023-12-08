@@ -2,7 +2,7 @@
 	import ToggleDot from '$components/common/ToggleDot.svelte';
 </script>
 
-<div class="w-[38rem] h-[24rem] p-5 bg-[#FFCD4C] rounded-2xl">
+<div class="w-[40rem] h-[24rem] p-5 bg-[#FFCD4C] rounded-2xl">
 	<div class="w-full">
 		<label class="form-control">
 			<div class="label pt-0">
@@ -38,13 +38,16 @@
 			</label>
 
 			<div class="flex items-center gap-[0.68rem] mt-1">
-				<ToggleDot showEveryday={true} bright={true} />
+				<ToggleDot showEveryday={false} bright={true} />
 				<span class="text-xs">Show every day in Daily Review</span>
 			</div>
 		</div>
-		<div class="flex justify-end items-end w-1/3">
-			<button class="btn">Cancel</button>
-			<button class="btn">Save</button>
+		<div class="flex justify-end items-end gap-2 w-1/3 -mb-3">
+			<button class="btn btn-sm w-20 text-sm bg-white">Cancel</button>
+			<button
+				class="btn btn-sm -mr-1 w-20 text-sm bg-black text-[#FFCD4C] border-none hover:bg-gray-700 active:bg-bg-gray-700"
+				>Save</button
+			>
 		</div>
 	</div>
 </div>
