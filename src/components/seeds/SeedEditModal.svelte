@@ -1,6 +1,8 @@
 <script lang="ts">
 	import ToggleDot from '$components/common/ToggleDot.svelte';
 
+	export let hideModal: () => void;
+
 	let content = '';
 	let author = '';
 	let source = '';
@@ -61,7 +63,7 @@
 			</div>
 		</div>
 		<div class="flex justify-end items-end gap-2 w-1/3 -mb-3">
-			<button class="btn btn-sm w-20 text-sm bg-white">Cancel</button>
+			<button class="btn btn-sm w-20 text-sm bg-white" on:click={hideModal}>Cancel</button>
 			<button
 				class="btn btn-sm -mr-1 w-20 text-sm bg-black text-[#FFCD4C] border-none hover:bg-gray-700 active:bg-bg-gray-700"
 				>Save</button

@@ -3,7 +3,7 @@
 	import type { DeckData } from './+page';
 	import { addNewItem, newItemBtnName } from '$lib/stores/helperStores';
 	import PageHeader from '$components/app-layout/PageHeader.svelte';
-	import { expandedSeedId, seedsOrderByOptions } from './seedsLogic';
+	import { createSeed, expandedSeedId, seedsOrderByOptions } from './seedsLogic';
 	import { seedsDecks, settings } from '$lib/stores/dbStores';
 	import Seed from '$components/seeds/Seed.svelte';
 	import SeedEditModal from '$components/seeds/SeedEditModal.svelte';
@@ -12,6 +12,7 @@
 	export let data: DeckData;
 
 	let seeds: SeedType[];
+	let showSeedCreator = false;
 
 	// Get seeds array from user data
 	$: for (let i = 0; i < $seedsDecks.length; i++) {
@@ -20,16 +21,26 @@
 		}
 	}
 
+	function toggleShowSeedCreator(show: boolean) {
+		if (show) {
+			showSeedCreator = true;
+		} else {
+			showSeedCreator = false;
+		}
+	}
+
 	onMount(() => {
-		addNewItem.set(() => {});
+		addNewItem.set(() => toggleShowSeedCreator(true));
 		newItemBtnName.set('Seed');
 		expandedSeedId.set('');
 	});
 </script>
 
-<ModalBackground>
-	<SeedEditModal />
-</ModalBackground>
+{#if showSeedCreator}
+	<ModalBackground>
+		<SeedEditModal hideModal={() => toggleShowSeedCreator(false)} />
+	</ModalBackground>
+{/if}
 
 <PageHeader
 	pageName="Seeds"
