@@ -2,6 +2,7 @@
 	import ThreeDotsDropdown from '$components/common/ThreeDotsDropdown.svelte';
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
 	import { expandedSeedId } from '../../routes/app/seeds/[deck_id]/seedsLogic';
+	import ToggleDot from '$components/common/ToggleDot.svelte';
 
 	export let seed: SeedType;
 
@@ -43,8 +44,8 @@
 
 			// Hide overflow only for duration of expand animation, otherwise options dropdown is clipped
 			setTimeout(() => {
-				seedHtml.classList.add('overflow-visible')
-			}, 300)
+				seedHtml.classList.add('overflow-visible');
+			}, 300);
 		}
 		// Don't allow seed to collapse when text is highlighted
 		else if (expandedMode && selection !== undefined && selection === 0) {
@@ -143,11 +144,30 @@
 	>
 		<div
 			class="absolute right-0 hidden justify-center items-center text-[0.7rem] text-base-300 h-6 w-60 bg-gray-600 rounded-full cursor-default transition-all duration-200
-			{expandedMode? 'bottom-6' : 'bottom-[1.90rem]'}
+			{expandedMode ? 'bottom-6' : 'bottom-[1.90rem]'}
 			{showTooltip && showSeedOptions ? 'opacity-100' : 'opacity-0'}"
 			bind:this={toggleTooltip}
 		>
 			Toggle: show every day in Daily Review
+		</div>
+		<div
+			role="button"
+			tabindex="0"
+			on:mouseenter={() => {
+				tooltipTimeout = setTimeout(() => {
+					// Invisible tooltip interferes with seed click handler, so it needs to be display:none before transitioning opacity
+					toggleTooltip.style.display = 'flex';
+					showTooltip = true;
+				}, 900);
+			}}
+			on:mouseleave={() => {
+				clearTimeout(tooltipTimeout);
+				showTooltip = false;
+				toggleTooltip.style.display = 'none';
+			}}
+			bind:this={showEverydayToggleContainer}
+		>
+			<ToggleDot showEveryday={seed.showEveryday} bright={showSeedOptions} />
 		</div>
 		<!-- <div
 			class="w-3 h-3 rounded-full {seed.showEveryday ? 'visible' : ''}"
@@ -189,21 +209,6 @@
 </div>
 
 <style>
-	.unchecked {
-		width: 0.82rem;
-		height: 0.82rem;
-		border: solid 2px white;
-		background-color: none;
-	}
-
-	.checked-with-options {
-		background-color: white;
-	}
-
-	.checked-no-options {
-		background-color: #ffcd4c;
-	}
-
 	.custom-transition {
 		transition: all 250ms ease-out;
 	}

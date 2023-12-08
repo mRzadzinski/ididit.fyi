@@ -7,6 +7,7 @@
 	import { seedsDecks, settings } from '$lib/stores/dbStores';
 	import Seed from '$components/seeds/Seed.svelte';
 	import SeedEditModal from '$components/seeds/SeedEditModal.svelte';
+	import ModalBackground from '$components/common/ModalBackground.svelte';
 
 	export let data: DeckData;
 
@@ -26,7 +27,10 @@
 	});
 </script>
 
-<SeedEditModal />
+<ModalBackground>
+	<SeedEditModal />
+</ModalBackground>
+
 <PageHeader
 	pageName="Seeds"
 	orderBy={$settings.seedsOrderBy}
