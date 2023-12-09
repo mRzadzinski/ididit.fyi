@@ -32,7 +32,7 @@
 		background-color: none;
 	}
 	.ring-dark {
-		border: solid 2px #ffcd4c;
+		border: solid 2px none;
 		background-color: none;
 	}
 
@@ -41,6 +41,8 @@
 	}
 
 	.checked-no-options {
+		width: 0.75rem;
+		height: 0.75rem;
 		background-color: #ffcd4c;
 	}
 </style>

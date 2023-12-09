@@ -8,6 +8,10 @@ body {
 	background-color: white;
 }
 
+/* .btn {
+	text-transform: uppercase;
+} */
+
 .drag-item {
 	z-index: 1;
 }

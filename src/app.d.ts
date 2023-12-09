@@ -1,3 +1,4 @@
+import type { Timestamp } from 'firebase/firestore';
 import 'unplugin-icons/types/svelte';
 
 // See https://kit.svelte.dev/docs/types#app
@@ -32,6 +33,7 @@ declare global {
 		content: string;
 		author: string;
 		source: string;
+		date: Timestamp;
 		showEveryday: boolean;
 	}
 
