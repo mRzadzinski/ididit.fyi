@@ -5,7 +5,7 @@
 </script>
 
 <div
-	class="flex justify-center items-center w-4 h-4 rounded-full transition-all duration-200 cursor-pointer
+	class="flex justify-center items-center w-4 h-4 rounded-full cursor-pointer
 	{enabled ? 'visible' : ''}"
 	class:ring-bright={bright}
 	class:ring-dark={enabled && !bright}
@@ -19,7 +19,7 @@
 	}}
 >
 	<div
-		class="w-2 h-2 rounded-full bg-inherit transition-all duration-200"
+		class="w-2 h-2 rounded-full bg-inherit"
 		class:checked-no-options={enabled && !bright}
 		class:checked-with-options={enabled && bright}
 	/>
