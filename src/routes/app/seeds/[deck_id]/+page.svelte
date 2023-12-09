@@ -36,11 +36,16 @@
 	});
 </script>
 
-{#if showSeedCreator}
-	<ModalBackground>
-		<SeedEditModal seedData={null} hideModal={() => toggleShowSeedCreator(false)} />
-	</ModalBackground>
-{/if}
+<!-- {#if showSeedCreator}
+{/if} -->
+<ModalBackground>
+	<SeedEditModal
+		seedCreator={true}
+		seedData={null}
+		deckId={data.deckId}
+		hideModal={() => toggleShowSeedCreator(false)}
+	/>
+</ModalBackground>
 
 <PageHeader
 	pageName="Seeds"

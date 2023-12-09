@@ -16,7 +16,12 @@ export const seedsOrderByOptions = [
 	{ name: 'Z - A', value: 'z-a' }
 ];
 
-function SeedFactory(content: string, author: string, source: string, showEveryday: boolean) {
+export function SeedFactory(
+	content: string,
+	author: string,
+	source: string,
+	showEveryday: boolean
+) {
 	return {
 		id: uniqueID(),
 		date: Timestamp.now(),
@@ -31,20 +36,33 @@ export async function createSeed(newSeed: SeedType, deckId: string) {
 	const batch = writeBatch(db);
 	const seedSize = sizeof(newSeed);
 	const usrDocs = get(userDocs);
-	let parentDoc: DocumentType;
-	let deck: SeedsDeckType;
 	let seedCreated = false;
 
 	// Add seed to deck if enough space in doc
 	// Find doc containing deck
 	for (let i = 0; i < usrDocs.length; i++) {
 		const decks = usrDocs[i].doc.seedsDecks;
-		for (let j = 0; j < decks; j++) {
+		for (let j = 0; j < decks.length; j++) {
 			if (decks[j].id === deckId) {
-				parentDoc = usrDocs[i];
-				deck = decks[j];
-				console.log(parentDoc);
-				// let parentDocID = parentDoc.doc
+				const document = usrDocs[i];
+				const documentId = document.docID;
+				const documentSize = document.remainingSpace;
+				const spaceLeft = documentSize - seedSize;
+				const deck = decks[j]
+				const updatedDeck = cloneDeep(deck);
+				console.log(document);
+
+				// // 	// Add new deck if there's enough space in docs
+				// if (spaceLeft > 0) {
+				// 	updatedDeck.push(newSeed);
+				// 	seedCreated = true;
+				// }
+
+				// // 	// If anything changed in deck, add to batch update
+				// if (!isEqual(deck, updatedDeck)) {
+				// 	const docRef = doc(db, 'users', documentId);
+				// 	batch.update(docRef, { seedsDecks: updatedDecksArray });
+				// }
 			}
 		}
 	}
