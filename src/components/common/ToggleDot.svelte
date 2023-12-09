@@ -11,7 +11,8 @@
 	class:ring-dark={enabled && !bright}
 	role="button"
 	tabindex="0"
-	on:click={() => {
+	on:click={(e) => {
+		e.stopImmediatePropagation();
 		clickHandler();
 	}}
 	on:keydown={() => {

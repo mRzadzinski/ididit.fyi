@@ -55,7 +55,13 @@
 				/>
 			</label>
 
-			<div class="flex items-center gap-[0.68rem] mt-1">
+			<div
+				class="flex items-center gap-[0.68rem] w-52 mt-1 cursor-pointer"
+				role="button"
+				tabindex="0"
+				on:click={() => toggleShowEveryday()}
+				on:keydown={() => toggleShowEveryday()}
+			>
 				<div>
 					<ToggleDot enabled={showEveryday} bright={true} clickHandler={toggleShowEveryday} />
 				</div>
