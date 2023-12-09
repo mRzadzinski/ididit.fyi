@@ -1,6 +1,8 @@
 <script lang="ts">
 	import ToggleDot from '$components/common/ToggleDot.svelte';
 
+
+	export let seedData: null | SeedType;
 	export let hideModal: () => void;
 
 	let content = '';

@@ -38,7 +38,7 @@
 
 {#if showSeedCreator}
 	<ModalBackground>
-		<SeedEditModal hideModal={() => toggleShowSeedCreator(false)} />
+		<SeedEditModal seedData={null} hideModal={() => toggleShowSeedCreator(false)} />
 	</ModalBackground>
 {/if}
 

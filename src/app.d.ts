@@ -30,10 +30,10 @@ declare global {
 
 	interface SeedType {
 		id: string;
+		date: Timestamp;
 		content: string;
 		author: string;
 		source: string;
-		date: Timestamp;
 		showEveryday: boolean;
 	}
 

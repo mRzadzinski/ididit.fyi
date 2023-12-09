@@ -1,8 +1,9 @@
 import { userDataDocFactory } from '$lib/db/docsBoilerplate';
 import { db } from '$lib/firebase/firebase';
+import { uniqueID } from '$lib/helpers';
 import { user } from '$lib/stores/authStores';
 import { syncInProgress, userDocs } from '$lib/stores/dbStores';
-import { collection, doc, writeBatch } from 'firebase/firestore';
+import { Timestamp, collection, doc, writeBatch } from 'firebase/firestore';
 import sizeof from 'firestore-size';
 import { cloneDeep, isEqual } from 'lodash';
 import { get, writable } from 'svelte/store';
@@ -14,6 +15,17 @@ export const seedsOrderByOptions = [
 	{ name: 'A - Z', value: 'a-z' },
 	{ name: 'Z - A', value: 'z-a' }
 ];
+
+function SeedFactory(content: string, author: string, source: string, showEveryday: boolean) {
+	return {
+		id: uniqueID(),
+		date: Timestamp.now(),
+		content,
+		author,
+		source,
+		showEveryday
+	} as SeedType;
+}
 
 export async function createSeed(newSeed: SeedType, deckId: string) {
 	const batch = writeBatch(db);
@@ -31,10 +43,8 @@ export async function createSeed(newSeed: SeedType, deckId: string) {
 			if (decks[j].id === deckId) {
 				parentDoc = usrDocs[i];
 				deck = decks[j];
-				console.log(parentDoc)
+				console.log(parentDoc);
 				// let parentDocID = parentDoc.doc
-
-
 			}
 		}
 	}
