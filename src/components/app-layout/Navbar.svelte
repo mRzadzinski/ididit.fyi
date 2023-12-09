@@ -23,7 +23,7 @@
 		</label>
 	</div>
 	<div class="max-w-none flex-1 flex justify-between">
-		<button class="btn min-w-fit bg-[#ffcd4c] daily-review" on:click={() => goto('/app')}
+		<button class="btn min-w-fit w-36 bg-[#ffcd4c] daily-review" on:click={() => goto('/app')}
 			>Daily Review</button
 		>
 		<div class="flex-none items-center">

@@ -50,12 +50,24 @@
 		// Don't allow seed to collapse when text is highlighted
 		else if (expandedMode && selection !== undefined && selection === 0) {
 			expandedMode = false;
-			// If expanded mode was disabled while mouse is inside element, options would disappear
+			expandedSeedId.set('');
+			// Prevent options from disappearing when expanded mode was disabled while mouse is inside element
 			if (!seedHover) {
 				showSeedOptions = false;
 			}
-			expandedSeedId.set('');
 		}
+	}
+
+	// Collapse element when clicked outside
+	function handleClickOutsideSeed(e: Event) {
+		if (expandedMode && !seedHtml.contains(e.target as Node)) {
+			handleSeedClick();
+		}
+	}
+
+	function setFullHeight() {
+		fullHeight = seedContentHtml.scrollHeight;
+		seedHtml.style.height = fullHeight.toString() + 'px';
 	}
 
 	onMount(() => {
@@ -65,19 +77,10 @@
 	afterUpdate(() => {
 		// Manage seed height to handle animation
 		if (expandedMode) {
-			// Get height of hidden content
-			fullHeight = seedContentHtml.scrollHeight;
-
-			// Add margins to it
-			let newHeight = fullHeight;
-			newHeight += parseInt(
-				window.getComputedStyle(seedContentHtml).getPropertyValue('margin-top')
-			);
-			newHeight += parseInt(
-				window.getComputedStyle(seedContentHtml).getPropertyValue('margin-bottom')
-			);
-			// Update
-			seedHtml.style.height = newHeight.toString() + 'px';
+			// When setting height synchronously it sometimes isn't calculated properly
+			setTimeout(() => {
+				setFullHeight();
+			}, 0);
 		} else {
 			seedHtml.style.height = initialHeight.toString() + 'px';
 		}
@@ -88,6 +91,7 @@
 	});
 </script>
 
+<svelte:window on:click={(e) => handleClickOutsideSeed(e)} />
 <div
 	class="flex justify-between items-center min-w-[496px] w-[100%] pl-8 mb-1 h-8 rounded-3xl bg-[#FEF6DE] custom-transition
 	{otherSeedInExpandedMode ? '' : 'hover:bg-[#FFCD4C]'}
@@ -116,18 +120,18 @@
 >
 	<!-- Constrain content to one line if not in expandedMode -->
 	<div
-		class="text-xs mr-8 w-full {expandedMode ? 'my-4' : 'line-clamp-1'}"
+		class="text-xs mr-8 w-full {expandedMode ? 'py-4' : 'line-clamp-1'}"
 		bind:this={seedContentHtml}
 	>
-		<span class="text-[0.78rem] w-full">{seed.content}</span>
+		<span class="text-sm w-full">{seed.content}</span>
 		<div class="author-source-font-size italic opacity-60">
 			{#if seed.author && expandedMode}
 				<br />
 				{seed.author}
 			{/if}
-			{#if seed.source}
+			{#if seed.source && expandedMode}
 				<br />
-				{seed.source && expandedMode}
+				{seed.source}
 			{/if}
 		</div>
 	</div>
@@ -167,11 +171,7 @@
 			}}
 			bind:this={showEverydayToggleContainer}
 		>
-			<ToggleDot
-				enabled={seed.showEveryday}
-				bright={showSeedOptions}
-				clickHandler={() => {}}
-			/>
+			<ToggleDot enabled={seed.showEveryday} bright={showSeedOptions} clickHandler={() => {}} />
 		</div>
 		<div class="scale-[85%]" bind:this={dotsDropdown}>
 			<ThreeDotsDropdown
