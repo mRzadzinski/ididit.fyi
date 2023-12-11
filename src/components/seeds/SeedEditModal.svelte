@@ -39,6 +39,7 @@
 			if (!seedData) {
 				const newSeed = SeedFactory(content, author, source, showEveryday);
 				createSeed(newSeed, deckId);
+				hideModal();
 			}
 		}}
 	>
@@ -64,6 +65,8 @@
 					</div>
 					<input
 						class="input input-xs input-bordered w-full max-w-xs rounded-lg border-gray-500"
+						id="author-input"
+						autocomplete="off"
 						type="text"
 						placeholder="Author"
 						bind:value={author}
@@ -75,6 +78,8 @@
 					</div>
 					<input
 						class="input input-xs input-bordered w-full max-w-xs rounded-lg border-gray-500"
+						id="source-input"
+						autocomplete="off"
 						type="text"
 						placeholder="Source"
 						bind:value={source}
