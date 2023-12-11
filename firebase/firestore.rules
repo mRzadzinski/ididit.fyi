@@ -3,10 +3,11 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /users/{doc} {
-      allow read: if request.auth.uid == resource.data.uid;
+      allow read: if request.auth.uid == doc || request.auth.uid == resource.data.uid;
       // Disallow updating subscription data
-      allow write: if request.auth.uid == resource.data.uid && (!request.resource.data.diff(resource.data).affectedKeys()
+      allow update, delete: if request.auth.uid == resource.data.uid && (!request.resource.data.diff(resource.data).affectedKeys()
         .hasAny(['subscription']));
+      allow create: if request.auth != null;
     }
     // // Allow user to only read Main Document
     // match /users/{userId} {
