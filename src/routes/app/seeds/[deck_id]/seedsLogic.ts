@@ -3,9 +3,9 @@ import { db } from '$lib/firebase/firebase';
 import { uniqueID } from '$lib/helpers';
 import { user } from '$lib/stores/authStores';
 import { syncInProgress, userDocs } from '$lib/stores/dbStores';
-import { Timestamp, collection, doc, writeBatch } from 'firebase/firestore';
+import { Timestamp, addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 import sizeof from 'firestore-size';
-import { cloneDeep, isEqual } from 'lodash';
+import { cloneDeep } from 'lodash';
 import { get, writable } from 'svelte/store';
 
 export const expandedSeedId = writable('');
@@ -32,75 +32,58 @@ export function SeedFactory(
 	} as SeedType;
 }
 
-export async function createSeed(newSeed: SeedType, deckId: string) {
-	const batch = writeBatch(db);
-	const seedSize = sizeof(newSeed);
+async function updateSeedsDecksDb(docId: string, updatedDecksArray: SeedsDeckType[]) {
+	// Update doc
+	const docRef = doc(db, 'users', docId);
+
+	syncInProgress.set(true);
+	await updateDoc(docRef, { seedsDecks: updatedDecksArray });
+	syncInProgress.set(false);
+}
+
+export async function createSeed(newSeed: SeedType, deck: SeedsDeckType) {
 	const usrDocs = get(userDocs);
-	let seedCreated = false;
+	const deckWithSeed = cloneDeep(deck);
+	deckWithSeed.seeds = [newSeed];
 
-	// Add seed to deck if enough space in doc
-	// Find doc containing deck
+	// Add seed to any doc if enough space
 	for (let i = 0; i < usrDocs.length; i++) {
-		const decks = usrDocs[i].doc.seedsDecks;
-		for (let j = 0; j < decks.length; j++) {
-			if (decks[j].id === deckId) {
-				const document = usrDocs[i];
-				const documentId = document.docID;
-				const documentSize = document.remainingSpace;
-				const spaceLeft = documentSize - seedSize;
-				const deck = decks[j]
-				const updatedDeck = cloneDeep(deck);
-				console.log(document);
+		const spaceLeft = usrDocs[i].remainingSpace - sizeof(deckWithSeed);
+		const documentId = usrDocs[i].docID;
 
-				// // 	// Add new deck if there's enough space in docs
-				// if (spaceLeft > 0) {
-				// 	updatedDeck.push(newSeed);
-				// 	seedCreated = true;
-				// }
-
-				// // 	// If anything changed in deck, add to batch update
-				// if (!isEqual(deck, updatedDeck)) {
-				// 	const docRef = doc(db, 'users', documentId);
-				// 	batch.update(docRef, { seedsDecks: updatedDecksArray });
-				// }
+		if (spaceLeft > 0) {
+			const docDecks = usrDocs[i].doc.seedsDecks;
+			const updatedDecksArray = cloneDeep(docDecks);
+			// Check if doc already contains deck, if so add seed
+			for (let j = 0; j < docDecks.length; j++) {
+				if (docDecks[j].id === deck.id) {
+					updatedDecksArray[j].seeds.push(newSeed);
+					
+					// Push to db
+					updateSeedsDecksDb(documentId, updatedDecksArray);
+					return;
+				}
 			}
+			// If it doesn't contain deck, add it with new seed inside
+			updatedDecksArray.push(deckWithSeed);
+			// Push to db
+			updateSeedsDecksDb(documentId, updatedDecksArray);
+			return;
 		}
 	}
+	// If all docs are full, create new one
+	let newDoc;
+	const usr = get(user);
+	if (usr && typeof usr === 'object') {
+		newDoc = userDataDocFactory(usr.uid);
+	}
+	// Add parent deck containing only new seed to new doc
+	const parentDeckClone = cloneDeep(deck);
+	parentDeckClone.seeds = [newSeed];
+	newDoc?.seedsDecks.push(parentDeckClone);
 
-	// Check to which doc add new seed
-	// for (let i = 0; i < usrDocs.length; i++) {
-	// 	const document = usrDocs[i];
-	// 	const documentId = document.docID;
-	// 	const documentSize = document.remainingSpace;
-	// 	const spaceLeft = documentSize - seedSize;
-	// 	const decksArray = document.doc.seedsDecks;
-	// 	const updatedDecksArray = cloneDeep(decksArray);
-
-	// 	// Add new deck if there's enough space in docs
-	// 	if (spaceLeft > 0 && !seedCreated) {
-	// 		updatedDecksArray.push(newSeed);
-	// 		seedCreated = true;
-	// 	}
-
-	// 	// If anything changed in deck, add to batch update
-	// 	if (!isEqual(decksArray, updatedDecksArray)) {
-	// 		const docRef = doc(db, 'users', documentId);
-	// 		batch.update(docRef, { seedsDecks: updatedDecksArray });
-	// 	}
-	// }
-	// // If there was no space in docs, create new one and add deck
-	// if (!seedCreated) {
-	// 	let docObj;
-	// 	const usr = get(user);
-	// 	if (usr && typeof usr === 'object') {
-	// 		docObj = userDataDocFactory(usr.uid);
-	// 	}
-	// 	docObj?.seedsDecks.push(newSeed);
-
-	// 	const docRef = doc(collection(db, 'users'));
-	// 	batch.set(docRef, docObj);
-	// }
-	// syncInProgress.set(true);
-	// await batch.commit();
-	// syncInProgress.set(false);
+	// Push to db
+	syncInProgress.set(true);
+	await addDoc(collection(db, 'users'), newDoc);
+	syncInProgress.set(false);
 }

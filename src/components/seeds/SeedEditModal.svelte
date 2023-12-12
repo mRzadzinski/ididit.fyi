@@ -1,11 +1,11 @@
 <script lang="ts">
 	import ToggleDot from '$components/common/ToggleDot.svelte';
-	import { afterUpdate, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	import { SeedFactory, createSeed } from '../../routes/app/seeds/[deck_id]/seedsLogic';
 
 	export let seedCreator = false;
 	export let seedData: null | SeedType;
-	export let deckId: string;
+	export let deck:SeedsDeckType
 	export let hideModal: () => void;
 
 	let contentHtml: HTMLElement;
@@ -38,7 +38,7 @@
 
 			if (!seedData) {
 				const newSeed = SeedFactory(content, author, source, showEveryday);
-				createSeed(newSeed, deckId);
+				createSeed(newSeed, deck);
 				hideModal();
 			}
 		}}

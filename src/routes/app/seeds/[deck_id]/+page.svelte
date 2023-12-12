@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import type { DeckData } from './+page';
 	import { addNewItem, newItemBtnName } from '$lib/stores/helperStores';
 	import PageHeader from '$components/app-layout/PageHeader.svelte';
@@ -8,16 +8,27 @@
 	import Seed from '$components/seeds/Seed.svelte';
 	import SeedEditModal from '$components/seeds/SeedEditModal.svelte';
 	import ModalBackground from '$components/common/ModalBackground.svelte';
+	import { fillDocs } from '../decksLogic';
 
 	export let data: DeckData;
 
+	let deck: SeedsDeckType;
 	let seeds: SeedType[];
 	let showSeedCreator = false;
 
-	// Get seeds array from user data
-	$: for (let i = 0; i < $seedsDecks.length; i++) {
-		if ($seedsDecks[i].id === data.deckId) {
-			seeds = $seedsDecks[i].seeds;
+	// Get seeds array and deck from user data
+	$: {
+		let tempDeck: SeedsDeckType | undefined = undefined;
+		let tempSeeds: SeedType[] = [];
+		for (let i = 0; i < $seedsDecks.length; i++) {
+			if ($seedsDecks[i].id === data.deckId) {
+				tempDeck = $seedsDecks[i];
+				tempSeeds = tempSeeds.concat($seedsDecks[i].seeds);
+			}
+		}
+		if (tempDeck) {
+			deck = tempDeck;
+			seeds = tempSeeds;
 		}
 	}
 
@@ -34,18 +45,22 @@
 		newItemBtnName.set('Seed');
 		expandedSeedId.set('');
 	});
+
+	onDestroy(() => {
+		// fillDocs()
+	});
 </script>
 
-<!-- {#if showSeedCreator}
-{/if} -->
-<ModalBackground>
-	<SeedEditModal
-		seedCreator={true}
-		seedData={null}
-		deckId={data.deckId}
-		hideModal={() => toggleShowSeedCreator(false)}
-	/>
-</ModalBackground>
+{#if showSeedCreator}
+	<ModalBackground>
+		<SeedEditModal
+			seedCreator={true}
+			seedData={null}
+			{deck}
+			hideModal={() => toggleShowSeedCreator(false)}
+		/>
+	</ModalBackground>
+{/if}
 
 <PageHeader
 	pageName="Seeds"

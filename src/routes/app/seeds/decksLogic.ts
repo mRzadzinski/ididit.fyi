@@ -16,7 +16,6 @@ export const decksOrderByOptions = [
 
 export async function createDeck(newDeck: SeedsDeckType) {
 	const batch = writeBatch(db);
-	const deckSize = sizeof(newDeck);
 	const usrDocs = get(userDocs);
 	let deckCreated = false;
 
@@ -24,8 +23,7 @@ export async function createDeck(newDeck: SeedsDeckType) {
 	for (let i = 0; i < usrDocs.length; i++) {
 		const document = usrDocs[i];
 		const documentId = document.docID;
-		const documentSize = document.remainingSpace;
-		const spaceLeft = documentSize - deckSize;
+		const spaceLeft = document.remainingSpace - sizeof(newDeck)
 		const decksArray = document.doc.seedsDecks;
 		const updatedDecksArray = cloneDeep(decksArray);
 

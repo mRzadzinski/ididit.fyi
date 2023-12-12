@@ -14,7 +14,6 @@
 		deckFactory,
 		decksOrderByOptions,
 		deleteDeck,
-		fillDocs,
 		reorderDecks
 	} from './decksLogic';
 	import { addNewItem, disableNewItemBtn, newItemBtnName } from '$lib/stores/helperStores';
@@ -23,11 +22,16 @@
 		dndListOnDestroy,
 		dndListOnMount
 	} from '../../../lib/dnd/verticalListLifecycle';
+	import { uniqBy } from 'lodash';
 
+	let decks: SeedsDeckType[] = [];
 	let listContainer: HTMLElement;
 	let newDeckId: string;
 	let editedDeckId = '';
 	let newDeck: SeedsDeckType;
+
+	// Get decks and remove deck duplicates
+	$: decks = uniqBy($seedsDecks, (deck) => deck.id);
 
 	// When deck name is an empty string, automatically set it in edit mode
 	// (this could happen when reloading page while creating new deck)
@@ -78,7 +82,6 @@
 		newItemBtnName.set('');
 		disableNewItemBtn.set(false);
 		dndListOnDestroy();
-		// fillDocs();
 	});
 </script>
 
@@ -89,7 +92,7 @@
 	whereToUpdateOrder="decks"
 />
 <div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
-	{#each $seedsDecks as deck (deck.id)}
+	{#each decks as deck (deck.id)}
 		{#if newDeckId === deck.id}
 			<SeedsDeck
 				{deck}
