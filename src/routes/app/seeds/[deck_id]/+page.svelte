@@ -3,12 +3,13 @@
 	import type { DeckData } from './+page';
 	import { addNewItem, newItemBtnName } from '$lib/stores/helperStores';
 	import PageHeader from '$components/app-layout/PageHeader.svelte';
-	import { createSeed, expandedSeedId, seedsOrderByOptions } from './seedsLogic';
+	import { expandedSeedId, reorderSeeds, seedsOrderByOptions } from './seedsLogic';
 	import { seedsDecks, settings } from '$lib/stores/dbStores';
 	import Seed from '$components/seeds/Seed.svelte';
 	import SeedEditModal from '$components/seeds/SeedEditModal.svelte';
 	import ModalBackground from '$components/common/ModalBackground.svelte';
 	import { fillDocs } from '../decksLogic';
+	import { flip } from 'svelte/animate';
 
 	export let data: DeckData;
 
@@ -72,7 +73,9 @@
 	<li><a href="/app/seeds">Decks</a></li>
 	<li>{data.deckName}</li>
 </PageHeader>
-
+<button on:click={() => (seeds = reorderSeeds(seeds))}>Reorder</button>
 {#each seeds as seed (seed.id)}
-	<Seed {seed} deckId={deck.id} />
+	<div animate:flip={{ duration: 400 }}>
+		<Seed {seed} deckId={deck.id} />
+	</div>
 {/each}
