@@ -74,5 +74,5 @@
 </PageHeader>
 
 {#each seeds as seed (seed.id)}
-	<Seed {seed} />
+	<Seed {seed} deckId={deck.id} />
 {/each}

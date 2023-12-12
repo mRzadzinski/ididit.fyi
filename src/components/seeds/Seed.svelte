@@ -1,10 +1,11 @@
 <script lang="ts">
 	import ThreeDotsDropdown from '$components/common/ThreeDotsDropdown.svelte';
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
-	import { expandedSeedId } from '../../routes/app/seeds/[deck_id]/seedsLogic';
+	import { deleteSeed, expandedSeedId } from '../../routes/app/seeds/[deck_id]/seedsLogic';
 	import ToggleDot from '$components/common/ToggleDot.svelte';
 
 	export let seed: SeedType;
+	export let deckId: string;
 
 	let seedHtml: HTMLElement;
 	let seedContentHtml: HTMLElement;
@@ -135,7 +136,7 @@
 			{/if}
 		</div>
 	</div>
-	<!-- Stay centered if not author or source -->
+	<!-- Stay centered if no author or source -->
 	<div
 		class="relative flex items-center gap-[0.1rem] cursor-default
 		{showSeedOptions ? '' : 'invisible'} 
@@ -183,7 +184,7 @@
 					},
 					{
 						name: 'Delete',
-						handlers: [() => {}]
+						handlers: [() => deleteSeed(seed.id, deckId)]
 					}
 				]}
 			/>
