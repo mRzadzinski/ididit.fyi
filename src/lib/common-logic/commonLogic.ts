@@ -17,5 +17,4 @@ export async function updateSortMethod(target: string, sortMethod: string) {
 		[settingsOrderPath]: sortMethod
 	});
 	syncInProgress.set(false);
-	return;
 }

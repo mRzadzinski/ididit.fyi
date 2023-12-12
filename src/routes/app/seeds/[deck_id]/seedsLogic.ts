@@ -2,7 +2,7 @@ import { userDataDocFactory } from '$lib/db/docsBoilerplate';
 import { db } from '$lib/firebase/firebase';
 import { uniqueID } from '$lib/helpers';
 import { user } from '$lib/stores/authStores';
-import { syncInProgress, userDocs } from '$lib/stores/dbStores';
+import { settings, syncInProgress, userDocs } from '$lib/stores/dbStores';
 import { Timestamp, addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 import sizeof from 'firestore-size';
 import { cloneDeep } from 'lodash';
@@ -159,4 +159,62 @@ export async function deleteSeed(seedId: string, deckId: string) {
 	// Push to db
 	updateSeedsDecksDb(documentId, updatedDecks);
 	return;
+}
+
+// Could be shorter but this way is more readable
+export function reorderSeeds(seeds: SeedType[]) {
+	const order = get(settings).seedsOrderBy;
+	const reordered = seeds;
+
+	if (order === 'a-z') {
+		reordered.sort((a, b) => {
+			const nameA = a.content.toUpperCase(); // ignore upper and lowercase
+			const nameB = b.content.toUpperCase(); // ignore upper and lowercase
+			if (nameA < nameB) {
+				return -1;
+			}
+			if (nameA > nameB) {
+				return 1;
+			}
+			return 1;
+		});
+	} else if (order === 'z-a') {
+		reordered.sort((a, b) => {
+			const nameA = a.content.toUpperCase(); // ignore upper and lowercase
+			const nameB = b.content.toUpperCase(); // ignore upper and lowercase
+			if (nameA < nameB) {
+				return 1;
+			}
+			if (nameA > nameB) {
+				return -1;
+			}
+			return 1;
+		});
+	} else if (order === 'new-old') {
+		reordered.sort((a, b) => {
+			const nameA = a.date.toDate();
+			const nameB = b.date.toDate();
+			if (nameA < nameB) {
+				return 1;
+			}
+			if (nameA > nameB) {
+				return -1;
+			}
+			return 1;
+		});
+	}else if (order === 'old-new') {
+		reordered.sort((a, b) => {
+			const nameA = a.date.toDate();
+			const nameB = b.date.toDate();
+			if (nameA < nameB) {
+				return -1;
+			}
+			if (nameA > nameB) {
+				return 1;
+			}
+			return 1;
+		});
+	}
+
+	return reordered;
 }

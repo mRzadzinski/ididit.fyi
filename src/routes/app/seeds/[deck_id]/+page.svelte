@@ -33,6 +33,12 @@
 		}
 	}
 
+	// Reorder seeds on settings change
+	$: {
+		$settings.seedsOrderBy;
+		seeds = reorderSeeds(seeds);
+	}
+
 	function toggleShowSeedCreator(show: boolean) {
 		if (show) {
 			showSeedCreator = true;
@@ -73,7 +79,7 @@
 	<li><a href="/app/seeds">Decks</a></li>
 	<li>{data.deckName}</li>
 </PageHeader>
-<button on:click={() => (seeds = reorderSeeds(seeds))}>Reorder</button>
+
 {#each seeds as seed (seed.id)}
 	<div animate:flip={{ duration: 400 }}>
 		<Seed {seed} deckId={deck.id} />
