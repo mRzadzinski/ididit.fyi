@@ -4,7 +4,7 @@
 	import { addNewItem, newItemBtnName } from '$lib/stores/helperStores';
 	import PageHeader from '$components/app-layout/PageHeader.svelte';
 	import { expandedSeedId, reorderSeeds, seedsOrderByOptions } from './seedsLogic';
-	import { seedsDecks, settings } from '$lib/stores/dbStores';
+	import { seedsData, settings } from '$lib/stores/dbStores';
 	import Seed from '$components/seeds/Seed.svelte';
 	import SeedEditModal from '$components/seeds/SeedEditModal.svelte';
 	import ModalBackground from '$components/common/ModalBackground.svelte';
@@ -21,10 +21,10 @@
 	$: {
 		let tempDeck: SeedsDeckType | undefined = undefined;
 		let tempSeeds: SeedType[] = [];
-		for (let i = 0; i < $seedsDecks.length; i++) {
-			if ($seedsDecks[i].id === data.deckId) {
-				tempDeck = $seedsDecks[i];
-				tempSeeds = tempSeeds.concat($seedsDecks[i].seeds);
+		for (let i = 0; i < $seedsData.decks.length; i++) {
+			if ($seedsData.decks[i].id === data.deckId) {
+				tempDeck = $seedsData.decks[i];
+				tempSeeds = tempSeeds.concat($seedsData.decks[i].seeds);
 			}
 		}
 		if (tempDeck) {

@@ -20,13 +20,17 @@ export const userMainDocFactory = (uid: string) => {
 			decksOrderBy: decksOrderByOptions[0],
 			seedsOrderBy: seedsOrderByOptions[0]
 		},
-		seedsDecks: [] as SeedsDeckType[]
+		seedsData: {
+			decks: [] as SeedsDeckType[]
+		}
 	};
 };
 
 export const userDataDocFactory = (uid: string) => {
 	return {
 		uid,
-		seedsDecks: [] as SeedsDeckType[]
+		seedsData: {
+			decks: [] as SeedsDeckType[]
+		}
 	};
 };

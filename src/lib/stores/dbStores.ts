@@ -17,10 +17,12 @@ export const subscription = derived(userDocs, ($userDocs) => {
 	}
 	return data;
 });
-export const seedsDecks = derived(userDocs, ($userDocs) => {
-	let data: SeedsDeckType[] = [];
+export const seedsData = derived(userDocs, ($userDocs) => {
+	const data = {
+		decks: [] as SeedsDeckType[]
+	};
 	for (let i = 0; i < $userDocs.length; i++) {
-		data = data.concat($userDocs[i].doc.seedsDecks);
+		data.decks = data.decks.concat($userDocs[i].doc.seedsData.decks);
 	}
 	return data;
 });

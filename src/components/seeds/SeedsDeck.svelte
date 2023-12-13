@@ -4,7 +4,7 @@
 	import { beforeUpdate, onMount } from 'svelte';
 	import ThreeDotsDropdown from '../common/ThreeDotsDropdown.svelte';
 	import type Muuri from 'muuri';
-	import { seedsDecks, syncInProgress } from '$lib/stores/dbStores';
+	import { seedsData, syncInProgress } from '$lib/stores/dbStores';
 	import { disableNewItemBtn } from '$lib/stores/helperStores';
 	import { goto } from '$app/navigation';
 
@@ -50,9 +50,9 @@
 			return;
 		}
 
-		for (let i = 0; i < $seedsDecks.length; i++) {
+		for (let i = 0; i < $seedsData.decks.length; i++) {
 			// Ensure deck name in unique
-			if ($seedsDecks[i].name === newName && newName !== deck.name) {
+			if ($seedsData.decks[i].name === newName && newName !== deck.name) {
 				nameInput.setCustomValidity(`Deck '${newName}' already exists - try something different.`);
 				return;
 			} else {

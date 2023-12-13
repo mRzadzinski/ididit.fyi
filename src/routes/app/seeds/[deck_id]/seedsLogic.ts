@@ -32,12 +32,12 @@ export function SeedFactory(
 	} as SeedType;
 }
 
-async function updateSeedsDecksDb(docId: string, updatedDecks: SeedsDeckType[]) {
+async function updateDecksDb(docId: string, updatedDecks: SeedsDeckType[]) {
 	// Update doc
 	const docRef = doc(db, 'users', docId);
 
 	syncInProgress.set(true);
-	await updateDoc(docRef, { seedsDecks: updatedDecks });
+	await updateDoc(docRef, { 'seedsData.decks': updatedDecks });
 	syncInProgress.set(false);
 }
 
@@ -57,7 +57,7 @@ export async function createSeed(newSeed: SeedType, deck: SeedsDeckType) {
 		const documentId = usrDocs[i].docID;
 
 		if (spaceLeft > 0) {
-			const docDecks = usrDocs[i].doc.seedsDecks;
+			const docDecks = usrDocs[i].doc.seedsData.decks;
 			const updatedDecks = cloneDeep(docDecks);
 			// Check if doc already contains deck, if so add seed
 			for (let j = 0; j < docDecks.length; j++) {
@@ -65,14 +65,14 @@ export async function createSeed(newSeed: SeedType, deck: SeedsDeckType) {
 					updatedDecks[j].seeds.push(newSeed);
 
 					// Push to db
-					updateSeedsDecksDb(documentId, updatedDecks);
+					updateDecksDb(documentId, updatedDecks);
 					return;
 				}
 			}
 			// If it doesn't contain deck, add it with new seed inside
 			updatedDecks.push(deckWithSeed);
 			// Push to db
-			updateSeedsDecksDb(documentId, updatedDecks);
+			updateDecksDb(documentId, updatedDecks);
 			return;
 		}
 	}
@@ -85,7 +85,7 @@ export async function createSeed(newSeed: SeedType, deck: SeedsDeckType) {
 	// Add parent deck containing only new seed to new doc
 	const parentDeckClone = cloneDeep(deck);
 	parentDeckClone.seeds = [newSeed];
-	newDoc?.seedsDecks.push(parentDeckClone);
+	newDoc?.seedsData.decks.push(parentDeckClone);
 
 	// Push to db
 	syncInProgress.set(true);
@@ -107,7 +107,7 @@ export async function deleteSeed(seedId: string, deckId: string) {
 	// If deck will be empty after removing seed, check if it has copies in other docs so it can be removed
 	for (let i = 0; i < usrDocs.length; i++) {
 		if (exitLoops) break;
-		const decks = usrDocs[i].doc.seedsDecks;
+		const decks = usrDocs[i].doc.seedsData.decks;
 
 		for (let j = 0; j < decks.length; j++) {
 			if (exitLoops) break;
@@ -157,7 +157,7 @@ export async function deleteSeed(seedId: string, deckId: string) {
 	}
 
 	// Push to db
-	updateSeedsDecksDb(documentId, updatedDecks);
+	updateDecksDb(documentId, updatedDecks);
 	return;
 }
 

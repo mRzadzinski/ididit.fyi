@@ -7,7 +7,7 @@
 		dndReorderDbData,
 		whereDndIsActive
 	} from '$lib/stores/dndStores';
-	import { seedsDecks, settings } from '$lib/stores/dbStores';
+	import { seedsData, settings } from '$lib/stores/dbStores';
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
 	import {
 		createDeck,
@@ -31,14 +31,14 @@
 	let newDeck: SeedsDeckType;
 
 	// Get decks and remove deck duplicates
-	$: decks = uniqBy($seedsDecks, (deck) => deck.id);
+	$: decks = uniqBy($seedsData.decks, (deck) => deck.id);
 
 	// When deck name is an empty string, automatically set it in edit mode
 	// (this could happen when reloading page while creating new deck)
-	for (let i = 0; i < $seedsDecks.length; i++) {
-		if ($seedsDecks[i].name === '') {
-			editedDeckId = $seedsDecks[i].id;
-			newDeckId = $seedsDecks[i].id;
+	for (let i = 0; i < $seedsData.decks.length; i++) {
+		if ($seedsData.decks[i].name === '') {
+			editedDeckId = $seedsData.decks[i].id;
+			newDeckId = $seedsData.decks[i].id;
 		}
 	}
 

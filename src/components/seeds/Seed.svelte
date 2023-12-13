@@ -9,18 +9,15 @@
 
 	let seedHtml: HTMLElement;
 	let seedContentHtml: HTMLElement;
-	let showEverydayToggleContainer: HTMLElement;
-	let dotsDropdown: HTMLElement;
-	let seedOptionsContainer: HTMLElement;
 	let toggleTooltip: HTMLElement;
-	let showSeedOptions = false;
-	let expandedMode = false;
-	let showTooltip = false;
-	let seedHover = false;
 	let tooltipTimeout: NodeJS.Timeout;
 	let otherSeedInExpandedMode: boolean;
 	let initialHeight: number;
 	let fullHeight: number;
+	let showSeedOptions = false;
+	let expandedMode = false;
+	let showTooltip = false;
+	let seedHover = false;
 
 	// Save which seed is in expandedMode
 	$: if ($expandedSeedId.length > 0 && $expandedSeedId !== seed.id) {
@@ -145,7 +142,6 @@
 		tabindex="0"
 		on:click={(e) => e.stopImmediatePropagation()}
 		on:keydown={(e) => e.stopImmediatePropagation()}
-		bind:this={seedOptionsContainer}
 	>
 		<div
 			class="absolute right-0 hidden justify-center items-center text-[0.7rem] text-base-300 h-6 w-60 bg-gray-600 rounded-full cursor-default transition-all duration-200
@@ -170,11 +166,10 @@
 				showTooltip = false;
 				toggleTooltip.style.display = 'none';
 			}}
-			bind:this={showEverydayToggleContainer}
 		>
 			<ToggleDot enabled={seed.showEveryday} bright={showSeedOptions} clickHandler={() => {}} />
 		</div>
-		<div class="scale-[85%]" bind:this={dotsDropdown}>
+		<div class="scale-[85%]">
 			<ThreeDotsDropdown
 				itemId={seed.id}
 				options={[
