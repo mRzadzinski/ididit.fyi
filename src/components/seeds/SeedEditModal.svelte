@@ -28,6 +28,12 @@
 		}
 	}
 
+	function trimSeedData() {
+		content = content.trim();
+		author = author.trim();
+		source = source.trim();
+	}
+
 	function toggleShowEveryday() {
 		if (!showEveryday) {
 			showEveryday = true;
@@ -37,11 +43,9 @@
 	}
 
 	onMount(() => {
-		if (seedCreator) {
-			setTimeout(() => {
-				contentHtml.focus();
-			}, 0);
-		}
+		setTimeout(() => {
+			contentHtml.focus();
+		}, 0);
 	});
 </script>
 
@@ -56,6 +60,7 @@
 				hideModal();
 			} else {
 				if (seed) {
+					trimSeedData();
 					const editedSeed = { ...seed, content, author, source, showEveryday };
 					editSeed(editedSeed, deck.id);
 					hideModal();

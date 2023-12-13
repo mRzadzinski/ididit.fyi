@@ -3,7 +3,7 @@ import { db } from '$lib/firebase/firebase';
 import { uniqueID } from '$lib/helpers';
 import { user } from '$lib/stores/authStores';
 import { settings, syncInProgress, userDocs } from '$lib/stores/dbStores';
-import { Timestamp, addDoc, collection, doc, updateDoc } from 'firebase/firestore';
+import { Timestamp, addDoc, collection, doc, updateDoc, writeBatch } from 'firebase/firestore';
 import sizeof from 'firestore-size';
 import { cloneDeep } from 'lodash';
 import { get, writable } from 'svelte/store';
@@ -44,10 +44,7 @@ async function updateDecksDb(docId: string, updatedDecks: SeedsDeckType[]) {
 export async function createSeed(newSeed: SeedType, deck: SeedsDeckType) {
 	const usrDocs = get(userDocs);
 	const deckWithSeed = {
-		id: deck.id,
-		name: deck.name,
-		dailyLimit: deck.dailyLimit,
-		order: deck.order,
+		...deck,
 		seeds: [newSeed] as SeedType[]
 	} as SeedsDeckType;
 
@@ -163,47 +160,114 @@ export async function deleteSeed(seedId: string, deckId: string) {
 
 export async function editSeed(editedSeed: SeedType, deckId: string) {
 	const usrDocs = get(userDocs);
-	let documentId = '';
-	let updatedDecks: SeedsDeckType[] = [];
-	let deckIndex: number | undefined;
+	let parentDocId: string | undefined;
+	let parentDocIndex: number | undefined;
+	let parentDeckIndex: number | undefined;
 	let seedIndex: number | undefined;
+	let updatedDecks: SeedsDeckType[] = [];
+	let deckWithSeed: SeedsDeckType | undefined;
 
-	// Find seed location
-	// if enough space => edit
+	let seedFound = false;
+	let breakInnerLoops = false;
+
+	// Find seed location and edit, if not enough space in parent doc, try remaining docs
 	for (let i = 0; i < usrDocs.length; i++) {
 		const decks = usrDocs[i].doc.seedsData.decks;
+		breakInnerLoops = false;
+
+		if (deckWithSeed) {
+			const spaceLeft = usrDocs[i].remainingSpace - sizeof(deckWithSeed);
+			if (spaceLeft < 0) continue;
+		}
 
 		for (let j = 0; j < decks.length; j++) {
+			if (breakInnerLoops) break;
 			const seeds = decks[j].seeds;
 
 			if (decks[j].id === deckId) {
-				for (let k = 0; k < seeds.length; k++) {
-					if (seeds[k].id === editedSeed.id) {
-						const spaceLeft = usrDocs[i].remainingSpace - sizeof(editedSeed);
+				if (!seedFound) {
+					for (let k = 0; k < seeds.length; k++) {
+						if (seeds[k].id === editedSeed.id) {
+							const spaceLeft = usrDocs[i].remainingSpace - sizeof(editedSeed);
+							parentDocId = usrDocs[i].docID;
+							seedFound = true;
 
-						// Edit seed in place
-						if (spaceLeft > 0) {
-							documentId = usrDocs[i].docID;
-							updatedDecks = cloneDeep(decks);
-							updatedDecks[j].seeds[k] = editedSeed;
+							// Edit seed in place
+							if (spaceLeft > 0) {
+								updatedDecks = cloneDeep(decks);
+								updatedDecks[j].seeds[k] = editedSeed;
+								updateDecksDb(parentDocId, updatedDecks);
 
-							updateDecksDb(documentId, updatedDecks);
+								return;
+							} else {
+								// Save deck with seed inside to check space remaining in docs
+								deckWithSeed = { ...decks[j], seeds: [editedSeed] };
+
+								// Collect seed location data
+								parentDocIndex = i;
+								parentDeckIndex = j;
+								seedIndex = k;
+
+								// Docs are sorted by remaining space ascending, so previous doc won't fit seed anyway -> scan next docs
+								breakInnerLoops = true;
+								break;
+							}
+
+							// Collect seed location data
+							// documentId = usrDocs[i].docID;
+							// updatedDecks = cloneDeep(decks);
+							// deckIndex = j;
+							// seedIndex = k;
 						}
-
-						// Collect seed location data
-						// documentId = usrDocs[i].docID;
-						// updatedDecks = cloneDeep(decks);
-						// deckIndex = j;
-						// seedIndex = k;
 					}
 				}
+				// Deck copy exist in doc => move seed to deck copy (if deck in initial location becomes empty, remove it)
+				else {
+					console.log('here');
+					const batch = writeBatch(db);
+					const docID = usrDocs[i].docID;
+
+					// Add seed to doc
+					updatedDecks = cloneDeep(decks);
+					updatedDecks[j].seeds.push(editedSeed);
+					// Add to batch update
+					const docRef = doc(db, 'users', docID);
+					batch.update(docRef, { 'seedsData.decks': updatedDecks });
+
+					// Remove from parent doc
+					if (
+						parentDocId !== undefined &&
+						parentDocIndex !== undefined &&
+						parentDeckIndex !== undefined &&
+						seedIndex !== undefined
+					) {
+						updatedDecks = cloneDeep(usrDocs[parentDocIndex].doc.seedsData.decks);
+
+						// If deck will become empty - remove whole deck, else remove only seed
+						if (updatedDecks[parentDeckIndex].seeds.length === 1) {
+							updatedDecks.splice(parentDeckIndex, 1);
+						} else {
+							updatedDecks[parentDeckIndex].seeds.splice(seedIndex, 1);
+						}
+
+						// Add to batch update
+						const docRef = doc(db, 'users', parentDocId);
+						batch.update(docRef, { 'seedsData.decks': updatedDecks });
+
+						batch.commit();
+					}
+				}
+			}
+			// Deck copy doesn't exist => create deck copy with edited seed inside (if deck in initial location becomes empty, remove it)
+			else {
+				
 			}
 		}
 	}
 
 	// if not enough space => scan remaining docs => if enough space =>
-	//     if deck copy exists in doc => move seed to deck copy (if deck in initial location becomes empty, remove it)
-	//     if deck copy doesn't exist => create deck copy with edited seed inside (if deck in initial location becomes empty, remove it)
+
+	// if deck copy doesn't exist => create deck copy with edited seed inside (if deck in initial location becomes empty, remove it)
 
 	// if not enough space in existing docs => create new one => create deck copy with edited seed inside (if deck in initial location becomes empty, remove it)
 }
