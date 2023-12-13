@@ -3,9 +3,11 @@
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
 	import { deleteSeed, expandedSeedId } from '../../routes/app/seeds/[deck_id]/seedsLogic';
 	import ToggleDot from '$components/common/ToggleDot.svelte';
+	import SeedEditModal from './SeedEditModal.svelte';
+	import ModalBackground from '$components/common/ModalBackground.svelte';
 
 	export let seed: SeedType;
-	export let deckId: string;
+	export let deck: SeedsDeckType;
 
 	let seedHtml: HTMLElement;
 	let seedContentHtml: HTMLElement;
@@ -14,6 +16,7 @@
 	let otherSeedInExpandedMode: boolean;
 	let initialHeight: number;
 	let fullHeight: number;
+	let showSeedEditor = false;
 	let showSeedOptions = false;
 	let expandedMode = false;
 	let showTooltip = false;
@@ -68,6 +71,14 @@
 		seedHtml.style.height = fullHeight.toString() + 'px';
 	}
 
+	function toggleShowSeedEditor(show: boolean) {
+		if (show) {
+			showSeedEditor = true;
+		} else {
+			showSeedEditor = false;
+		}
+	}
+
 	onMount(() => {
 		initialHeight = seedHtml.scrollHeight;
 	});
@@ -116,6 +127,17 @@
 		handleSeedClick();
 	}}
 >
+	{#if showSeedEditor}
+		<ModalBackground>
+			<SeedEditModal
+				seedCreator={false}
+				{seed}
+				{deck}
+				hideModal={() => toggleShowSeedEditor(false)}
+			/>
+		</ModalBackground>
+	{/if}
+
 	<!-- Constrain content to one line if not in expandedMode -->
 	<div
 		class="text-xs mr-8 w-full {expandedMode ? 'py-4' : 'line-clamp-1'}"
@@ -175,11 +197,11 @@
 				options={[
 					{
 						name: 'Edit',
-						handlers: [() => {}]
+						handlers: [() => toggleShowSeedEditor(true)]
 					},
 					{
 						name: 'Delete',
-						handlers: [() => deleteSeed(seed.id, deckId)]
+						handlers: [() => deleteSeed(seed.id, deck.id)]
 					}
 				]}
 			/>

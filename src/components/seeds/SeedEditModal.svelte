@@ -1,11 +1,11 @@
 <script lang="ts">
 	import ToggleDot from '$components/common/ToggleDot.svelte';
 	import { onMount } from 'svelte';
-	import { SeedFactory, createSeed } from '../../routes/app/seeds/[deck_id]/seedsLogic';
+	import { SeedFactory, createSeed, editSeed } from '../../routes/app/seeds/[deck_id]/seedsLogic';
 
 	export let seedCreator = false;
-	export let seedData: null | SeedType;
-	export let deck:SeedsDeckType
+	export let seed: null | SeedType;
+	export let deck: SeedsDeckType;
 	export let hideModal: () => void;
 
 	let contentHtml: HTMLElement;
@@ -13,6 +13,20 @@
 	let author = '';
 	let source = '';
 	let showEveryday = false;
+
+	if (!seedCreator) {
+		if (
+			seed?.content !== undefined &&
+			seed?.author !== undefined &&
+			seed?.source !== undefined &&
+			seed?.showEveryday !== undefined
+		) {
+			content = seed?.content;
+			author = seed?.author;
+			source = seed?.source;
+			showEveryday = seed?.showEveryday;
+		}
+	}
 
 	function toggleShowEveryday() {
 		if (!showEveryday) {
@@ -36,10 +50,16 @@
 		on:submit={(e) => {
 			e.preventDefault();
 
-			if (!seedData) {
+			if (seedCreator) {
 				const newSeed = SeedFactory(content, author, source, showEveryday);
 				createSeed(newSeed, deck);
 				hideModal();
+			} else {
+				if (seed) {
+					const editedSeed = { ...seed, content, author, source, showEveryday };
+					editSeed(editedSeed, deck.id);
+					hideModal();
+				}
 			}
 		}}
 	>

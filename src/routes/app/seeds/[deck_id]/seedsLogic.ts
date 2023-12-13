@@ -137,7 +137,7 @@ export async function deleteSeed(seedId: string, deckId: string) {
 						deckCopiesExist = true;
 					}
 				}
-				// Seed and deck copy was found so terminate loops
+				// Seed and deck-copy was found so terminate loops
 				else {
 					exitLoops = true;
 				}
@@ -161,7 +161,54 @@ export async function deleteSeed(seedId: string, deckId: string) {
 	return;
 }
 
-// Could be shorter but this way is more readable
+export async function editSeed(editedSeed: SeedType, deckId: string) {
+	const usrDocs = get(userDocs);
+	let documentId = '';
+	let updatedDecks: SeedsDeckType[] = [];
+	let deckIndex: number | undefined;
+	let seedIndex: number | undefined;
+
+	// Find seed location
+	// if enough space => edit
+	for (let i = 0; i < usrDocs.length; i++) {
+		const decks = usrDocs[i].doc.seedsData.decks;
+
+		for (let j = 0; j < decks.length; j++) {
+			const seeds = decks[j].seeds;
+
+			if (decks[j].id === deckId) {
+				for (let k = 0; k < seeds.length; k++) {
+					if (seeds[k].id === editedSeed.id) {
+						const spaceLeft = usrDocs[i].remainingSpace - sizeof(editedSeed);
+
+						// Edit seed in place
+						if (spaceLeft > 0) {
+							documentId = usrDocs[i].docID;
+							updatedDecks = cloneDeep(decks);
+							updatedDecks[j].seeds[k] = editedSeed;
+
+							updateDecksDb(documentId, updatedDecks);
+						}
+
+						// Collect seed location data
+						// documentId = usrDocs[i].docID;
+						// updatedDecks = cloneDeep(decks);
+						// deckIndex = j;
+						// seedIndex = k;
+					}
+				}
+			}
+		}
+	}
+
+	// if not enough space => scan remaining docs => if enough space =>
+	//     if deck copy exists in doc => move seed to deck copy (if deck in initial location becomes empty, remove it)
+	//     if deck copy doesn't exist => create deck copy with edited seed inside (if deck in initial location becomes empty, remove it)
+
+	// if not enough space in existing docs => create new one => create deck copy with edited seed inside (if deck in initial location becomes empty, remove it)
+}
+
+// Could be less verbose but this way is more readable
 export function reorderSeeds(seeds: SeedType[]) {
 	const order = get(settings).seedsOrderBy;
 	const reordered = seeds;
@@ -202,7 +249,7 @@ export function reorderSeeds(seeds: SeedType[]) {
 			}
 			return 1;
 		});
-	}else if (order === 'old-new') {
+	} else if (order === 'old-new') {
 		reordered.sort((a, b) => {
 			const nameA = a.date.toDate();
 			const nameB = b.date.toDate();

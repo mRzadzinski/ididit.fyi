@@ -62,7 +62,7 @@
 	<ModalBackground>
 		<SeedEditModal
 			seedCreator={true}
-			seedData={null}
+			seed={null}
 			{deck}
 			hideModal={() => toggleShowSeedCreator(false)}
 		/>
@@ -82,6 +82,6 @@
 
 {#each seeds as seed (seed.id)}
 	<div animate:flip={{ duration: 400 }}>
-		<Seed {seed} deckId={deck.id} />
+		<Seed {seed} {deck} />
 	</div>
 {/each}
