@@ -1,7 +1,11 @@
 <script lang="ts">
 	import ThreeDotsDropdown from '$components/common/ThreeDotsDropdown.svelte';
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
-	import { deleteSeed, expandedSeedId } from '../../routes/app/seeds/[deck_id]/seedsLogic';
+	import {
+		deleteSeed,
+		editSeed,
+		expandedSeedId
+	} from '../../routes/app/seeds/[deck_id]/seedsLogic';
 	import ToggleDot from '$components/common/ToggleDot.svelte';
 	import SeedEditModal from './SeedEditModal.svelte';
 	import ModalBackground from '$components/common/ModalBackground.svelte';
@@ -189,7 +193,14 @@
 				toggleTooltip.style.display = 'none';
 			}}
 		>
-			<ToggleDot enabled={seed.showEveryday} bright={showSeedOptions} clickHandler={() => {}} />
+			<ToggleDot
+				enabled={seed.showEveryday}
+				bright={showSeedOptions}
+				clickHandler={() => {
+					const updatedSeed = { ...seed, showEveryday: !seed.showEveryday };
+					editSeed(updatedSeed, deck.id);
+				}}
+			/>
 		</div>
 		<div class="scale-[85%]">
 			<ThreeDotsDropdown
