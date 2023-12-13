@@ -159,7 +159,7 @@
 	>
 		{#if !editMode}
 			<span class="text-sm max-w-full whitespace-nowrap text-ellipsis truncate mr-8"
-				>{deck.name}</span
+				>{newName}</span
 			>
 			<div class={showDeckOptions ? '' : 'invisible'}>
 				<ThreeDotsDropdown
