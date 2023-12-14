@@ -66,26 +66,28 @@ export async function createDeck(newDeck: SeedsDeckType) {
 export async function deleteDeck(deckId: string) {
 	const batch = writeBatch(db);
 	const usrDocs = get(userDocs);
+	let updatedDecksArray: SeedsDeckType[] | undefined;
 
-	// Find deck location in docs
+	// Find all deck locations in docs
 	for (let i = 0; i < usrDocs.length; i++) {
 		const document = usrDocs[i];
 		const documentId = document.docID;
-		const decksArray = document.doc.seedsData.decks;
-		const updatedDecksArray = cloneDeep(decksArray);
+		const decks = document.doc.seedsData.decks;
 
-		for (let j = 0; j < updatedDecksArray.length; j++) {
-			const scannedDeck = updatedDecksArray[j];
-			const scannedDeckId = scannedDeck.id;
-			// Delete deck
-			if (scannedDeckId === deckId) {
-				updatedDecksArray.splice(j, 1);
+		for (let j = 0; j < decks.length; j++) {
+			if (decks[j].id === deckId) {
+				// Delete deck
+				updatedDecksArray = cloneDeep(decks);
+				if (updatedDecksArray) {
+					updatedDecksArray.splice(j, 1);
+
+					// Add to batch update
+					const docRef = doc(db, 'users', documentId);
+					batch.update(docRef, { 'seedsData.decks': updatedDecksArray });
+
+					break;
+				}
 			}
-		}
-		// If anything changed in deck, add to batch update
-		if (!isEqual(decksArray, updatedDecksArray)) {
-			const docRef = doc(db, 'users', documentId);
-			batch.update(docRef, { 'seedsData.decks': updatedDecksArray });
 		}
 	}
 	syncInProgress.set(true);
@@ -120,11 +122,13 @@ export async function updateDeck(updatedDeck: SeedsDeckType) {
 			newDeckArray[docInfo.oldDeckIndex] = updatedDeck;
 			// Update doc in firestore
 			const docRef = doc(db, 'users', parentDocID);
+
 			syncInProgress.set(true);
 			await updateDoc(docRef, {
 				'seedsData.decks': newDeckArray
 			});
 			syncInProgress.set(false);
+			
 			return;
 		}
 
