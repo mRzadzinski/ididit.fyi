@@ -159,6 +159,7 @@ export async function deleteSeed(seedId: string, deckId: string) {
 }
 
 export async function editSeed(editedSeed: SeedType, deckId: string) {
+	const batch = writeBatch(db);
 	const usrDocs = get(userDocs);
 	let parentDocId: string | undefined;
 	let parentDocIndex: number | undefined;
@@ -171,6 +172,7 @@ export async function editSeed(editedSeed: SeedType, deckId: string) {
 	let breakInnerLoops = false;
 
 	// Find seed location and edit, if not enough space in parent doc, try remaining docs
+	// Scan Docs
 	for (let i = 0; i < usrDocs.length; i++) {
 		const decks = usrDocs[i].doc.seedsData.decks;
 		breakInnerLoops = false;
@@ -179,13 +181,14 @@ export async function editSeed(editedSeed: SeedType, deckId: string) {
 			const spaceLeft = usrDocs[i].remainingSpace - sizeof(deckWithSeed);
 			if (spaceLeft < 0) continue;
 		}
-
+		// Scan decks
 		for (let j = 0; j < decks.length; j++) {
 			if (breakInnerLoops) break;
 			const seeds = decks[j].seeds;
 
 			if (decks[j].id === deckId) {
 				if (!seedFound) {
+					// Scan seeds
 					for (let k = 0; k < seeds.length; k++) {
 						if (seeds[k].id === editedSeed.id) {
 							const spaceLeft = usrDocs[i].remainingSpace - sizeof(editedSeed);
@@ -208,68 +211,72 @@ export async function editSeed(editedSeed: SeedType, deckId: string) {
 								parentDeckIndex = j;
 								seedIndex = k;
 
-								// Docs are sorted by remaining space ascending, so previous doc won't fit seed anyway -> scan next docs
+								// Docs are sorted by remaining space ascending, so previous doc won't fit seed anyway -> scan remaining docs
 								breakInnerLoops = true;
 								break;
 							}
-
-							// Collect seed location data
-							// documentId = usrDocs[i].docID;
-							// updatedDecks = cloneDeep(decks);
-							// deckIndex = j;
-							// seedIndex = k;
 						}
 					}
 				}
-				// Deck copy exist in doc => move seed to deck copy (if deck in initial location becomes empty, remove it)
+				// Deck copy exists in doc => move seed to deck copy (if deck in initial location becomes empty, remove it)
 				else {
-					console.log('here');
-					const batch = writeBatch(db);
-					const docID = usrDocs[i].docID;
-
 					// Add seed to doc
 					updatedDecks = cloneDeep(decks);
 					updatedDecks[j].seeds.push(editedSeed);
 					// Add to batch update
+					const docID = usrDocs[i].docID;
 					const docRef = doc(db, 'users', docID);
 					batch.update(docRef, { 'seedsData.decks': updatedDecks });
 
 					// Remove from parent doc
-					if (
-						parentDocId !== undefined &&
-						parentDocIndex !== undefined &&
-						parentDeckIndex !== undefined &&
-						seedIndex !== undefined
-					) {
-						updatedDecks = cloneDeep(usrDocs[parentDocIndex].doc.seedsData.decks);
-
-						// If deck will become empty - remove whole deck, else remove only seed
-						if (updatedDecks[parentDeckIndex].seeds.length === 1) {
-							updatedDecks.splice(parentDeckIndex, 1);
-						} else {
-							updatedDecks[parentDeckIndex].seeds.splice(seedIndex, 1);
-						}
-
-						// Add to batch update
-						const docRef = doc(db, 'users', parentDocId);
-						batch.update(docRef, { 'seedsData.decks': updatedDecks });
-
-						batch.commit();
-					}
+					removeFromParentDoc();
+					return;
 				}
 			}
-			// Deck copy doesn't exist => create deck copy with edited seed inside (if deck in initial location becomes empty, remove it)
-			else {
-				
-			}
+		}
+		// Deck copy doesn't exist => create deck copy with edited seed inside (if deck in initial location becomes empty, remove it)
+		if (deckWithSeed) {
+			const spaceLeft = usrDocs[i].remainingSpace - sizeof(deckWithSeed);
+			if (spaceLeft < 0) continue;
+
+			// Add deck to doc
+			updatedDecks = cloneDeep(decks);
+			updatedDecks.push(deckWithSeed);
+			// Add to batch update
+			const docID = usrDocs[i].docID;
+			const docRef = doc(db, 'users', docID);
+			batch.update(docRef, { 'seedsData.decks': updatedDecks });
+
+			// Remove from parent doc
+			removeFromParentDoc();
+			return;
 		}
 	}
-
-	// if not enough space => scan remaining docs => if enough space =>
-
-	// if deck copy doesn't exist => create deck copy with edited seed inside (if deck in initial location becomes empty, remove it)
-
 	// if not enough space in existing docs => create new one => create deck copy with edited seed inside (if deck in initial location becomes empty, remove it)
+
+	function removeFromParentDoc() {
+		if (
+			parentDocId !== undefined &&
+			parentDocIndex !== undefined &&
+			parentDeckIndex !== undefined &&
+			seedIndex !== undefined
+		) {
+			updatedDecks = cloneDeep(usrDocs[parentDocIndex].doc.seedsData.decks);
+
+			// If deck will become empty - remove whole deck, else remove only seed
+			if (updatedDecks[parentDeckIndex].seeds.length === 1) {
+				updatedDecks.splice(parentDeckIndex, 1);
+			} else {
+				updatedDecks[parentDeckIndex].seeds.splice(seedIndex, 1);
+			}
+
+			// Add to batch update
+			const docRef = doc(db, 'users', parentDocId);
+			batch.update(docRef, { 'seedsData.decks': updatedDecks });
+
+			batch.commit();
+		}
+	}
 }
 
 // Could be less verbose but this way is more readable
