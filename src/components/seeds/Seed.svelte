@@ -148,7 +148,7 @@
 		bind:this={seedContentHtml}
 	>
 		<span class="text-sm w-full">{seed.content}</span>
-		<div class="author-source-font-size italic opacity-60">
+		<div class="italic opacity-60">
 			{#if seed.author && expandedMode}
 				<br />
 				{seed.author}
@@ -223,10 +223,5 @@
 <style>
 	.custom-transition {
 		transition: all 250ms ease-out;
-	}
-
-	.author-source-font-size {
-		font-size: 0.73rem;
-		line-height: 0.95rem;
 	}
 </style>

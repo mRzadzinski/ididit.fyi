@@ -2,17 +2,24 @@
 	import ToggleDot from '$components/common/ToggleDot.svelte';
 	import { onMount } from 'svelte';
 	import { SeedFactory, createSeed, editSeed } from '../../routes/app/seeds/[deck_id]/seedsLogic';
+	import { cloneDeep } from 'lodash';
 
 	export let seedCreator = false;
 	export let seed: null | SeedType;
 	export let deck: SeedsDeckType;
 	export let hideModal: () => void;
 
+	let allowSave = false;
 	let contentHtml: HTMLElement;
 	let content = '';
 	let author = '';
 	let source = '';
 	let showEveryday = false;
+
+	$: {
+		showEveryday;
+		checkIfAllowSave();
+	}
 
 	if (!seedCreator) {
 		if (
@@ -25,6 +32,27 @@
 			author = seed?.author;
 			source = seed?.source;
 			showEveryday = seed?.showEveryday;
+		}
+	}
+
+	function checkIfAllowSave() {
+		const contentTrimmed = cloneDeep(content).trim();
+		const authorTrimmed = cloneDeep(author).trim();
+		const sourceTrimmed = cloneDeep(source).trim();
+
+		if (seedCreator && contentTrimmed.length > 0) {
+			allowSave = true;
+		} else if (
+			!seedCreator &&
+			contentTrimmed.length > 0 &&
+			(contentTrimmed !== seed?.content ||
+				authorTrimmed !== seed.author ||
+				sourceTrimmed !== seed.source ||
+				showEveryday !== seed.showEveryday)
+		) {
+			allowSave = true;
+		} else {
+			allowSave = false;
 		}
 	}
 
@@ -51,8 +79,9 @@
 
 <div class="w-[40rem] h-[24rem] p-5 bg-[#FFCD4C] rounded-2xl">
 	<form
-		on:submit={(e) => {
-			e.preventDefault();
+		on:input={() => checkIfAllowSave()}
+		on:submit|preventDefault={() => {
+			trimSeedData();
 
 			if (seedCreator) {
 				const newSeed = SeedFactory(content, author, source, showEveryday);
@@ -60,7 +89,6 @@
 				hideModal();
 			} else {
 				if (seed) {
-					trimSeedData();
 					const editedSeed = { ...seed, content, author, source, showEveryday };
 					editSeed(editedSeed, deck.id);
 					hideModal();
@@ -125,7 +153,11 @@
 			</div>
 			<div class="flex justify-end items-end gap-2 w-1/3 -mb-3">
 				<button class="btn btn-sm bg-white" type="reset" on:click={hideModal}>Cancel</button>
-				<button class="btn btn-sm btn-neutral bg-black">Save</button>
+				{#if allowSave}
+					<button class="btn btn-sm btn-neutral bg-black">Save</button>
+				{:else}
+					<button class="btn btn-sm btn-disabled" tabindex="-1" aria-disabled="true">Save</button>
+				{/if}
 			</div>
 		</div>
 	</form>
