@@ -41,6 +41,20 @@ async function updateDecksDb(docId: string, updatedDecks: SeedsDeckType[]) {
 	syncInProgress.set(false);
 }
 
+function createDocWithDeckAndSeed(deck: SeedsDeckType, seed: SeedType) {
+	let newDoc;
+	const usr = get(user);
+	if (usr && typeof usr === 'object') {
+		newDoc = userDataDocFactory(usr.uid);
+	}
+	// Add parent deck containing only new seed to new doc
+	const parentDeckClone = cloneDeep(deck);
+	parentDeckClone.seeds = [seed];
+	newDoc?.seedsData.decks.push(parentDeckClone);
+
+	return newDoc;
+}
+
 export async function createSeed(newSeed: SeedType, deck: SeedsDeckType) {
 	const usrDocs = get(userDocs);
 	const deckWithSeed = {
@@ -74,15 +88,7 @@ export async function createSeed(newSeed: SeedType, deck: SeedsDeckType) {
 		}
 	}
 	// If all docs are full, create new one
-	let newDoc;
-	const usr = get(user);
-	if (usr && typeof usr === 'object') {
-		newDoc = userDataDocFactory(usr.uid);
-	}
-	// Add parent deck containing only new seed to new doc
-	const parentDeckClone = cloneDeep(deck);
-	parentDeckClone.seeds = [newSeed];
-	newDoc?.seedsData.decks.push(parentDeckClone);
+	const newDoc = createDocWithDeckAndSeed(deck, newSeed);
 
 	// Push to db
 	syncInProgress.set(true);
@@ -252,7 +258,15 @@ export async function editSeed(editedSeed: SeedType, deckId: string) {
 			return;
 		}
 	}
-	// if not enough space in existing docs => create new one => create deck copy with edited seed inside (if deck in initial location becomes empty, remove it)
+	// Not enough space in existing docs
+	if (deckWithSeed) {
+		// Create new doc with deck copy with edited seed inside
+		const newDoc = createDocWithDeckAndSeed(deckWithSeed, deckWithSeed?.seeds[0]);
+		const docRef = doc(collection(db, 'users'));
+		batch.set(docRef, newDoc);
+
+		removeFromParentDoc();
+	}
 
 	function removeFromParentDoc() {
 		if (
