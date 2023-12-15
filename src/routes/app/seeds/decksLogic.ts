@@ -111,11 +111,12 @@ export async function updateDeck(updatedDeck: SeedsDeckType) {
 				// Update deck data, leave seeds unchanged
 				updatedDecks = cloneDeep(decks);
 				updatedDecks[j] = { ...updatedDeck, seeds: updatedDecks[j].seeds };
-				console.log(updatedDeck)
 
 				// Add to batch changes
 				const docRef = doc(db, 'users', documentId);
 				batch.update(docRef, { 'seedsData.decks': updatedDecks });
+
+				break;
 			}
 		}
 	}
@@ -127,30 +128,31 @@ export async function updateDeck(updatedDeck: SeedsDeckType) {
 
 export async function reorderDecks(reorderData: DndReorderData[]) {
 	const batch = writeBatch(db);
+	const usrDocs = get(userDocs);
 
-	// Scan all user docs
-	get(userDocs).forEach((document) => {
-		const docID = document.docID;
-		const decksArray = document.doc.seedsData.decks;
-		const decksClone = cloneDeep(decksArray);
+	// Scan all user docs => reorder all deck instances
+	for (let i = 0; i < usrDocs.length; i++) {
+		const docID = usrDocs[i].docID;
+		const decks = usrDocs[i].doc.seedsData.decks;
+		const updatedDecks = cloneDeep(decks);
 
 		// Scan all decks in each document
-		for (let i = 0; i < decksClone.length; i++) {
-			const scannedDeck = decksClone[i];
-			for (let j = 0; j < reorderData.length; j++) {
-				if (scannedDeck.id === reorderData[j].id) {
-					scannedDeck.order = reorderData[j].order;
-					reorderData.splice(j, 1);
+		for (let j = 0; j < updatedDecks.length; j++) {
+			const scannedDeck = updatedDecks[j];
+
+			for (let k = 0; k < reorderData.length; k++) {
+				if (scannedDeck.id === reorderData[k].id) {
+					// Reorder deck
+					scannedDeck.order = reorderData[k].order;
 				}
 			}
 		}
-
 		// If any changes were made in doc, prepare update
-		if (!isEqual(decksClone, decksArray)) {
+		if (!isEqual(updatedDecks, decks)) {
 			const docRef = doc(db, 'users', docID);
-			batch.update(docRef, { 'seedsData.decks': decksClone });
+			batch.update(docRef, { 'seedsData.decks': updatedDecks });
 		}
-	});
+	}
 	syncInProgress.set(true);
 	await batch.commit();
 	syncInProgress.set(false);
