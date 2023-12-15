@@ -3,11 +3,11 @@ import { db } from '$lib/firebase/firebase';
 import { generateRandomPassword, uniqueID } from '$lib/helpers';
 import { user } from '$lib/stores/authStores';
 import { syncInProgress, userDocs } from '$lib/stores/dbStores';
-import { arrayUnion, collection, doc, updateDoc, writeBatch } from 'firebase/firestore';
-import sizeof from 'firestore-size';
+import { collection, doc, updateDoc, writeBatch } from 'firebase/firestore';
 import { cloneDeep, isEqual } from 'lodash';
 import { get } from 'svelte/store';
 import type { DndReorderData } from '../../../lib/dnd/verticalListLifecycle';
+import sizeof from 'firestore-size';
 
 export const decksOrderByOptions = [
 	{ name: 'Custom', value: 'custom' },
@@ -158,35 +158,6 @@ export async function reorderDecks(reorderData: DndReorderData[]) {
 	syncInProgress.set(false);
 }
 
-export async function manageAllSeedsOrder(action: string) {
-	const batch = writeBatch(db);
-
-	// Scan all user docs
-	get(userDocs).forEach((document) => {
-		const docID = document.docID;
-		const decksArray = document.doc.seedsData.decks;
-		const decksClone = cloneDeep(decksArray);
-
-		// Increment order for all decks
-		for (let i = 0; i < decksClone.length; i++) {
-			if (action === 'increment') {
-				decksClone[i].order += 1;
-			} else if (action === 'decrement') {
-				decksClone[i].order -= 1;
-			}
-		}
-
-		// If any changes were made in doc, prepare update
-		if (!isEqual(decksClone, decksArray)) {
-			const docRef = doc(db, 'users', docID);
-			batch.update(docRef, { 'seedsData.decks': decksClone });
-		}
-	});
-	syncInProgress.set(true);
-	await batch.commit();
-	syncInProgress.set(false);
-}
-
 export function deckFactory() {
 	return {
 		id: uniqueID(),
@@ -195,20 +166,6 @@ export function deckFactory() {
 		order: 0,
 		seeds: []
 	};
-}
-
-export async function changeDeckSortMethod(sortMethod: string) {
-	// Get parent doc that contains settings
-	const document = get(userDocs).filter((d) => d.doc.settings)[0];
-	const id = document.docID;
-
-	const docRef = doc(db, 'users', id);
-	syncInProgress.set(true);
-	await updateDoc(docRef, {
-		'settings.decksOrderBy': sortMethod
-	});
-	syncInProgress.set(false);
-	return;
 }
 
 export async function fillDocs() {

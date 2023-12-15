@@ -32,29 +32,6 @@ export function SeedFactory(
 	} as SeedType;
 }
 
-async function updateDecksDb(docId: string, updatedDecks: SeedsDeckType[]) {
-	// Update doc
-	const docRef = doc(db, 'users', docId);
-
-	syncInProgress.set(true);
-	await updateDoc(docRef, { 'seedsData.decks': updatedDecks });
-	syncInProgress.set(false);
-}
-
-function createDocWithDeckAndSeed(deck: SeedsDeckType, seed: SeedType) {
-	let newDoc;
-	const usr = get(user);
-	if (usr && typeof usr === 'object') {
-		newDoc = userDataDocFactory(usr.uid);
-	}
-	// Add parent deck containing only new seed to new doc
-	const parentDeckClone = cloneDeep(deck);
-	parentDeckClone.seeds = [seed];
-	newDoc?.seedsData.decks.push(parentDeckClone);
-
-	return newDoc;
-}
-
 export async function createSeed(newSeed: SeedType, deck: SeedsDeckType) {
 	const usrDocs = get(userDocs);
 	const deckWithSeed = {
@@ -349,4 +326,27 @@ export function reorderSeeds(seeds: SeedType[]) {
 	}
 
 	return reordered;
+}
+
+async function updateDecksDb(docId: string, updatedDecks: SeedsDeckType[]) {
+	// Update doc
+	const docRef = doc(db, 'users', docId);
+
+	syncInProgress.set(true);
+	await updateDoc(docRef, { 'seedsData.decks': updatedDecks });
+	syncInProgress.set(false);
+}
+
+function createDocWithDeckAndSeed(deck: SeedsDeckType, seed: SeedType) {
+	let newDoc;
+	const usr = get(user);
+	if (usr && typeof usr === 'object') {
+		newDoc = userDataDocFactory(usr.uid);
+	}
+	// Add parent deck containing only new seed to new doc
+	const parentDeckClone = cloneDeep(deck);
+	parentDeckClone.seeds = [seed];
+	newDoc?.seedsData.decks.push(parentDeckClone);
+
+	return newDoc;
 }
