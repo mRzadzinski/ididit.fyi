@@ -158,8 +158,7 @@
 		on:mouseleave={() => toggleDeckOptionsVisibility(false)}
 	>
 		{#if !editMode}
-			<span class="text-sm max-w-full whitespace-nowrap text-ellipsis truncate mr-8"
-				>{newName}</span
+			<span class="text-sm max-w-full whitespace-nowrap text-ellipsis truncate mr-8">{newName}</span
 			>
 			<div class={showDeckOptions ? '' : 'invisible'}>
 				<ThreeDotsDropdown

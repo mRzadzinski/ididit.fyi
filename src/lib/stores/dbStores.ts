@@ -51,7 +51,8 @@ onAuthStateChanged(auth, async (currentUser) => {
 				}
 				// Modify
 				if (change.type === 'modified') {
-					const newRemainingSpace = 1000000 - sizeof(change.doc.data());
+					// Leave 15k bytes buffer
+					const newRemainingSpace = 1033576 - sizeof(change.doc.data());
 					const updatedDoc = change.doc.data();
 
 					for (let i = 0; i < docs.length; i++) {
