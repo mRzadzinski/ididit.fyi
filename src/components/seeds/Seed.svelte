@@ -71,8 +71,10 @@
 	}
 
 	function setFullHeight() {
-		fullHeight = seedContentHtml.scrollHeight;
-		seedHtml.style.height = fullHeight.toString() + 'px';
+		if (seedContentHtml) {
+			fullHeight = seedContentHtml.scrollHeight;
+			seedHtml.style.height = fullHeight.toString() + 'px';
+		}
 	}
 
 	function toggleShowSeedEditor(show: boolean) {
