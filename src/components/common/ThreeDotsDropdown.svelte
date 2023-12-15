@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
 	export interface ThreeDotsDropdownOptions {
 		name: string;
-		handlers: Function[];
+		handler: Function;
 	}
 </script>
 
@@ -42,11 +42,11 @@
 									tabindex="0"
 									on:click={(e) => {
 										e.stopPropagation();
-										option.handlers.forEach((handler) => handler());
+										option.handler();
 									}}
 									on:keydown={(e) => {
 										e.stopPropagation();
-										option.handlers.forEach((handler) => handler());
+										option.handler();
 									}}
 								>
 									{option.name}

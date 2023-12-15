@@ -208,11 +208,11 @@
 				options={[
 					{
 						name: 'Edit',
-						handlers: [() => toggleShowSeedEditor(true)]
+						handler: () => toggleShowSeedEditor(true)
 					},
 					{
 						name: 'Delete',
-						handlers: [() => deleteSeed(seed.id, deck.id)]
+						handler: () => deleteSeed(seed.id, deck.id)
 					}
 				]}
 			/>

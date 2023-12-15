@@ -4,9 +4,11 @@
 	import { beforeUpdate, onMount } from 'svelte';
 	import ThreeDotsDropdown from '../common/ThreeDotsDropdown.svelte';
 	import type Muuri from 'muuri';
-	import { seedsData, syncInProgress } from '$lib/stores/dbStores';
+	import { seedsData, syncInProgress, userDocs } from '$lib/stores/dbStores';
 	import { disableNewItemBtn } from '$lib/stores/helperStores';
 	import { goto } from '$app/navigation';
+	import ConfirmDeleteDeckModal from './ConfirmDeleteDeckModal.svelte';
+	import ModalBackground from '$components/common/ModalBackground.svelte';
 
 	export let deck: SeedsDeckType;
 	export let newDeck = false;
@@ -17,6 +19,7 @@
 
 	let dndItem: HTMLElement;
 	let nameInput: HTMLInputElement;
+	let seedsInDeck: boolean;
 	let editMode = false;
 	let newDeckInitEditMode = true;
 	let otherDeckInEditMode = false;
@@ -24,6 +27,24 @@
 	let newName = deck.name;
 	let newLimit = deck.dailyLimit;
 	let showDeckOptions = false;
+	let showConfirmDelete = false;
+
+	function toggleShowConfirmDelete(bool: boolean) {
+		if (bool) {
+			showConfirmDelete = true;
+		} else {
+			showConfirmDelete = false;
+		}
+	}
+
+	function checkIfSeedsInDeck() {
+		for (let i = 0; i < $seedsData.decks.length; i++) {
+			const scannedDeck = $seedsData.decks[i];
+			if (scannedDeck.id === deck.id && scannedDeck.seeds.length > 0) {
+				seedsInDeck = true;
+			}
+		}
+	}
 
 	function toggleDeckOptionsVisibility(bool: boolean) {
 		// Timeout to sync with highlight animation
@@ -131,6 +152,15 @@
 	});
 </script>
 
+{#if showConfirmDelete}
+	<ModalBackground>
+		<ConfirmDeleteDeckModal
+			deleteHandler={() => handleDeleteDeck(deck.id, dndItem)}
+			hideModal={() => toggleShowConfirmDelete(false)}
+		/>
+	</ModalBackground>
+{/if}
+
 <div
 	class="absolute mb-3 w-full z-0 {editMode ? 'h-24 cursor-default' : ''}"
 	data-order={deck.order}
@@ -166,11 +196,18 @@
 					options={[
 						{
 							name: 'Edit',
-							handlers: [() => handleToggleEdit('enable')]
+							handler: () => handleToggleEdit('enable')
 						},
 						{
 							name: 'Delete',
-							handlers: [() => handleDeleteDeck(deck.id, dndItem)]
+							handler: () => {
+								checkIfSeedsInDeck();
+								if (seedsInDeck) {
+									toggleShowConfirmDelete(true);
+								} else {
+									handleDeleteDeck(deck.id, dndItem);
+								}
+							}
 						}
 					]}
 				/>
