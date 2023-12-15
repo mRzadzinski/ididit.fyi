@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SeedsDeck from '$components/seeds/SeedsDeck.svelte';
+	import Deck from '$components/seeds/Deck.svelte';
 	import PageHeader from '$components/app-layout/PageHeader.svelte';
 	import {
 		dndList,
@@ -94,7 +94,7 @@
 <div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
 	{#each decks as deck (deck.id)}
 		{#if newDeckId === deck.id}
-			<SeedsDeck
+			<Deck
 				{deck}
 				dndList={$dndList}
 				{handleDeleteDeck}
@@ -104,7 +104,7 @@
 			/>
 			{(newDeckId = '')}
 		{:else}
-			<SeedsDeck {deck} dndList={$dndList} {manageEditedDeckId} {handleDeleteDeck} {editedDeckId} />
+			<Deck {deck} dndList={$dndList} {manageEditedDeckId} {handleDeleteDeck} {editedDeckId} />
 		{/if}
 	{/each}
 </div>

@@ -133,6 +133,7 @@
 		handleSeedClick();
 	}}
 >
+
 	{#if showSeedEditor}
 		<ModalBackground>
 			<SeedEditModal
