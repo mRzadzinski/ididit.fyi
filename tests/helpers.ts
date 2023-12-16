@@ -14,7 +14,7 @@ interface OobCode {
 
 export async function getFirebaseAuthLink() {
 	try {
-		const response = await fetch('http://localhost:9099/emulator/v1/projects/ididit-fyi/oobCodes');
+		const response = await fetch('http://127.0.0.1:9099/emulator/v1/projects/ididit-fyi/oobCodes');
 		const obj = await response.json();
 		const link = (obj as OobCode).oobCodes[(obj as OobCode).oobCodes.length - 1].oobLink;
 
