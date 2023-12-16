@@ -7,7 +7,6 @@
 	import { seedsData, settings } from '$lib/stores/dbStores';
 	import Seed from '$components/seeds/Seed.svelte';
 	import SeedEditModal from '$components/seeds/SeedEditModal.svelte';
-	import ModalBackground from '$components/common/ModalBackground.svelte';
 	import { fillDocs } from '../decksLogic';
 	import { flip } from 'svelte/animate';
 
@@ -59,14 +58,12 @@
 </script>
 
 {#if showSeedCreator}
-	<ModalBackground>
 		<SeedEditModal
 			seedCreator={true}
 			seed={null}
 			{deck}
 			hideModal={() => toggleShowSeedCreator(false)}
 		/>
-	</ModalBackground>
 {/if}
 
 <PageHeader

@@ -1,29 +1,22 @@
 <script lang="ts">
-	import ThreeDotsDropdown from '$components/common/ThreeDotsDropdown.svelte';
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
-	import {
-		deleteSeed,
-		editSeed,
-		expandedSeedId
-	} from '../../routes/app/seeds/[deck_id]/seedsLogic';
-	import ToggleDot from '$components/common/ToggleDot.svelte';
+	import { expandedSeedId } from '../../routes/app/seeds/[deck_id]/seedsLogic';
 	import SeedEditModal from './SeedEditModal.svelte';
-	import ModalBackground from '$components/common/ModalBackground.svelte';
+	import SeedData from './SeedData.svelte';
+	import SeedOptions from './SeedOptions.svelte';
 
 	export let seed: SeedType;
 	export let deck: SeedsDeckType;
 
 	let seedHtml: HTMLElement;
 	let seedContentHtml: HTMLElement;
-	let toggleTooltip: HTMLElement;
-	let tooltipTimeout: NodeJS.Timeout;
 	let otherSeedInExpandedMode: boolean;
 	let initialHeight: number;
 	let fullHeight: number;
 	let showSeedEditor = false;
 	let showSeedOptions = false;
 	let expandedMode = false;
-	let showTooltip = false;
+
 	let seedHover = false;
 
 	// Save which seed is in expandedMode
@@ -37,6 +30,10 @@
 		}
 	} else {
 		otherSeedInExpandedMode = false;
+	}
+
+	function getSeedContentHtml(htmlEl: HTMLElement) {
+		seedContentHtml = htmlEl;
 	}
 
 	function handleSeedClick() {
@@ -107,6 +104,11 @@
 </script>
 
 <svelte:window on:click={(e) => handleClickOutsideSeed(e)} />
+
+{#if showSeedEditor}
+	<SeedEditModal seedCreator={false} {seed} {deck} hideModal={() => toggleShowSeedEditor(false)} />
+{/if}
+
 <div
 	class="flex justify-between items-center min-w-[496px] w-[100%] pl-5 mb-1 h-8 rounded-3xl bg-[#FEF6DE] custom-transition
 	{otherSeedInExpandedMode ? '' : 'hover:bg-[#FFCD4C]'}
@@ -133,94 +135,8 @@
 		handleSeedClick();
 	}}
 >
-
-	{#if showSeedEditor}
-		<ModalBackground>
-			<SeedEditModal
-				seedCreator={false}
-				{seed}
-				{deck}
-				hideModal={() => toggleShowSeedEditor(false)}
-			/>
-		</ModalBackground>
-	{/if}
-
-	<!-- Constrain content to one line if not in expandedMode -->
-	<div
-		class="text-xs mr-8 w-full {expandedMode ? 'py-4' : 'line-clamp-1'}"
-		bind:this={seedContentHtml}
-	>
-		<span class="text-sm w-full">{seed.content}</span>
-		<div class="italic opacity-60">
-			{#if seed.author && expandedMode}
-				<br />
-				{seed.author}
-			{/if}
-			{#if seed.source && expandedMode}
-				<br />
-				{seed.source}
-			{/if}
-		</div>
-	</div>
-	<!-- Stay centered if no author or source -->
-	<div
-		class="relative flex items-center gap-[0.1rem] cursor-default
-		{showSeedOptions ? '' : 'invisible'} 
-		{expandedMode && (seed.author || seed.source) ? 'self-end mb-[0.3rem]' : ''}"
-		role="button"
-		tabindex="0"
-		on:click={(e) => e.stopImmediatePropagation()}
-		on:keydown={(e) => e.stopImmediatePropagation()}
-	>
-		<div
-			class="absolute right-0 hidden justify-center items-center text-[0.7rem] text-base-300 h-6 w-60 bg-gray-600 rounded-full cursor-default transition-all duration-200
-			{expandedMode ? 'bottom-6' : 'bottom-[1.90rem]'}
-			{showTooltip && showSeedOptions ? 'opacity-100' : 'opacity-0'}"
-			bind:this={toggleTooltip}
-		>
-			Toggle: show every day in Daily Review
-		</div>
-		<div
-			role="button"
-			tabindex="0"
-			on:mouseenter={() => {
-				tooltipTimeout = setTimeout(() => {
-					// Invisible tooltip interferes with seed click handler, so it needs to be display:none before transitioning opacity
-					toggleTooltip.style.display = 'flex';
-					showTooltip = true;
-				}, 900);
-			}}
-			on:mouseleave={() => {
-				clearTimeout(tooltipTimeout);
-				showTooltip = false;
-				toggleTooltip.style.display = 'none';
-			}}
-		>
-			<ToggleDot
-				enabled={seed.showEveryday}
-				bright={showSeedOptions}
-				clickHandler={() => {
-					const updatedSeed = { ...seed, showEveryday: !seed.showEveryday };
-					editSeed(updatedSeed, deck.id);
-				}}
-			/>
-		</div>
-		<div class="scale-[85%]">
-			<ThreeDotsDropdown
-				itemId={seed.id}
-				options={[
-					{
-						name: 'Edit',
-						handler: () => toggleShowSeedEditor(true)
-					},
-					{
-						name: 'Delete',
-						handler: () => deleteSeed(seed.id, deck.id)
-					}
-				]}
-			/>
-		</div>
-	</div>
+	<SeedData {seed} {expandedMode} {getSeedContentHtml} />
+	<SeedOptions {seed} {deck} {showSeedOptions} {expandedMode} {toggleShowSeedEditor} />
 </div>
 
 <style>

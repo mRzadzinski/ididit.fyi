@@ -5,7 +5,6 @@
 	import { seedsData } from '$lib/stores/dbStores';
 	import { disableNewItemBtn } from '$lib/stores/helperStores';
 	import ConfirmDeleteDeckModal from './ConfirmDeleteDeckModal.svelte';
-	import ModalBackground from '$components/common/ModalBackground.svelte';
 	import DeckForm from './DeckForm.svelte';
 	import DeckDndItem from './DeckDndItem.svelte';
 
@@ -115,12 +114,10 @@
 </script>
 
 {#if showConfirmDelete}
-	<ModalBackground>
 		<ConfirmDeleteDeckModal
 			deleteHandler={() => handleDeleteDeck(deck.id, dndItem)}
 			hideModal={() => toggleShowConfirmDelete(false)}
 		/>
-	</ModalBackground>
 {/if}
 
 <DeckDndItem {deck} {editMode} {getDndItem}>
