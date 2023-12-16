@@ -1,3 +1,22 @@
+import type { Timestamp } from 'firebase/firestore';
+
+interface SeedType {
+	id: string;
+	date: Timestamp;
+	content: string;
+	author: string;
+	source: string;
+	showEveryday: boolean;
+}
+
+export interface SeedsDeckType {
+	id: string;
+	name: string;
+	dailyLimit: number;
+	order: number;
+	seeds: SeedType[];
+}
+
 export const userMainDocFactory = (uid: string) => {
 	return {
 		uid,

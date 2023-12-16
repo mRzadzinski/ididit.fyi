@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import { userMainDocFactory } from '../../src/lib/db/docsBoilerplate';
+import { userMainDocFactory } from './docsBoilerplate';
 // import { HttpsError, onCall } from 'firebase-functions/v1/https';
 // import { FieldValue } from 'firebase-admin/firestore';
 // import { getAuth } from 'firebase-admin/auth';
