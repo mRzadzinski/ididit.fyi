@@ -2,12 +2,12 @@
 	import { beforeUpdate, onMount } from 'svelte';
 	import ThreeDotsDropdown from '../common/ThreeDotsDropdown.svelte';
 	import type Muuri from 'muuri';
-	import { seedsData, syncInProgress, userDocs } from '$lib/stores/dbStores';
+	import { seedsData } from '$lib/stores/dbStores';
 	import { disableNewItemBtn } from '$lib/stores/helperStores';
-	import { goto } from '$app/navigation';
 	import ConfirmDeleteDeckModal from './ConfirmDeleteDeckModal.svelte';
 	import ModalBackground from '$components/common/ModalBackground.svelte';
 	import DeckForm from './DeckForm.svelte';
+	import DeckDndItem from './DeckDndItem.svelte';
 
 	export let deck: SeedsDeckType;
 	export let newDeck = false;
@@ -32,7 +32,9 @@
 	function getNewLimit(value: number) {
 		newLimit = value;
 	}
-
+	function getDndItem(item: HTMLElement) {
+		dndItem = item;
+	}
 
 	function toggleShowConfirmDelete(bool: boolean) {
 		if (bool) {
@@ -121,26 +123,12 @@
 	</ModalBackground>
 {/if}
 
-<div
-	class="absolute mb-3 w-full z-0 {editMode ? 'h-24 cursor-default' : ''}"
-	data-order={deck.order}
-	data-edit-mode={editMode}
-	id={deck.id}
-	bind:this={dndItem}
-	role="button"
-	tabindex="0"
-	on:click={() => {
-		if (!editMode) goto(`/app/seeds/${deck.name}_Seeds_${deck.id}`);
-	}}
-	on:keypress={() => {
-		if (!editMode) goto(`/app/seeds/${deck.id}`);
-	}}
->
+<DeckDndItem {deck} {editMode} {getDndItem}>
 	<div
 		class="flex justify-between items-center min-w-[496px] w-full h-10 pl-8 pr-1 rounded-3xl custom-transitions
-		{newDeck && newDeckInitEditMode ? 'h-0' : ''} 
-		{otherDeckInEditMode ? '' : 'hover:bg-[#FFCD4C]'}
-		{editMode ? 'h-24 overflow-hidden bg-[#FFCD4C]' : 'bg-[#FEF6DE]'}"
+	{newDeck && newDeckInitEditMode ? 'h-0' : ''} 
+	{otherDeckInEditMode ? '' : 'hover:bg-[#FFCD4C]'}
+	{editMode ? 'h-24 overflow-hidden bg-[#FFCD4C]' : 'bg-[#FEF6DE]'}"
 		role="listitem"
 		on:mouseenter={() => {
 			if (!otherDeckInEditMode) toggleDeckOptionsVisibility(true);
@@ -186,7 +174,7 @@
 			/>
 		{/if}
 	</div>
-</div>
+</DeckDndItem>
 
 <style>
 	.custom-transitions {

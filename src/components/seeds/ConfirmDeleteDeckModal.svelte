@@ -7,9 +7,8 @@
 
 <div class="flex flex-col justify-between w-80 h-60 p-4 bg-white">
 	<div>
-		Deck contains seeds.
-		<br />
-		Do you really want to delete them?
+		<div class="text-lg font-bold mb-1">Delete deck</div>
+		Seeds inside will be deleted.
 	</div>
 
 	<label class="form-control w-full max-w-xs">
