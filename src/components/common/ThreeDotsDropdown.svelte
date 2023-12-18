@@ -26,7 +26,7 @@
 				class="p-0 w-7 h-7 flex justify-center items-center rounded-full"
 				id="menu-dropdown-{itemId}"
 			>
-				<div class="dropdown dropdown-top dropdown-end w-full h-full">
+				<div class="dropdown dropdown-top dropdown-end w-full h-full rounded-full">
 					<label
 						class="w-full h-full flex items-center justify-center z-[0]"
 						tabindex="-1"

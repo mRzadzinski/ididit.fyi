@@ -4,29 +4,56 @@
 	export let clickHandler: () => void;
 </script>
 
-<div
-	class="flex justify-center items-center w-4 h-4 rounded-full cursor-pointer
-	{enabled ? 'visible' : ''}"
-	class:ring-bright={bright}
-	class:ring-dark={enabled && !bright}
-	role="button"
-	tabindex="0"
-	on:click={(e) => {
-		e.stopImmediatePropagation();
-		clickHandler();
-	}}
-	on:keydown={() => {
-		clickHandler();
-	}}
->
-	<div
-		class="w-2 h-2 rounded-full bg-inherit"
-		class:checked-no-options={enabled && !bright}
-		class:checked-with-options={enabled && bright}
-	/>
-</div>
+<ul class="menu min-w-fit flex p-0">
+	<li class="flex items-center">
+		<div
+			class="p-0 w-7 h-7 flex justify-center items-center rounded-full cursor-default"
+			role="button"
+			tabindex="0"
+			on:click={(e) => {
+				e.stopImmediatePropagation();
+				clickHandler();
+			}}
+			on:keydown={() => {
+				clickHandler();
+			}}
+		>
+			<div class="dropdown dropdown-top dropdown-end w-[0.85rem] h-[0.85rem] rounded-full">
+				<label
+					class="w-full h-full flex items-center justify-center z-[0]"
+					tabindex="-1"
+					for="menu-dropdown-{'toggle-dot'}"
+				>
+					<div
+						class="flex justify-center items-center w-[0.875rem] h-[0.875rem] rounded-full
+				{enabled ? 'visible' : ''}"
+						class:ring-bright={bright}
+						class:ring-dark={enabled && !bright}
+					>
+						<div
+							class="w-2 h-2 rounded-full bg-inherit"
+							class:checked-no-options={enabled && !bright}
+							class:checked-with-options={enabled && bright}
+						/>
+					</div>
+				</label>
+			</div>
+		</div>
+	</li>
+</ul>
 
 <style>
+	@media (hover: hover) {
+		:where(.menu li:not(.menu-title):not(.disabled) > *:not(ul):not(details):not(.menu-title)):not(
+				.active
+			):hover,
+		:where(.menu li:not(.menu-title):not(.disabled) > details > summary:not(.menu-title)):not(
+				.active
+			):hover {
+			cursor: default;
+		}
+	}
+
 	.ring-bright {
 		border: solid 2px white;
 		background-color: none;
@@ -41,8 +68,8 @@
 	}
 
 	.checked-no-options {
-		width: 0.75rem;
-		height: 0.75rem;
+		width: 0.625rem;
+		height: 0.625rem;
 		background-color: #ffcd4c;
 	}
 </style>

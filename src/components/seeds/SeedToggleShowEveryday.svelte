@@ -16,7 +16,6 @@
 	tabindex="0"
 	on:mouseenter={() => {
 		tooltipTimeout = setTimeout(() => {
-			console.log(toggleTooltip);
 			// Invisible tooltip interferes with seed click handler, so it needs to be display:none before transitioning opacity
 			toggleTooltip.style.display = 'flex';
 			toggleTooltipVisibility(true);
