@@ -25,7 +25,7 @@
 				<!-- Page content -->
 				<div class="h-full w-full">
 					{#if $user}
-						<main class="h-full w-full py-10 m-0">
+						<main class="h-full w-full m-0">
 							<slot />
 						</main>
 					{/if}

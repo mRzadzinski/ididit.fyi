@@ -4,7 +4,7 @@
 	import PlusIcon from '~icons/uil/plus';
 </script>
 
-<div class="w-full navbar mt-3 px-0">
+<div class="w-full navbar min-h-min mt-10 mb-16 p-0">
 	<!-- Content to show on small screen -->
 	<div class="flex-none md:hidden">
 		<label for="my-drawer-3" aria-label="open sidebar" class="btn btn-square btn-ghost">
@@ -23,13 +23,13 @@
 		</label>
 	</div>
 	<div class="max-w-none flex-1 flex justify-between">
-		<button class="btn min-w-fit w-36 bg-[#ffcd4c] daily-review" on:click={() => goto('/app')}
+		<button class="btn min-w-fit w-40 bg-[#ffcd4c] daily-review" on:click={() => goto('/app')}
 			>Daily Review</button
 		>
 		<div class="flex-none items-center">
 			{#if $newItemBtnName.length > 0}
 				{#if !$disableNewItemBtn}
-					<button class="btn bg-white" on:click={() => $addNewItem()}>
+					<button class="btn w-32 bg-white" on:click={() => $addNewItem()}>
 						<PlusIcon />
 						New {$newItemBtnName}
 					</button>
@@ -53,6 +53,7 @@
 	.btn {
 		height: 2.5rem;
 		min-height: unset;
+		font-size: 0.75rem;
 	}
 
 	.daily-review {
