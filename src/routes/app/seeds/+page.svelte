@@ -91,7 +91,7 @@
 	orderByOptions={decksOrderByOptions}
 	whereToUpdateOrder="decks"
 />
-<div class="flex flex-col gap-3 relative h-full" bind:this={listContainer}>
+<div class="flex flex-col gap-[0.63rem] relative h-full mb-4" bind:this={listContainer}>
 	{#each decks as deck (deck.id)}
 		{#if newDeckId === deck.id}
 			<Deck

@@ -14,7 +14,7 @@
 </script>
 
 <div
-	class="absolute mb-3 w-full z-0 {editMode ? 'h-24 cursor-default' : ''}"
+	class="absolute mb-[0.62rem] w-full z-0 {editMode ? 'cursor-default' : ''}"
 	data-order={deck.order}
 	data-edit-mode={editMode}
 	id={deck.id}

@@ -96,7 +96,7 @@
 		on:input={validateDeckName}
 	/>
 	<div class="flex justify-between gap-1">
-		<div class="flex items-center gap-2 text-sm">
+		<div class="flex items-center gap-[0.37rem] text-sm">
 			<span>Show</span>
 			<input
 				class="input input-sm input-bordered w-16 rounded-lg"
@@ -109,7 +109,7 @@
 			/>
 			<span>seeds in Daily Review</span>
 		</div>
-		<div class="flex gap-2 mr-2">
+		<div class="flex gap-[0.62rem] mr-[0.62rem]">
 			<button
 				class="btn btn-sm bg-white"
 				type="reset"
@@ -141,12 +141,16 @@
 
 <style>
 	.btn {
+		height: 1.75rem;
+		min-height: 1.75rem;
 		width: 5.5rem;
 		font-size: small;
+		font-size: 0.75rem;
 	}
 
 	.input.input-sm {
 		padding-right: 0;
 		padding-left: 0.75rem;
+		height: 1.63rem;
 	}
 </style>

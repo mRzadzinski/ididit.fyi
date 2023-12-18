@@ -19,7 +19,7 @@
 			<SidebarItems />
 		</div>
 		<div class="drawer-content flex flex-col">
-			<div class="flex flex-col h-full px-10">
+			<div class="flex flex-col h-full pl-6 pr-12">
 				<!-- Navbar -->
 				<Navbar />
 				<!-- Page content -->

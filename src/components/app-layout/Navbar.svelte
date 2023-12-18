@@ -35,7 +35,7 @@
 					</button>
 				{:else}
 					<button
-						class="btn btn-disabled bg-white"
+						class="btn btn-disabled w-32 bg-white"
 						tabindex="-1"
 						aria-disabled="true"
 						on:click={() => $addNewItem()}
