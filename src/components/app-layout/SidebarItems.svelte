@@ -2,7 +2,8 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { syncInProgress } from '$lib/stores/dbStores';
-	import SyncCompleteIcon from '~icons/fluent/cloud-sync-complete-28-regular';
+	import SyncCompleteIcon from '~icons/material-symbols/cloud-done-outline-rounded';
+	// material-symbols:cloud-done-outline-rounded
 	import Avatar from './Avatar.svelte';
 	import DropdownMenuItems from './DropdownMenuItems.svelte';
 
@@ -12,15 +13,15 @@
 
 <div class="flex flex-col items-center">
 	<div class="prose mt-8 mb-12">
-		<button on:click={() => goto('/app')}><h2 class="m-0">ididit.fyi</h2></button>
+		<button on:click={() => goto('/app')}><div class="text-2xl font-extrabold">IDIDIT.FYI</div></button>
 	</div>
 	<button
-		class="btn"
+		class="btn text-xs"
 		class:active={currentURL.includes('/app/seeds')}
 		on:click={() => goto('/app/seeds')}>Seeds</button
 	>
 </div>
-<div class="flex items-center gap-2 mt-auto mb-3">
+<div class="flex items-center gap-4 mt-auto mb-6">
 	<ul class="menu min-w-fit flex">
 		<li class="flex items-center">
 			<button class="p-0" id="avatar-sidebar-dropdown">
@@ -36,9 +37,9 @@
 		</li>
 	</ul>
 	{#if $syncInProgress}
-		<span class="loading loading-spinner loading-md mr-4 text-error" />
+		<span class="loading loading-spinner loading-md mr-4 text-base-content" />
 	{:else}
-		<SyncCompleteIcon style="font-size: 1.7rem; color: oklch(var(--su)); margin-right: 1rem;" />
+		<SyncCompleteIcon style="font-size: 1.7rem; color: oklch(var(--bc)); margin-right: 1rem;" />
 	{/if}
 </div>
 
@@ -50,7 +51,7 @@
 	.btn {
 		color: black;
 		background-color: white;
-		width: 100%;
+		width: 10rem;
 		height: 2.5rem;
 		min-height: unset;
 	}

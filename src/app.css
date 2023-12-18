@@ -8,9 +8,9 @@ body {
 	background-color: white;
 }
 
-/* .btn {
+.btn {
 	text-transform: uppercase;
-} */
+}
 
 .drag-item {
 	z-index: 1;
