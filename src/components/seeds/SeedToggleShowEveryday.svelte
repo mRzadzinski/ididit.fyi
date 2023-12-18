@@ -5,8 +5,8 @@
 	export let seed: SeedType;
 	export let deck: SeedsDeckType;
 	export let showSeedOptions: boolean;
-	export let showTooltip: boolean;
 	export let toggleTooltip: HTMLElement;
+	export let toggleTooltipVisibility: (bool: boolean) => void;
 
 	let tooltipTimeout: NodeJS.Timeout;
 </script>
@@ -16,14 +16,15 @@
 	tabindex="0"
 	on:mouseenter={() => {
 		tooltipTimeout = setTimeout(() => {
+			console.log(toggleTooltip);
 			// Invisible tooltip interferes with seed click handler, so it needs to be display:none before transitioning opacity
 			toggleTooltip.style.display = 'flex';
-			showTooltip = true;
+			toggleTooltipVisibility(true);
 		}, 900);
 	}}
 	on:mouseleave={() => {
 		clearTimeout(tooltipTimeout);
-		showTooltip = false;
+		toggleTooltipVisibility(false);
 		toggleTooltip.style.display = 'none';
 	}}
 >

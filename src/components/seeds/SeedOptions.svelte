@@ -7,10 +7,18 @@
 	export let deck: SeedsDeckType;
 	export let showSeedOptions: boolean;
 	export let expandedMode: boolean;
-    export let toggleShowSeedEditor:(show: boolean) => void
+	export let toggleShowSeedEditor: (show: boolean) => void;
 
 	let toggleTooltip: HTMLElement;
 	let showTooltip = false;
+
+	function toggleTooltipVisibility(bool: boolean) {
+		if (bool) {
+			showTooltip = true;
+		} else {
+			showTooltip = false;
+		}
+	}
 </script>
 
 <!-- Stay centered if no author or source -->
@@ -31,7 +39,13 @@
 	>
 		Toggle: show every day in Daily Review
 	</div>
-	<SeedToggleShowEveryday {seed} {deck} {showSeedOptions} {showTooltip} {toggleTooltip} />
+	<SeedToggleShowEveryday
+		{seed}
+		{deck}
+		{showSeedOptions}
+		{toggleTooltip}
+		{toggleTooltipVisibility}
+	/>
 	<div class="scale-[85%]">
 		<ThreeDotsDropdown
 			itemId={seed.id}
