@@ -39,7 +39,7 @@
 	{#if $syncInProgress}
 		<span class="loading loading-spinner loading-md mr-4 text-base-content" />
 	{:else}
-		<SyncCompleteIcon style="font-size: 1.7rem; color: oklch(var(--bc)); margin-right: 1rem;" />
+		<SyncCompleteIcon style="font-size: 1.5rem; color: oklch(var(--bc)); margin-right: 1rem;" />
 	{/if}
 </div>
 

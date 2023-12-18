@@ -17,7 +17,7 @@
 
 <div class="flex justify-between mb-10">
 	<div class="flex items-end gap-5">
-		<h1 class="text-3xl">{pageName}</h1>
+		<h1 class="text-4xl">{pageName}</h1>
 		{#if breadcrumbs}
 			<div class="flex items-end text-xs breadcrumbs pt-0 pb-1">
 				<ul>
@@ -29,7 +29,7 @@
 	</div>
 	<div class="flex items-end">
 		<div class="flex items-center">
-			<span class="text-xs mr-2">Order by:</span>
+			<!-- <span class="text-xs mr-2">Order by:</span> -->
 			<select
 				class="select select-bordered select-xs max-w-xs self-end pl-3 pr-6 bg-white"
 				bind:this={selectOrderInput}
@@ -47,5 +47,8 @@
 	.select {
 		/* Arrow position */
 		background-position: calc(100% - 13px) calc(1px + 50%), calc(100% - 9px) calc(1px + 50%);
+		height: 1.25rem;
+		min-height: 1.25rem;
+		line-height: 0.9rem;
 	}
 </style>
