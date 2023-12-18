@@ -4,7 +4,7 @@
 	import type Muuri from 'muuri';
 	import { seedsData } from '$lib/stores/dbStores';
 	import { disableNewItemBtn } from '$lib/stores/helperStores';
-	import ConfirmDeleteDeckModal from './ConfirmDeleteDeckModal.svelte';
+	import DeckConfirmDeleteModal from './DeckConfirmDeleteModal.svelte';
 	import DeckForm from './DeckForm.svelte';
 	import DeckDndItem from './DeckDndItem.svelte';
 
@@ -114,7 +114,7 @@
 </script>
 
 {#if showConfirmDelete}
-		<ConfirmDeleteDeckModal
+		<DeckConfirmDeleteModal
 			deleteHandler={() => handleDeleteDeck(deck.id, dndItem)}
 			hideModal={() => toggleShowConfirmDelete(false)}
 		/>

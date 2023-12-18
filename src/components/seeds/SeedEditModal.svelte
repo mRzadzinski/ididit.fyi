@@ -84,7 +84,6 @@
 			on:input={() => checkIfAllowSave()}
 			on:submit|preventDefault={() => {
 				trimSeedData();
-
 				if (seedCreator) {
 					const newSeed = SeedFactory(content, author, source, showEveryday);
 					createSeed(newSeed, deck);
@@ -154,9 +153,9 @@
 					</div>
 				</div>
 				<div class="flex justify-end items-end gap-2 w-1/3 -mb-3">
-					<button class="btn btn-sm bg-white" type="reset" on:click={hideModal}>Cancel</button>
+					<button class="btn btn-sm bg-white" type="reset" on:click|stopPropagation={hideModal}>Cancel</button>
 					{#if allowSave}
-						<button class="btn btn-sm btn-neutral bg-black">Save</button>
+						<button class="btn btn-sm btn-neutral bg-black" type="submit">Save</button>
 					{:else}
 						<button class="btn btn-sm btn-disabled" tabindex="-1" aria-disabled="true">Save</button>
 					{/if}

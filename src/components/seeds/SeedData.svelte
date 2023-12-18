@@ -18,14 +18,14 @@
 	bind:this={seedContentHtml}
 >
 	<span class="text-sm w-full">{seed.content}</span>
-	<div class="italic opacity-60">
+	<div class="opacity-60">
 		{#if seed.author && expandedMode}
 			<br />
 			{seed.author}
 		{/if}
 		{#if seed.source && expandedMode}
 			<br />
-			{seed.source}
+			<span class="italic">{seed.source}</span>
 		{/if}
 	</div>
 </div>

@@ -32,7 +32,7 @@
 						tabindex="-1"
 						for="menu-dropdown-{itemId}"
 					>
-						<VerticalDots style="font-size: .75rem;" />
+						<VerticalDots style="font-size: .75rem; color: white" />
 					</label>
 					<ul class="dropdown-content z-[1] menu p-2 shadow bg-white rounded-box w-28">
 						{#each options as option (option.name)}
