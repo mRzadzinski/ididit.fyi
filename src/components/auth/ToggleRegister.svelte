@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { loginError, registerError } from '$lib/stores/authStores';
+	import { emailLinkLogin, loginError, registerError } from '$lib/stores/authStores';
 
 	export let register: boolean;
 </script>
@@ -14,6 +14,7 @@
 				goto('/auth/login');
 			} else {
 				loginError.set('');
+				emailLinkLogin.set(false);
 				goto('/auth/register');
 			}
 		}}

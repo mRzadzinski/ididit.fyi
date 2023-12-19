@@ -25,10 +25,16 @@
 	};
 </script>
 
-<form aria-label="form">
-	<div class="form-control">
+<form class="h-[21rem]" aria-label="form">
+	<div class="form-control justify-center">
 		<h1>
-			{register ? 'Register' : 'Login'}
+			{#if register}
+				Register
+			{:else if $emailLinkLogin}
+				Login with link
+			{:else}
+				Login
+			{/if}
 		</h1>
 		<label for="email-input" class="label">
 			<span class="label-text">Email</span>
@@ -42,7 +48,7 @@
 			class="input input-bordered"
 		/>
 	</div>
-	<div class="form-control" style:display={register || $emailLinkLogin ? 'none' : 'flex'}>
+	<div class="flex form-control {register || $emailLinkLogin ? 'invisible' : ''}">
 		<label for="password-input" class="label">
 			<span class="label-text">Password</span>
 		</label>
@@ -59,7 +65,7 @@
 
 		<span class="w-full mt-2">
 			<button
-				class="btn btn-xs btn-link p-0 no-underline label-text no-animation normal-case opacity-90 font-medium"
+				class="btn btn-xs btn-link p-0 no-underline label-text no-animation opacity-90 font-medium"
 				class:invisible={register}
 				type="button"
 				on:click={() => {
@@ -79,7 +85,7 @@
 	<div class="form-control mt-7">
 		<!-- Submitting form with empty, display: none input doesn't work in Safari.
 			moving submit handler to on button click.  -->
-		<button class="btn btn-primary w-36" on:click={onSubmit}>
+		<button class="btn bg-[#FFCD4C] w-36 min-h-[2.5rem] h-11" on:click={onSubmit}>
 			{#if inProgress}
 				<span class="loading loading-spinner" />
 			{/if}
@@ -87,3 +93,9 @@
 		</button>
 	</div>
 </form>
+
+<style>
+	.btn-link {
+		text-transform: none;
+	}
+</style>
