@@ -53,17 +53,17 @@
 	});
 
 	onDestroy(() => {
-		// fillDocs()
+		newItemBtnName.set('');
 	});
 </script>
 
 {#if showSeedCreator}
-		<SeedEditModal
-			seedCreator={true}
-			seed={null}
-			{deck}
-			hideModal={() => toggleShowSeedCreator(false)}
-		/>
+	<SeedEditModal
+		seedCreator={true}
+		seed={null}
+		{deck}
+		hideModal={() => toggleShowSeedCreator(false)}
+	/>
 {/if}
 
 <PageHeader

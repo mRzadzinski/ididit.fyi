@@ -1,5 +1,6 @@
 <script>
 	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import { addNewItem, disableNewItemBtn, newItemBtnName } from '$lib/stores/helperStores';
 	import PlusIcon from '~icons/uil/plus';
 </script>
@@ -23,9 +24,16 @@
 		</label>
 	</div>
 	<div class="max-w-none flex-1 flex justify-between">
-		<button class="btn min-w-fit w-40 bg-[#ffcd4c] daily-review" on:click={() => goto('/app')}
-			>Daily Review</button
-		>
+		{#if $page.url.pathname !== '/app/daily-review'}
+			<button
+				class="btn min-w-fit w-40 bg-[#ffcd4c] daily-review"
+				on:click={() => goto('/app/daily-review')}>Daily Review</button
+			>
+		{:else}
+			<button class="btn btn-disabled w-40 bg-white" tabindex="-1" aria-disabled="true">
+				Placeholder
+			</button>
+		{/if}
 		<div class="flex-none items-center">
 			{#if $newItemBtnName.length > 0}
 				{#if !$disableNewItemBtn}
@@ -34,12 +42,7 @@
 						New {$newItemBtnName}
 					</button>
 				{:else}
-					<button
-						class="btn btn-disabled w-32 bg-white"
-						tabindex="-1"
-						aria-disabled="true"
-						on:click={() => $addNewItem()}
-					>
+					<button class="btn btn-disabled w-32 bg-white" tabindex="-1" aria-disabled="true">
 						<PlusIcon />
 						New {$newItemBtnName}
 					</button>

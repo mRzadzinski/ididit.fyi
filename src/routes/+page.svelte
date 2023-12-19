@@ -3,6 +3,6 @@
 </script>
 
 <main class="flex h-screen justify-center items-center flex-col">
-	<h1 class="text-5xl mb-3">ididit.fyi</h1>
-	<button on:click={() => goto('/app')} class="btn">Go to App</button>
+	<h1 class="text-5xl mb-6">ididit.fyi</h1>
+	<button class="btn w-36" on:click={() => goto('/app')}>Login</button>
 </main>
