@@ -79,8 +79,9 @@
 </script>
 
 <ModalBackground>
-	<div class="w-[40rem] h-[24rem] p-5 bg-[#FFCD4C] rounded-2xl">
+	<div class="max-w-[46.875rem] min-w-[305px] w-full min-h-[30.625rem] pt-[0.9rem] pl-[1.81rem] bg-[#FFCD4C] rounded-2xl">
 		<form
+			class="flex flex-col h-full"
 			on:input={() => checkIfAllowSave()}
 			on:submit|preventDefault={() => {
 				trimSeedData();
@@ -97,13 +98,13 @@
 				}
 			}}
 		>
-			<div class="w-full">
+			<div class="w-full pr-[1.94rem]">
 				<label class="form-control">
-					<div class="label pt-0">
-						<span class="label-text text-xs">Content</span>
+					<div class="label pt-0 pb-1">
+						<span class="label-text text-sm">Content</span>
 					</div>
 					<textarea
-						class="textarea textarea-bordered h-40 rounded-lg border-gray-500 resize-none"
+						class="textarea textarea-bordered w-full min-h-[15.625rem] rounded-lg border-gray-500 resize-none"
 						placeholder="New seed..."
 						required
 						bind:this={contentHtml}
@@ -111,14 +112,14 @@
 					/>
 				</label>
 			</div>
-			<div class="flex mt-4">
-				<div class="flex flex-col gap-[0.7rem] w-2/3">
-					<label class="form-control w-full max-w-xs">
-						<div class="label py-1">
-							<span class="label-text text-xs">Author</span>
+			<div class="flex flex-col sm:flex-row grow">
+				<div class="flex flex-col grow pr-[1.94rem] sm:pr-0">
+					<label class="form-control w-full max-w-xs mt-[0.81rem]">
+						<div class="label pt-[0.81] pb-1">
+							<span class="label-text text-sm">Author</span>
 						</div>
 						<input
-							class="input input-xs input-bordered w-full max-w-xs rounded-lg border-gray-500"
+							class="input input-sm input-bordered w-full max-w-xs rounded-lg border-gray-500"
 							id="author-input"
 							autocomplete="off"
 							type="text"
@@ -126,12 +127,12 @@
 							bind:value={author}
 						/>
 					</label>
-					<label class="form-control w-full max-w-xs">
-						<div class="label py-1">
-							<span class="label-text text-xs">Source</span>
+					<label class="form-control w-full max-w-xs mt-[0.81rem]">
+						<div class="label pt-[0.81] pb-1">
+							<span class="label-text text-sm">Source</span>
 						</div>
 						<input
-							class="input input-xs input-bordered w-full max-w-xs rounded-lg border-gray-500"
+							class="input input-sm input-bordered w-full max-w-xs rounded-lg border-gray-500"
 							id="source-input"
 							autocomplete="off"
 							type="text"
@@ -140,20 +141,22 @@
 						/>
 					</label>
 					<div
-						class="flex items-center gap-[0.68rem] w-52 mt-1 cursor-pointer"
+						class="flex items-center gap-[0.68rem] w-64 mt-[0.94rem] cursor-pointer"
 						role="button"
 						tabindex="0"
 						on:click={() => toggleShowEveryday()}
 						on:keydown={() => toggleShowEveryday()}
 					>
-						<div>
+						<div class="scale-105">
 							<ToggleDot enabled={showEveryday} bright={true} clickHandler={toggleShowEveryday} />
 						</div>
-						<span class="text-xs">Show every day in Daily Review</span>
+						<span class="text-sm">Show every day in Daily Review</span>
 					</div>
 				</div>
-				<div class="flex justify-end items-end gap-2 w-1/3 -mb-3">
-					<button class="btn btn-sm bg-white" type="reset" on:click|stopPropagation={hideModal}>Cancel</button>
+				<div class="flex justify-end items-end gap-2 w-full sm:w-[45%] mb-3 pr-4 mt-4 sm:mt-0">
+					<button class="btn btn-sm bg-white" type="reset" on:click|stopPropagation={hideModal}
+						>Cancel</button
+					>
 					{#if allowSave}
 						<button class="btn btn-sm btn-neutral bg-black" type="submit">Save</button>
 					{:else}
@@ -166,8 +169,25 @@
 </ModalBackground>
 
 <style>
-	.btn {
+	.label {
+		padding-top: 0;
+	}
+	.btn-sm {
 		width: 5.5rem;
-		font-size: small;
+		font-size: 0.75rem;
+	}
+
+	.input-sm {
+		width: 100%;
+	}
+
+	.input-sm,
+	.btn-sm {
+		height: 1.875rem;
+		min-height: 1.875rem;
+	}
+
+	.max-w-xs {
+		max-width: 25rem;
 	}
 </style>
