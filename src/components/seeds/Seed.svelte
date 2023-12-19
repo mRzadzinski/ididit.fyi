@@ -10,6 +10,7 @@
 
 	let seedHtml: HTMLElement;
 	let seedContentHtml: HTMLElement;
+	let heightTimeout: NodeJS.Timeout;
 	let otherSeedInExpandedMode: boolean;
 	let initialHeight: number;
 	let fullHeight: number;
@@ -90,7 +91,7 @@
 		// Manage seed height to handle animation
 		if (expandedMode) {
 			// When setting height synchronously it sometimes isn't calculated properly
-			setTimeout(() => {
+			heightTimeout = setTimeout(() => {
 				setFullHeight();
 			}, 0);
 		} else {
@@ -99,6 +100,7 @@
 	});
 
 	onDestroy(() => {
+		clearTimeout(heightTimeout);
 		expandedSeedId.set('');
 	});
 </script>
