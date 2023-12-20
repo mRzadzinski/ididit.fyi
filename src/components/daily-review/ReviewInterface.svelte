@@ -1,8 +1,9 @@
 <script lang="ts">
-	import CloseReview from '../common/ButtonClose.svelte';
+	import ButtonClose from '../common/ButtonClose.svelte';
 	import ReviewModal from './ReviewModal.svelte';
 	import ButtonArrowLeft from '../common/ButtonArrowLeft.svelte';
 	import ReviewContentSeed from './ReviewContentSeed.svelte';
+	import ReviewInstructions from './ReviewInstructions.svelte';
 	import { seedsData } from '$lib/stores/dbStores';
 
 	export let closeReview: () => void;
@@ -13,9 +14,8 @@
 		<!-- Upper part -->
 		<progress class="progress w-full" value="70" max="100" />
 		<div class="self-end mr-4 mt-4">
-			<CloseReview handler={closeReview} />
+			<ButtonClose handler={closeReview} />
 		</div>
-
 		<!-- Content -->
 		<div class="grow flex justify-between items-center">
 			<div class="ml-4">
@@ -29,16 +29,6 @@
 				<ButtonArrowLeft handler={() => {}} />
 			</div>
 		</div>
-
-		<!-- Instructions -->
-		<div class="flex justify-center items-center gap-4 h-24">
-			<span>Use</span>
-			<div class="flex justify-center gap-1">
-				<kbd class="kbd">◀︎</kbd>
-				<kbd class="kbd">▶︎</kbd>
-			</div>
-			<span>or press</span>
-			<kbd class="kbd">Spacebar</kbd>
-		</div>
+		<ReviewInstructions />
 	</div>
 </ReviewModal>
