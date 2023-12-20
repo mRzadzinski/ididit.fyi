@@ -9,9 +9,6 @@
 	});
 </script>
 
-<div
-	class="fixed flex flex-col items-center w-screen h-screen bg-white z-10"
-	bind:this={modal}
->
+<div class="fixed flex flex-col items-center w-screen h-screen bg-white z-10" bind:this={modal}>
 	<slot />
 </div>

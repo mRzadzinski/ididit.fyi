@@ -1,12 +1,20 @@
 <script lang="ts">
 	import ReviewInterface from '$components/daily-review/ReviewInterface.svelte';
 
-	let started = false;
+	let showReview = false;
+
+	function toggleShowReview(bool: boolean) {
+		if (bool) {
+			showReview = true;
+		} else {
+			showReview = false;
+		}
+	}
 </script>
 
-{#if started}
-	<ReviewInterface />
-{/if}
+<!-- {#if started} -->
+<ReviewInterface closeReview={() => toggleShowReview(false)} />
+<!-- {/if} -->
 
 <div class="flex flex-col h-full">
 	<div class="flex justify-between">
@@ -14,6 +22,6 @@
 		<button class="btn btn-sm text-xs">Options</button>
 	</div>
 	<div class="flex justify-center items-center mt-[20%]">
-		<button class="btn btn-lg w-48 bg-[#FFCD4C]" on:click={() => (started = true)}>START</button>
+		<button class="btn btn-lg w-48 bg-[#FFCD4C]" on:click={() => (showReview = true)}>START</button>
 	</div>
 </div>
