@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { afterUpdate } from 'svelte';
-	import { updateSortMethod } from '$lib/common-logic/commonLogic';
+	import { updateSortMethod } from '$lib/app-logic/commonLogic';
 
 	export let pageName: string;
 	export let orderBy: string;

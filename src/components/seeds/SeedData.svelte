@@ -17,7 +17,7 @@
 	class="mr-6 w-full {expandedMode ? 'pt-[1.19rem] pb-[1.06rem]' : 'line-clamp-1'}"
 	bind:this={seedContentHtml}
 >
-	<span class="text-sm w-full">{seed.content}</span>
+	<div class="text-sm w-full">{seed.content}</div>
 	<div class="text-xs opacity-60">
 		{#if seed.author && expandedMode}
 			<br />

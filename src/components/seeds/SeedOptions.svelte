@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ThreeDotsDropdown from '$components/common/ThreeDotsDropdown.svelte';
-	import { deleteSeed } from '../../routes/app/seeds/[deck_id]/seedsLogic';
+	import { deleteSeed } from '../../lib/app-logic/seedsLogic';
 	import SeedToggleShowEveryday from './SeedToggleShowEveryday.svelte';
 
 	export let seed: SeedType;

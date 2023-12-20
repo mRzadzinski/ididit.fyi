@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ToggleDot from '$components/common/ToggleDot.svelte';
-	import { editSeed } from '../../routes/app/seeds/[deck_id]/seedsLogic';
+	import { editSeed } from '../../lib/app-logic/seedsLogic';
 
 	export let seed: SeedType;
 	export let deck: SeedsDeckType;

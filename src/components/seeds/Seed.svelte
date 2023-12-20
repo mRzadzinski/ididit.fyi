@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
-	import { expandedSeedId } from '../../routes/app/seeds/[deck_id]/seedsLogic';
+	import { expandedSeedId } from '../../lib/app-logic/seedsLogic';
 	import SeedEditModal from './SeedEditModal.svelte';
 	import SeedData from './SeedData.svelte';
 	import SeedOptions from './SeedOptions.svelte';
@@ -69,7 +69,7 @@
 	}
 
 	function setFullHeight() {
-		if (seedContentHtml) {
+		if (seedContentHtml && seedHtml) {
 			fullHeight = seedContentHtml.scrollHeight;
 			seedHtml.style.height = fullHeight.toString() + 'px';
 		}

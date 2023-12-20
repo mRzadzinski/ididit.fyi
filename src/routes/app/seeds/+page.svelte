@@ -15,7 +15,7 @@
 		decksOrderByOptions,
 		deleteDeck,
 		reorderDecks
-	} from './decksLogic';
+	} from '../../../lib/app-logic/decksLogic';
 	import { addNewItem, disableNewItemBtn, newItemBtnName } from '$lib/stores/helperStores';
 	import {
 		dndListAfterUpdate,

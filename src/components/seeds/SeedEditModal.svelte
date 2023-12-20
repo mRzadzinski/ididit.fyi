@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ToggleDot from '$components/common/ToggleDot.svelte';
 	import { onMount } from 'svelte';
-	import { SeedFactory, createSeed, editSeed } from '../../routes/app/seeds/[deck_id]/seedsLogic';
+	import { SeedFactory, createSeed, editSeed } from '../../lib/app-logic/seedsLogic';
 	import { cloneDeep } from 'lodash';
 	import ModalBackground from '$components/common/ModalBackground.svelte';
 

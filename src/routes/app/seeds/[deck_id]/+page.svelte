@@ -3,11 +3,11 @@
 	import type { DeckData } from './+page';
 	import { addNewItem, newItemBtnName } from '$lib/stores/helperStores';
 	import PageHeader from '$components/app-layout/PageHeader.svelte';
-	import { expandedSeedId, reorderSeeds, seedsOrderByOptions } from './seedsLogic';
+	import { expandedSeedId, reorderSeeds, seedsOrderByOptions } from '../../../../lib/app-logic/seedsLogic';
 	import { seedsData, settings } from '$lib/stores/dbStores';
 	import Seed from '$components/seeds/Seed.svelte';
 	import SeedEditModal from '$components/seeds/SeedEditModal.svelte';
-	import { fillDocs } from '../decksLogic';
+	import { fillDocs } from '../../../../lib/app-logic/decksLogic';
 	import { flip } from 'svelte/animate';
 
 	export let data: DeckData;

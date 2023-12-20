@@ -6,7 +6,7 @@ import { syncInProgress, userDocs } from '$lib/stores/dbStores';
 import { collection, doc, updateDoc, writeBatch } from 'firebase/firestore';
 import { cloneDeep, isEqual } from 'lodash';
 import { get } from 'svelte/store';
-import type { DndReorderData } from '../../../lib/dnd/verticalListLifecycle';
+import type { DndReorderData } from '../dnd/verticalListLifecycle';
 import sizeof from 'firestore-size';
 
 export const decksOrderByOptions = [

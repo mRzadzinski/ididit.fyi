@@ -12,9 +12,9 @@
 	}
 </script>
 
-<!-- {#if started} -->
+{#if showReview}
 <ReviewInterface closeReview={() => toggleShowReview(false)} />
-<!-- {/if} -->
+{/if}
 
 <div class="flex flex-col h-full">
 	<div class="flex justify-between">

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { seedsData, syncInProgress } from '$lib/stores/dbStores';
 	import { cloneDeep } from 'lodash';
-	import { updateDeck } from '../../routes/app/seeds/decksLogic';
+	import { updateDeck } from '../../lib/app-logic/decksLogic';
 	import { onMount } from 'svelte';
 	import type Muuri from 'muuri';
 
