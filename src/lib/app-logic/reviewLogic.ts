@@ -3,13 +3,20 @@ import { uniqBy } from 'lodash';
 import { get } from 'svelte/store';
 
 export interface DailyReview {
-	seeds: SeedType[][];
+	decks: SeedType[][];
+	current: CurrentReview;
+}
+export type CurrentReview = CurrentSeed;
+export interface CurrentSeed {
+	type: 'seed';
+	deckIndex: number;
+	seedIndex: number;
 }
 
-export async function getReview() {
-	const review: DailyReview = { seeds: [] };
+export function getReview() {
+	const review: DailyReview = { decks: [], current: { type: 'seed', deckIndex: 0, seedIndex: 0 } };
 
-	review.seeds = getReviewSeeds();
+	review.decks = getReviewSeeds();
 
 	return review;
 }

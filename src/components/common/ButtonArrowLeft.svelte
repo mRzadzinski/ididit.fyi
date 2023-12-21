@@ -17,8 +17,8 @@
 						class="flex justify-center items-center"
 						role="button"
 						tabindex="0"
-						on:click={() => {}}
-						on:keypress={() => {}}
+						on:click={handler}
+						on:keypress={handler}
 					>
 						<ArrowLeft style="font-size: 1.5rem; margin-right: 0.26rem;" />
 					</div>
