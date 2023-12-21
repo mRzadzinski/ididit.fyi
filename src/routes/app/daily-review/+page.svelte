@@ -1,5 +1,6 @@
 <script lang="ts">
 	import ReviewInterface from '$components/daily-review/ReviewInterface.svelte';
+	import { getReview } from '$lib/app-logic/reviewLogic';
 
 	let showReview = false;
 
@@ -10,10 +11,12 @@
 			showReview = false;
 		}
 	}
+
+	getReview();
 </script>
 
 {#if showReview}
-<ReviewInterface closeReview={() => toggleShowReview(false)} />
+	<ReviewInterface closeReview={() => toggleShowReview(false)} />
 {/if}
 
 <div class="flex flex-col h-full">
