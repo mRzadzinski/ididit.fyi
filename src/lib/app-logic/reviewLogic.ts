@@ -3,7 +3,7 @@ import { uniqBy } from 'lodash';
 import { get } from 'svelte/store';
 
 export interface DailyReview {
-	decks: SeedType[][];
+	decks: SeedsDeckType[];
 	current: CurrentReview;
 }
 export type CurrentReview = CurrentSeed;
@@ -27,7 +27,8 @@ function getReviewSeeds() {
 
 	// Scan all decks
 	for (let i = 0; i < data.decks.length; i++) {
-		const seeds = data.decks[i].seeds;
+		const deck = data.decks[i];
+		const seeds = deck.seeds;
 		let reviewSeeds: SeedType[] = [];
 		let limit = data.decks[i].dailyLimit;
 
@@ -42,7 +43,7 @@ function getReviewSeeds() {
 			reviewSeeds.push(seeds[randomIndex]);
 			reviewSeeds = uniqBy(reviewSeeds, (seed: SeedType) => seed.id);
 		}
-		reviewData.push(reviewSeeds);
+		reviewData.push({ ...deck, seeds: reviewSeeds });
 	}
 	return reviewData;
 }

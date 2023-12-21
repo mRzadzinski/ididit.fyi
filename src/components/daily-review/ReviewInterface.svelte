@@ -2,7 +2,7 @@
 	import ButtonClose from '../common/ButtonClose.svelte';
 	import ReviewModal from './ReviewModal.svelte';
 	import ButtonArrowLeft from '../common/ButtonArrowLeft.svelte';
-	import ReviewContentSeed from './ReviewContentSeed.svelte';
+	import ReviewContentSeed from './ReviewContent.svelte';
 	import ReviewInstructions from './ReviewInstructions.svelte';
 	import type { CurrentReview, DailyReview } from '$lib/app-logic/reviewLogic';
 
@@ -15,7 +15,7 @@
 	$: {
 		current = reviewData.current;
 		if (current?.type === 'seed') {
-			content = reviewData.decks[current.deckIndex][current.seedIndex];
+			content = reviewData.decks[current.deckIndex].seeds[current.seedIndex];
 		}
 	}
 
@@ -25,7 +25,7 @@
 			const deck = decks[current.deckIndex];
 
 			// Next seed
-			if (current.seedIndex + 1 < deck.length) {
+			if (current.seedIndex + 1 < deck.seeds.length) {
 				current.seedIndex++;
 			}
 			// Next deck
@@ -49,7 +49,7 @@
 			else if (current.deckIndex - 1 >= 0) {
 				current.deckIndex--;
 				// Go to last seed of prev deck
-				current.seedIndex = decks[current.deckIndex].length - 1;
+				current.seedIndex = decks[current.deckIndex].seeds.length - 1;
 			}
 		}
 	}
