@@ -3,6 +3,7 @@
 	import { getReview } from '$lib/app-logic/reviewLogic';
 
 	const reviewData = getReview();
+	console.log(reviewData)
 	let showReview = false;
 
 	function toggleShowReview(bool: boolean) {

@@ -33,10 +33,3 @@ export const userDataDocFactory = (uid: string) => {
 		}
 	};
 };
-
-export const DailyReviewDocFactory = (uid: string) => {
-	return {
-		uid,
-		dailyReview: {} as DailyReview
-	};
-};

@@ -1,13 +1,17 @@
 import { db } from '$lib/firebase/firebase';
+import { shuffleArray } from '$lib/helpers';
 import { seedsData, userDocs } from '$lib/stores/dbStores';
 import { writeBatch } from 'firebase/firestore';
 import sizeof from 'firestore-size';
-import { uniq, uniqBy } from 'lodash';
+import { uniq } from 'lodash';
 import { get } from 'svelte/store';
 
 export interface DailyReview {
-	decks: DeckType[];
+	decks: ReviewDeckType[];
 	current: CurrentReview;
+}
+export interface ReviewDeckType extends Omit<DeckType, 'seeds'> {
+	seeds: string[];
 }
 export type CurrentReview = CurrentSeed;
 export interface CurrentSeed {
@@ -40,12 +44,21 @@ function getReviewSeeds() {
 			limit = seeds.length;
 		}
 
+		// Get all showEveryday seeds
+		for (let j = 0; j < deck.seeds.length; j++) {
+			if (deck.seeds[j].showEveryday) {
+				reviewSeeds.push(deck.seeds[j].id);
+			}
+		}
+
 		// Get limit number of random, unique seeds
 		while (reviewSeeds.length < limit) {
 			const randomIndex = Math.floor(Math.random() * seeds.length);
 			reviewSeeds.push(seeds[randomIndex].id);
 			reviewSeeds = uniq(reviewSeeds);
 		}
+		// Shuffle seeds
+		shuffleArray(reviewSeeds)
 		reviewData.push({ ...deck, seeds: reviewSeeds });
 	}
 	return reviewData;
