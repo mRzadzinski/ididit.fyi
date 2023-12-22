@@ -1,4 +1,4 @@
-import type { DailyReview } from '$lib/app-logic/reviewLogic';
+import type { DailyReviewDB } from '$lib/app-logic/reviewLogic';
 
 interface UserMainDocFactory {
 	uid: string;
@@ -7,7 +7,7 @@ interface UserMainDocFactory {
 	seedsData: {
 		decks: DeckType[];
 	};
-	dailyReview?: DailyReview;
+	dailyReview?: DailyReviewDB;
 }
 
 interface UserDataDocFactory {
@@ -15,7 +15,7 @@ interface UserDataDocFactory {
 	seedsData: {
 		decks: DeckType[];
 	};
-	dailyReview?: DailyReview;
+	dailyReview?: DailyReviewDB;
 }
 
 export const userMainDocFactory = (uid: string) => {

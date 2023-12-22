@@ -3,7 +3,10 @@ import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { derived, get, writable } from 'svelte/store';
 import { onAuthStateChanged, type Unsubscribe } from 'firebase/auth';
 import sizeof from 'firestore-size';
+import type { DailyReviewClient, DailyReviewDB } from '$lib/app-logic/reviewLogic';
 
+// Leave ~15k bytes buffer
+export const docSizeLimit = 1033576;
 export const syncInProgress = writable<boolean>(false);
 export const userDocs = writable<UserDoc[]>([]);
 export const settings = writable<Settings>();
@@ -26,11 +29,35 @@ export const seedsData = derived(userDocs, ($userDocs) => {
 	}
 	return data;
 });
-// export const dailyReview = derived(seedsData, ($seedsData) => {
-// 	const data = {};
 
-// 	return data;
-// });
+export const dailyReview = derived([userDocs, seedsData], ([$userDocs, $seedsData]) => {
+	// Get daily review object from docs
+	for (let i = 0; i < $userDocs.length; i++) {
+		if ($userDocs[i].doc.dailyReview) {
+			const dbData: DailyReviewDB = $userDocs[i].doc.dailyReview;
+			const clientData: DailyReviewClient = { current: dbData.current, decks: [] };
+
+			// Get seeds from seedIDs
+			// Scan all decks in dailyReviewDB data
+			for (let i = 0; i < dbData.decks.length; i++) {
+				const dbDeck = dbData.decks[i];
+				const seedIDs = dbData.decks[i].seeds;
+				const tempDeck = $seedsData.decks.filter((deck) => deck.id === dbDeck.id)[0];
+				const deck = { ...tempDeck, seeds: [] as SeedType[] };
+
+				// Scan all seedIDs inside deck
+				for (let j = 0; j < seedIDs.length; j++) {
+					// Find seed by ID in seedsData
+					const seed = tempDeck.seeds.filter((seed) => seed.id === seedIDs[j])[0];
+					deck.seeds.push(seed);
+				}
+				clientData.decks.push(deck);
+			}
+			return clientData;
+		}
+	}
+	return null;
+});
 
 export let unsubscribeDocs: Unsubscribe;
 
@@ -48,7 +75,7 @@ onAuthStateChanged(auth, async (currentUser) => {
 				if (change.type === 'added') {
 					const newDoc = change.doc;
 					docs.push({
-						remainingSpace: 1000000 - sizeof(newDoc.data()),
+						remainingSpace: docSizeLimit - sizeof(newDoc.data()),
 						doc: newDoc.data(),
 						docID: newDoc.id
 					});
@@ -56,8 +83,7 @@ onAuthStateChanged(auth, async (currentUser) => {
 				}
 				// Modify
 				if (change.type === 'modified') {
-					// Leave 15k bytes buffer
-					const newRemainingSpace = 1033576 - sizeof(change.doc.data());
+					const newRemainingSpace = docSizeLimit - sizeof(change.doc.data());
 					const updatedDoc = change.doc.data();
 
 					for (let i = 0; i < docs.length; i++) {

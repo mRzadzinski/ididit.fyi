@@ -2,8 +2,7 @@
 	import ReviewInterface from '$components/daily-review/ReviewInterface.svelte';
 	import { getReview } from '$lib/app-logic/reviewLogic';
 
-	const reviewData = getReview();
-	console.log(reviewData)
+	// getReview();
 	let showReview = false;
 
 	function toggleShowReview(bool: boolean) {
@@ -16,7 +15,7 @@
 </script>
 
 {#if showReview}
-	<ReviewInterface {reviewData} closeReview={() => toggleShowReview(false)} />
+	<ReviewInterface closeReview={() => toggleShowReview(false)} />
 {/if}
 
 <div class="flex flex-col h-full">

@@ -1,31 +1,40 @@
+import { userDataDocFactory } from '$lib/db/docsBoilerplate';
 import { db } from '$lib/firebase/firebase';
 import { shuffleArray } from '$lib/helpers';
-import { seedsData, userDocs } from '$lib/stores/dbStores';
-import { writeBatch } from 'firebase/firestore';
+import { user } from '$lib/stores/authStores';
+import { seedsData, syncInProgress, userDocs } from '$lib/stores/dbStores';
+import { collection, deleteField, doc, writeBatch } from 'firebase/firestore';
 import sizeof from 'firestore-size';
 import { uniq } from 'lodash';
 import { get } from 'svelte/store';
 
-export interface DailyReview {
+export interface DailyReviewClient {
+	decks: DeckType[];
+	current: CurrentReview;
+}
+export interface DailyReviewDB {
 	decks: ReviewDeckType[];
 	current: CurrentReview;
 }
 export interface ReviewDeckType extends Omit<DeckType, 'seeds'> {
 	seeds: string[];
 }
-export type CurrentReview = CurrentSeed;
 export interface CurrentSeed {
 	type: 'seed';
 	deckIndex: number;
 	seedIndex: number;
 }
+export type CurrentReview = CurrentSeed;
 
-export function getReview() {
-	const review: DailyReview = { decks: [], current: { type: 'seed', deckIndex: 0, seedIndex: 0 } };
+export async function getReview() {
+	const review: DailyReviewDB = {
+		decks: [],
+		current: { type: 'seed', deckIndex: 0, seedIndex: 0 }
+	};
 
 	review.decks = getReviewSeeds();
 
-	return review;
+	pushNewReviewToDB(review);
 }
 
 function getReviewSeeds() {
@@ -58,19 +67,50 @@ function getReviewSeeds() {
 			reviewSeeds = uniq(reviewSeeds);
 		}
 		// Shuffle seeds
-		shuffleArray(reviewSeeds)
+		shuffleArray(reviewSeeds);
 		reviewData.push({ ...deck, seeds: reviewSeeds });
 	}
 	return reviewData;
 }
 
-// async function pushNewReviewToDB(review:DailyReview) {
-// 	const batch = writeBatch(db);
-// 	const usrDocs = get(userDocs);
-// 	const spaceRemaining = sizeof(usrDocs) - sizeof(review);
+async function pushNewReviewToDB(review: DailyReviewDB) {
+	const batch = writeBatch(db);
+	const usrDocs = get(userDocs);
+	let reviewCreated = false;
 
-// 	// Add to dedicated dailyReview doc
-// 	// If too large split review data in half until it fits into separate documents
-// }
+	// Scan all docs to
+	// remove previous review and add new
+	for (let i = 0; i < usrDocs.length; i++) {
+		const document = usrDocs[i];
+		const documentId = document.docID;
+		const docRef = doc(db, 'users', documentId);
 
-// Keep only deck name with seed IDs and scan all data on each change
+		// Remove previous
+		if (usrDocs[i].doc.dailyReview) {
+			batch.update(docRef, { dailyReview: deleteField() });
+		}
+
+		// Add if there's enough space in doc
+		const spaceLeft = document.remainingSpace - sizeof(review);
+		if (spaceLeft > 0) {
+			batch.update(docRef, { dailyReview: review });
+			reviewCreated = true;
+		}
+	}
+	// If there was no space in docs, create new one and add review
+	if (!reviewCreated) {
+		let docObj;
+		const usr = get(user);
+		if (usr && typeof usr === 'object') {
+			docObj = userDataDocFactory(usr.uid);
+			docObj.dailyReview = review;
+		}
+
+		const docRef = doc(collection(db, 'users'));
+		batch.set(docRef, docObj);
+	}
+
+	syncInProgress.set(true);
+	await batch.commit();
+	syncInProgress.set(false);
+}

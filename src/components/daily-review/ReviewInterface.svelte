@@ -4,24 +4,27 @@
 	import ButtonArrowLeft from '../common/ButtonArrowLeft.svelte';
 	import ReviewContentSeed from './ReviewContent.svelte';
 	import ReviewInstructions from './ReviewInstructions.svelte';
-	import type { CurrentReview, DailyReview } from '$lib/app-logic/reviewLogic';
+	import type { CurrentReview } from '$lib/app-logic/reviewLogic';
+	import { dailyReview } from '$lib/stores/dbStores';
 
-	export let reviewData: DailyReview;
 	export let closeReview: () => void;
 
 	let current: CurrentReview;
 	let content: SeedType;
 
 	$: {
-		current = reviewData.current;
-		if (current?.type === 'seed') {
-			content = reviewData.decks[current.deckIndex].seeds[current.seedIndex];
+		if ($dailyReview) {
+			current = $dailyReview.current;
+
+			if (current?.type === 'seed') {
+				content = $dailyReview.decks[current.deckIndex].seeds[current.seedIndex];
+			}
 		}
 	}
 
 	function next() {
-		if (current?.type === 'seed') {
-			const decks = reviewData.decks;
+		if (current?.type === 'seed' && $dailyReview) {
+			const decks = $dailyReview.decks;
 			const deck = decks[current.deckIndex];
 
 			// Next seed
@@ -38,8 +41,8 @@
 	}
 
 	function prev() {
-		if (current?.type === 'seed') {
-			const decks = reviewData.decks;
+		if (current?.type === 'seed' && $dailyReview) {
+			const decks = $dailyReview.decks;
 
 			// Prev seed
 			if (current.seedIndex - 1 >= 0) {
