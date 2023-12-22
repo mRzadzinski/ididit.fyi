@@ -1,5 +1,23 @@
 import type { DailyReview } from '$lib/app-logic/reviewLogic';
 
+interface UserMainDocFactory {
+	uid: string;
+	subscription: Subscription;
+	settings: Settings;
+	seedsData: {
+		decks: DeckType[];
+	};
+	dailyReview?: DailyReview;
+}
+
+interface UserDataDocFactory {
+	uid: string;
+	seedsData: {
+		decks: DeckType[];
+	};
+	dailyReview?: DailyReview;
+}
+
 export const userMainDocFactory = (uid: string) => {
 	return {
 		uid,
@@ -20,9 +38,9 @@ export const userMainDocFactory = (uid: string) => {
 			seedsOrderBy: 'new-old'
 		},
 		seedsData: {
-			decks: [] as DeckType[]
+			decks: []
 		}
-	};
+	} as UserMainDocFactory;
 };
 
 export const userDataDocFactory = (uid: string) => {
@@ -31,5 +49,5 @@ export const userDataDocFactory = (uid: string) => {
 		seedsData: {
 			decks: [] as DeckType[]
 		}
-	};
+	} as UserDataDocFactory;
 };

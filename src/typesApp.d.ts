@@ -48,4 +48,3 @@ declare global {
 		data: number | string;
 	}
 }
-export { SeedType, DeckType as SeedsDeckType };
