@@ -5,7 +5,7 @@
 	import { onMount } from 'svelte';
 	import type Muuri from 'muuri';
 
-	export let deck: SeedsDeckType;
+	export let deck: DeckType;
 	export let newDeck: boolean;
 	export let dndList: Muuri;
 	export let dndItem: HTMLElement;

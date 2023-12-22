@@ -1,3 +1,5 @@
+import type { DailyReview } from '$lib/app-logic/reviewLogic';
+
 export const userMainDocFactory = (uid: string) => {
 	return {
 		uid,
@@ -18,7 +20,7 @@ export const userMainDocFactory = (uid: string) => {
 			seedsOrderBy: 'new-old'
 		},
 		seedsData: {
-			decks: [] as SeedsDeckType[]
+			decks: [] as DeckType[]
 		}
 	};
 };
@@ -27,7 +29,14 @@ export const userDataDocFactory = (uid: string) => {
 	return {
 		uid,
 		seedsData: {
-			decks: [] as SeedsDeckType[]
+			decks: [] as DeckType[]
 		}
+	};
+};
+
+export const DailyReviewDocFactory = (uid: string) => {
+	return {
+		uid,
+		dailyReview: {} as DailyReview
 	};
 };

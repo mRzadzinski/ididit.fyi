@@ -17,7 +17,7 @@ declare global {
 		showEveryday: boolean;
 	}
 
-	interface SeedsDeckType {
+	interface DeckType {
 		id: string;
 		name: string;
 		dailyLimit: number;
@@ -48,4 +48,4 @@ declare global {
 		data: number | string;
 	}
 }
-export { SeedType, SeedsDeckType };
+export { SeedType, DeckType as SeedsDeckType };

@@ -14,7 +14,7 @@ export const decksOrderByOptions = [
 	{ name: 'A - z', value: 'a-z' }
 ];
 
-export async function createDeck(newDeck: SeedsDeckType) {
+export async function createDeck(newDeck: DeckType) {
 	const batch = writeBatch(db);
 	const usrDocs = get(userDocs);
 	let deckCreated = false;
@@ -66,7 +66,7 @@ export async function createDeck(newDeck: SeedsDeckType) {
 export async function deleteDeck(deckId: string) {
 	const batch = writeBatch(db);
 	const usrDocs = get(userDocs);
-	let updatedDecksArray: SeedsDeckType[] | undefined;
+	let updatedDecksArray: DeckType[] | undefined;
 
 	// Find all deck locations in docs
 	for (let i = 0; i < usrDocs.length; i++) {
@@ -95,10 +95,10 @@ export async function deleteDeck(deckId: string) {
 	syncInProgress.set(false);
 }
 
-export async function updateDeck(updatedDeck: SeedsDeckType) {
+export async function updateDeck(updatedDeck: DeckType) {
 	const batch = writeBatch(db);
 	const usrDocs = get(userDocs);
-	let updatedDecks: SeedsDeckType[] = [];
+	let updatedDecks: DeckType[] = [];
 
 	// Update all deck instances in all docs
 	// Don't consider 'not enough space' scenario, there is about 15k bytes buffer to fit deck changes (name, dailyLimit)

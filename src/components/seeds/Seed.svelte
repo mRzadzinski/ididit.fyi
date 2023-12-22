@@ -6,7 +6,7 @@
 	import SeedOptions from './SeedOptions.svelte';
 
 	export let seed: SeedType;
-	export let deck: SeedsDeckType;
+	export let deck: DeckType;
 
 	let seedHtml: HTMLElement;
 	let seedContentHtml: HTMLElement;

@@ -3,7 +3,7 @@
 	import { editSeed } from '../../lib/app-logic/seedsLogic';
 
 	export let seed: SeedType;
-	export let deck: SeedsDeckType;
+	export let deck: DeckType;
 	export let showSeedOptions: boolean;
 	export let toggleTooltip: HTMLElement;
 	export let toggleTooltipVisibility: (bool: boolean) => void;

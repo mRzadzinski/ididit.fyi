@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 
-	export let deck: SeedsDeckType;
+	export let deck: DeckType;
 	export let editMode: boolean;
 	export let getDndItem: (dndItem: HTMLElement) => void;
 

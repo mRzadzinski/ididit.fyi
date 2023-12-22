@@ -7,7 +7,7 @@
 
 	export let seedCreator = false;
 	export let seed: null | SeedType;
-	export let deck: SeedsDeckType;
+	export let deck: DeckType;
 	export let hideModal: () => void;
 
 	let allowSave = false;
@@ -79,7 +79,9 @@
 </script>
 
 <ModalBackground>
-	<div class="max-w-[46.875rem] min-w-[305px] w-full min-h-[30.625rem] pt-[0.9rem] pl-[1.81rem] bg-[#FFCD4C] rounded-2xl">
+	<div
+		class="max-w-[46.875rem] min-w-[305px] w-full min-h-[30.625rem] pt-[0.9rem] pl-[1.81rem] bg-[#FFCD4C] rounded-2xl"
+	>
 		<form
 			class="flex flex-col h-full"
 			on:input={() => checkIfAllowSave()}

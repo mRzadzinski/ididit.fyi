@@ -4,7 +4,7 @@
 	import SeedToggleShowEveryday from './SeedToggleShowEveryday.svelte';
 
 	export let seed: SeedType;
-	export let deck: SeedsDeckType;
+	export let deck: DeckType;
 	export let showSeedOptions: boolean;
 	export let expandedMode: boolean;
 	export let toggleShowSeedEditor: (show: boolean) => void;

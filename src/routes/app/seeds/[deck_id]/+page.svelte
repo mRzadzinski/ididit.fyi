@@ -3,7 +3,11 @@
 	import type { DeckData } from './+page';
 	import { addNewItem, newItemBtnName } from '$lib/stores/helperStores';
 	import PageHeader from '$components/app-layout/PageHeader.svelte';
-	import { expandedSeedId, reorderSeeds, seedsOrderByOptions } from '../../../../lib/app-logic/seedsLogic';
+	import {
+		expandedSeedId,
+		reorderSeeds,
+		seedsOrderByOptions
+	} from '../../../../lib/app-logic/seedsLogic';
 	import { seedsData, settings } from '$lib/stores/dbStores';
 	import Seed from '$components/seeds/Seed.svelte';
 	import SeedEditModal from '$components/seeds/SeedEditModal.svelte';
@@ -12,13 +16,13 @@
 
 	export let data: DeckData;
 
-	let deck: SeedsDeckType;
+	let deck: DeckType;
 	let seeds: SeedType[];
 	let showSeedCreator = false;
 
 	// Get seeds array and deck from user data
 	$: {
-		let tempDeck: SeedsDeckType | undefined = undefined;
+		let tempDeck: DeckType | undefined = undefined;
 		let tempSeeds: SeedType[] = [];
 		for (let i = 0; i < $seedsData.decks.length; i++) {
 			if ($seedsData.decks[i].id === data.deckId) {

@@ -32,12 +32,12 @@ export function SeedFactory(
 	} as SeedType;
 }
 
-export async function createSeed(newSeed: SeedType, deck: SeedsDeckType) {
+export async function createSeed(newSeed: SeedType, deck: DeckType) {
 	const usrDocs = get(userDocs);
 	const deckWithSeed = {
 		...deck,
 		seeds: [newSeed] as SeedType[]
-	} as SeedsDeckType;
+	} as DeckType;
 
 	// Add seed to any doc if enough space
 	for (let i = 0; i < usrDocs.length; i++) {
@@ -76,7 +76,7 @@ export async function createSeed(newSeed: SeedType, deck: SeedsDeckType) {
 export async function deleteSeed(seedId: string, deckId: string) {
 	const usrDocs = get(userDocs);
 	let documentId = '';
-	let updatedDecks: SeedsDeckType[] = [];
+	let updatedDecks: DeckType[] = [];
 	let deckIndex: number | undefined;
 	let seedIndex: number | undefined;
 	let seedFound = false;
@@ -148,8 +148,8 @@ export async function editSeed(editedSeed: SeedType, deckId: string) {
 	let parentDocIndex: number | undefined;
 	let parentDeckIndex: number | undefined;
 	let seedIndex: number | undefined;
-	let updatedDecks: SeedsDeckType[] = [];
-	let deckWithSeed: SeedsDeckType | undefined;
+	let updatedDecks: DeckType[] = [];
+	let deckWithSeed: DeckType | undefined;
 
 	let seedFound = false;
 	let breakInnerLoops = false;
@@ -328,7 +328,7 @@ export function reorderSeeds(seeds: SeedType[]) {
 	return reordered;
 }
 
-async function updateDecksDb(docId: string, updatedDecks: SeedsDeckType[]) {
+async function updateDecksDb(docId: string, updatedDecks: DeckType[]) {
 	// Update doc
 	const docRef = doc(db, 'users', docId);
 
@@ -337,7 +337,7 @@ async function updateDecksDb(docId: string, updatedDecks: SeedsDeckType[]) {
 	syncInProgress.set(false);
 }
 
-function createDocWithDeckAndSeed(deck: SeedsDeckType, seed: SeedType) {
+function createDocWithDeckAndSeed(deck: DeckType, seed: SeedType) {
 	let newDoc;
 	const usr = get(user);
 	if (usr && typeof usr === 'object') {

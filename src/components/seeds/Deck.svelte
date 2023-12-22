@@ -8,7 +8,7 @@
 	import DeckForm from './DeckForm.svelte';
 	import DeckDndItem from './DeckDndItem.svelte';
 
-	export let deck: SeedsDeckType;
+	export let deck: DeckType;
 	export let newDeck = false;
 	export let editedDeckId: string;
 	export let dndList: Muuri;
@@ -114,10 +114,10 @@
 </script>
 
 {#if showConfirmDelete}
-		<DeckConfirmDeleteModal
-			deleteHandler={() => handleDeleteDeck(deck.id, dndItem)}
-			hideModal={() => toggleShowConfirmDelete(false)}
-		/>
+	<DeckConfirmDeleteModal
+		deleteHandler={() => handleDeleteDeck(deck.id, dndItem)}
+		hideModal={() => toggleShowConfirmDelete(false)}
+	/>
 {/if}
 
 <DeckDndItem {deck} {editMode} {getDndItem}>

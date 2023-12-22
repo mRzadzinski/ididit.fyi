@@ -24,11 +24,11 @@
 	} from '../../../lib/dnd/verticalListLifecycle';
 	import { uniqBy } from 'lodash';
 
-	let decks: SeedsDeckType[] = [];
+	let decks: DeckType[] = [];
 	let listContainer: HTMLElement;
 	let newDeckId: string;
 	let editedDeckId = '';
-	let newDeck: SeedsDeckType;
+	let newDeck: DeckType;
 
 	// Get decks and remove deck duplicates
 	$: decks = uniqBy($seedsData.decks, (deck) => deck.id);
