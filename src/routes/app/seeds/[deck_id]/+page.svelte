@@ -11,7 +11,6 @@
 	import { seedsData, settings } from '$lib/stores/dbStores';
 	import Seed from '$components/seeds/Seed.svelte';
 	import SeedEditModal from '$components/seeds/SeedEditModal.svelte';
-	import { fillDocs } from '../../../../lib/app-logic/decksLogic';
 	import { flip } from 'svelte/animate';
 
 	export let data: DeckData;
@@ -20,19 +19,13 @@
 	let seeds: SeedType[];
 	let showSeedCreator = false;
 
-	// Get seeds array and deck from user data
+	// Get seeds and deck from user data
 	$: {
-		let tempDeck: DeckType | undefined = undefined;
-		let tempSeeds: SeedType[] = [];
 		for (let i = 0; i < $seedsData.decks.length; i++) {
 			if ($seedsData.decks[i].id === data.deckId) {
-				tempDeck = $seedsData.decks[i];
-				tempSeeds = tempSeeds.concat($seedsData.decks[i].seeds);
+				deck = $seedsData.decks[i];
+				seeds = deck.seeds;
 			}
-		}
-		if (tempDeck) {
-			deck = tempDeck;
-			seeds = tempSeeds;
 		}
 	}
 

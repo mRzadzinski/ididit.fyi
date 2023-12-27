@@ -24,8 +24,36 @@ export const seedsData = derived(userDocs, ($userDocs) => {
 	const data = {
 		decks: [] as DeckType[]
 	};
+	let decks: Array<DeckType | null> = [];
+
+	// Get decks from all docs including their copies
 	for (let i = 0; i < $userDocs.length; i++) {
-		data.decks = data.decks.concat($userDocs[i].doc.seedsData.decks);
+		decks = decks.concat($userDocs[i].doc.seedsData.decks);
+	}
+
+	// Concatenate decks with the same IDs
+	for (let i = 0; i < decks.length; i++) {
+		const deck = decks[i];
+		let seedsOne: SeedType[] = [];
+		let seedsTwo: SeedType[] = [];
+
+		if (deck) {
+			seedsOne = deck.seeds;
+		} else {
+			continue;
+		}
+
+		for (let j = i + 1; j < decks.length; j++) {
+			const dck = decks[j];
+
+			if (dck && deck.id === dck.id) {
+				seedsTwo = dck.seeds;
+				// Set deck to null to skip it in next iterations
+				decks[j] = null;
+			}
+		}
+		data.decks.push({ ...deck, seeds: [...seedsOne, ...seedsTwo] });
+		decks[i] = null;
 	}
 	return data;
 });
