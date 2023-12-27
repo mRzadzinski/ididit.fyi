@@ -3,7 +3,7 @@ import { db } from '$lib/firebase/firebase';
 import { shuffleArray } from '$lib/helpers';
 import { user } from '$lib/stores/authStores';
 import { seedsData, syncInProgress, userDocs } from '$lib/stores/dbStores';
-import { collection, deleteField, doc, writeBatch } from 'firebase/firestore';
+import { collection, deleteField, doc, updateDoc, writeBatch } from 'firebase/firestore';
 import sizeof from 'firestore-size';
 import { uniq } from 'lodash';
 import { get } from 'svelte/store';
@@ -113,4 +113,20 @@ async function pushNewReviewToDB(review: DailyReviewDB) {
 	syncInProgress.set(true);
 	await batch.commit();
 	syncInProgress.set(false);
+}
+
+export async function updateCurrentReview(currentReview: CurrentReview) {
+	const usrDocs = get(userDocs);
+	console.log(currentReview);
+
+	for (let i = 0; i < usrDocs.length; i++) {
+		if (usrDocs[i].doc.dailyReview) {
+			const docID = usrDocs[i].docID;
+			const docRef = doc(db, 'users', docID);
+
+			syncInProgress.set(true);
+			await updateDoc(docRef, { 'dailyReview.current': currentReview });
+			syncInProgress.set(false);
+		}
+	}
 }

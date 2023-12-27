@@ -4,7 +4,7 @@
 	import ButtonArrowLeft from '../common/ButtonArrowLeft.svelte';
 	import ReviewContentSeed from './ReviewContent.svelte';
 	import ReviewInstructions from './ReviewInstructions.svelte';
-	import type { CurrentReview } from '$lib/app-logic/reviewLogic';
+	import { updateCurrentReview, type CurrentReview } from '$lib/app-logic/reviewLogic';
 	import { dailyReview } from '$lib/stores/dbStores';
 
 	export let closeReview: () => void;
@@ -29,13 +29,11 @@
 
 			// Next seed
 			if (current.seedIndex + 1 < deck.seeds.length) {
-				current.seedIndex++;
+				updateCurrentReview({ ...current, seedIndex: current.seedIndex + 1 });
 			}
-			// Next deck
+			// Go to first seed of next deck
 			else if (current.deckIndex + 1 < decks.length) {
-				current.deckIndex++;
-				// Go to first seed of next deck
-				current.seedIndex = 0;
+				updateCurrentReview({ ...current, deckIndex: current.deckIndex + 1, seedIndex: 0 });
 			}
 		}
 	}
@@ -46,13 +44,15 @@
 
 			// Prev seed
 			if (current.seedIndex - 1 >= 0) {
-				current.seedIndex--;
+				updateCurrentReview({ ...current, seedIndex: current.seedIndex - 1 });
 			}
-			// Prev deck
+			// Go to last seed of prev deck
 			else if (current.deckIndex - 1 >= 0) {
-				current.deckIndex--;
-				// Go to last seed of prev deck
-				current.seedIndex = decks[current.deckIndex].seeds.length - 1;
+				updateCurrentReview({
+					...current,
+					deckIndex: current.deckIndex - 1,
+					seedIndex: decks[current.deckIndex - 1].seeds.length - 1
+				});
 			}
 		}
 	}
