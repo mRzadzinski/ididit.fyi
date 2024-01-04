@@ -29,10 +29,10 @@
 				class="btn min-w-fit w-40 bg-[#ffcd4c] daily-review"
 				on:click={() => goto('/app/daily-review')}>Daily Review</button
 			>
-		{:else}
+		<!-- {:else}
 			<button class="btn btn-disabled w-40 bg-white" tabindex="-1" aria-disabled="true">
 				Placeholder
-			</button>
+			</button> -->
 		{/if}
 		<div class="flex-none items-center">
 			{#if $newItemBtnName.length > 0}

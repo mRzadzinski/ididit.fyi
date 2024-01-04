@@ -1,4 +1,5 @@
 import type { DailyReviewDB } from '$lib/app-logic/reviewLogic';
+import { Timestamp } from 'firebase/firestore';
 
 interface UserMainDocFactory {
 	uid: string;
@@ -35,7 +36,11 @@ export const userMainDocFactory = (uid: string) => {
 		},
 		settings: {
 			decksOrderBy: 'custom',
-			seedsOrderBy: 'new-old'
+			seedsOrderBy: 'new-old',
+			dailyReviewInfo: {
+				done: false,
+				nextReset: Timestamp.now()
+			}
 		},
 		seedsData: {
 			decks: []

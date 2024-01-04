@@ -4,7 +4,11 @@
 	import ButtonArrowLeft from '../common/ButtonArrowLeft.svelte';
 	import ReviewContentSeed from './ReviewContent.svelte';
 	import ReviewInstructions from './ReviewInstructions.svelte';
-	import { updateCurrentReview, type CurrentReview } from '$lib/app-logic/reviewLogic';
+	import {
+		updateCurrentReview,
+		type CurrentReview,
+		setReviewDoneStatus
+	} from '$lib/app-logic/reviewLogic';
 	import { dailyReview } from '$lib/stores/dbStores';
 
 	export let closeReview: () => void;
@@ -34,6 +38,11 @@
 			// Go to first seed of next deck
 			else if (current.deckIndex + 1 < decks.length) {
 				updateCurrentReview({ ...current, deckIndex: current.deckIndex + 1, seedIndex: 0 });
+			}
+			// Review finished
+			else {
+				setReviewDoneStatus(true);
+				closeReview();
 			}
 		}
 	}

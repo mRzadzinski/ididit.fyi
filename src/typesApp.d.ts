@@ -41,10 +41,16 @@ declare global {
 	interface Settings {
 		decksOrderBy: string;
 		seedsOrderBy: string;
+		dailyReviewInfo: DailyReviewInfo;
 	}
 
 	interface SortDndData {
 		id: string;
 		data: number | string;
 	}
+}
+
+interface DailyReviewInfo {
+	done: boolean;
+	nextReset: Timestamp;
 }

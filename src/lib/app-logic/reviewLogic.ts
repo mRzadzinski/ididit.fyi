@@ -7,6 +7,7 @@ import { collection, deleteField, doc, updateDoc, writeBatch } from 'firebase/fi
 import sizeof from 'firestore-size';
 import { uniq } from 'lodash';
 import { get } from 'svelte/store';
+import { DateTime } from 'luxon';
 
 export interface DailyReviewClient {
 	decks: DeckType[];
@@ -34,7 +35,8 @@ export async function getReview() {
 
 	review.decks = getReviewSeeds();
 
-	pushNewReviewToDB(review);
+	await pushNewReviewToDB(review);
+	await setReviewDoneStatus(false);
 }
 
 function getReviewSeeds() {
@@ -117,7 +119,6 @@ async function pushNewReviewToDB(review: DailyReviewDB) {
 
 export async function updateCurrentReview(currentReview: CurrentReview) {
 	const usrDocs = get(userDocs);
-	console.log(currentReview);
 
 	for (let i = 0; i < usrDocs.length; i++) {
 		if (usrDocs[i].doc.dailyReview) {
@@ -129,4 +130,42 @@ export async function updateCurrentReview(currentReview: CurrentReview) {
 			syncInProgress.set(false);
 		}
 	}
+}
+
+export async function setReviewDoneStatus(bool: boolean) {
+	const batch = writeBatch(db);
+	const docRef = doc(db, 'users', getSettingsDocID());
+
+	// Update reset date only when creating new review
+	if (!bool) {
+		batch.update(docRef, { 'settings.dailyReviewInfo.nextReset': getNextReviewResetDate() });
+	}
+	batch.update(docRef, { 'settings.dailyReviewInfo.done': bool });
+
+	syncInProgress.set(true);
+	await batch.commit();
+	syncInProgress.set(false);
+}
+
+function getNextReviewResetDate() {
+	const now = DateTime.now();
+	// Set reset date to 4 am today
+	let resetDate = DateTime.local(now.get('year'), now.get('month'), now.get('day'), 4);
+
+	// If it's past 4 am, set reset for next day
+	if (now.get('hour') >= 4) {
+		resetDate = resetDate.plus({ days: 1 });
+	}
+	return resetDate.toJSDate();
+}
+
+function getSettingsDocID() {
+	const usrDocs = get(userDocs);
+
+	for (let i = 0; i < usrDocs.length; i++) {
+		if (usrDocs[i].doc.settings) {
+			return usrDocs[i].docID;
+		}
+	}
+	return '';
 }
