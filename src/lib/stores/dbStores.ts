@@ -5,7 +5,7 @@ import { onAuthStateChanged, type Unsubscribe } from 'firebase/auth';
 import sizeof from 'firestore-size';
 import type { DailyReviewClient, DailyReviewDB } from '$lib/app-logic/reviewLogic';
 
-// Leave ~15k bytes buffer
+// Leave ~15k bytes buffer in each doc
 export const docSizeLimit = 1033576;
 export const syncInProgress = writable<boolean>(false);
 export const userDocs = writable<UserDoc[]>([]);

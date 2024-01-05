@@ -1,9 +1,17 @@
 <script lang="ts">
 	import ReviewInterface from '$components/daily-review/ReviewInterface.svelte';
 	import { getReview } from '$lib/app-logic/reviewLogic';
-	import { settings } from '$lib/stores/dbStores';
+	import { seedsData, settings } from '$lib/stores/dbStores';
 
+	let appIsEmpty = true;
 	let showReview = false;
+
+	// Check if there is anything to review
+	for (let i = 0 ; i < $seedsData.decks.length; i++) {
+		if ($seedsData.decks[i].seeds.length > 0) {
+			appIsEmpty = false;
+		}
+	}
 
 	// Check if review reset date passed
 	if ($settings.dailyReviewInfo.nextReset.toMillis() - Date.now() <= 0) {
@@ -26,10 +34,14 @@
 <div class="flex flex-col h-full">
 	<div class="flex justify-between">
 		<h1 class="text-3xl mb-3">Daily Review</h1>
-		<button class="btn btn-sm text-xs">Options</button>
+		<!-- <button class="btn btn-sm text-xs">Options</button> -->
 	</div>
 	<div class="flex justify-center items-center mt-[20%]">
-		{#if !$settings.dailyReviewInfo.done}
+		{#if appIsEmpty}
+		<div class="text-center text-xl">
+			There is nothing to review.
+		</div>
+		{:else if !$settings.dailyReviewInfo.done}
 			<button class="btn btn-lg w-48 bg-[#FFCD4C]" on:click={() => (showReview = true)}>
 				START
 			</button>
