@@ -24,16 +24,11 @@
 		</label>
 	</div>
 	<div class="max-w-none flex-1 flex justify-between">
-		{#if $page.url.pathname !== '/app/daily-review'}
-			<button
-				class="btn min-w-fit w-40 bg-[#ffcd4c] daily-review"
-				on:click={() => goto('/app/daily-review')}>Daily Review</button
-			>
-		<!-- {:else}
-			<button class="btn btn-disabled w-40 bg-white" tabindex="-1" aria-disabled="true">
-				Placeholder
-			</button> -->
-		{/if}
+		<button
+			class="btn min-w-fit w-40 bg-[#ffcd4c] daily-review
+				{$page.url.pathname === '/app/daily-review' ? 'invisible' : ''}"
+			on:click={() => goto('/app/daily-review')}>Daily Review</button
+		>
 		<div class="flex-none items-center">
 			{#if $newItemBtnName.length > 0}
 				{#if !$disableNewItemBtn}

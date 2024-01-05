@@ -33,7 +33,7 @@
 
 <div class="flex flex-col h-full">
 	<div class="flex justify-between">
-		<h1 class="text-3xl mb-3">Daily Review</h1>
+		<h1 class="text-4xl mb-3">Daily Review</h1>
 		<!-- <button class="btn btn-sm text-xs">Options</button> -->
 	</div>
 	<div class="flex justify-center items-center mt-[20%]">

@@ -39,7 +39,7 @@
 					Login
 				{/if}
 			</h1>
-			<button class="btn bg-[#FFCD4C] w-28 min-h-[2.5rem] h-11" on:click={() => signInAnonymously(auth)}>DEMO</button>
+			<button class="btn bg-[#FFCD4C] w-24 min-h-[2.5rem] h-11 -mt-1" on:click={() => signInAnonymously(auth)}>DEMO</button>
 		</div>
 		<label for="email-input" class="label">
 			<span class="label-text">Email</span>
