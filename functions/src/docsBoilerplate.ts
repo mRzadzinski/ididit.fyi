@@ -1,4 +1,4 @@
-import type { Timestamp } from 'firebase/firestore';
+import { Timestamp } from 'firebase-admin/firestore';
 
 interface SeedType {
 	id: string;
@@ -34,7 +34,11 @@ export const userMainDocFactory = (uid: string) => {
 		},
 		settings: {
 			decksOrderBy: 'custom',
-			seedsOrderBy: 'new-old'
+			seedsOrderBy: 'new-old',
+			dailyReviewInfo: {
+				done: false,
+				nextReset: Timestamp.now()
+			}
 		},
 		seedsData: {
 			decks: [] as SeedsDeckType[]

@@ -3,6 +3,8 @@
 	import { sendEmailLink, loginWithPassword } from '$lib/firebase/auth/emailAuth';
 	import { registerError, loginError, emailLinkLogin } from '$lib/stores/authStores';
 	import ErrorMessage from '$components/general/ErrorMessage.svelte';
+	import { signInAnonymously } from 'firebase/auth';
+	import { auth } from '$lib/firebase/firebase';
 
 	export let register: boolean;
 	let email: string;
@@ -27,15 +29,18 @@
 
 <form class="h-[21rem]" aria-label="form">
 	<div class="form-control justify-center">
-		<h1>
-			{#if register}
-				Register
-			{:else if $emailLinkLogin}
-				Login with link
-			{:else}
-				Login
-			{/if}
-		</h1>
+		<div class="flex justify-between">
+			<h1>
+				{#if register}
+					Register
+				{:else if $emailLinkLogin}
+					Login with link
+				{:else}
+					Login
+				{/if}
+			</h1>
+			<button class="btn bg-[#FFCD4C] w-28 min-h-[2.5rem] h-11" on:click={() => signInAnonymously(auth)}>DEMO</button>
+		</div>
 		<label for="email-input" class="label">
 			<span class="label-text">Email</span>
 		</label>
