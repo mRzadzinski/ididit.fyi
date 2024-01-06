@@ -54,7 +54,7 @@ function getReviewSeeds() {
 		}
 		const everydaySeedsCount = reviewSeeds.length;
 
-		// Get limit number of random, unique seeds. Exclude everyday seeds from limit
+		// Get limit number of random, unique seeds. Exclude everyday seeds from deck's limit
 		while (reviewSeeds.length < limit + everydaySeedsCount) {
 			const randomIndex = Math.floor(Math.random() * seeds.length);
 			reviewSeeds.push(seeds[randomIndex].id);
