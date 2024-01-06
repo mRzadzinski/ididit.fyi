@@ -9,7 +9,27 @@ admin.initializeApp();
 
 export const onRegister = functions.auth.user().onCreate(async (user) => {
 	// Create user document in firestore
-	await admin.firestore().collection('users').doc(user.uid).set(userMainDocFactory(user.uid));
+
+	// Anonymous account with predefined data
+	const docs = await admin
+		.firestore()
+		.collection('users')
+		.where('uid', '==', '4yPfnKzJGDR77QqmXxbwFbLngCQ2')
+		.get();
+
+	let predefinedData = undefined;
+	if (docs.docs[0]) {
+		predefinedData = (await docs.docs[0].ref.get()).data();
+	}
+
+	if (user.providerData.length === 0 && predefinedData) {
+		predefinedData.uid = user.uid;
+		await admin.firestore().collection('users').doc(user.uid).set(predefinedData);
+	}
+	// Normal account
+	else {
+		await admin.firestore().collection('users').doc(user.uid).set(userMainDocFactory(user.uid));
+	}
 	return null;
 });
 
@@ -74,41 +94,34 @@ export const onUserDelete = functions.auth.user().onDelete(async (user) => {
 // 	});
 
 // // Iterate through all users
-// let thousands = 0;
+// // let thousands = 0;
 // const listAllUsers = (nextPageToken?: string) => {
 // 	// List batch of users, 1000 at a time.
 // 	getAuth()
 // 		.listUsers(1000, nextPageToken)
-// 		.then(async (listUsersResult) => {
-// 			// USE FOR LOOP IN FUNCTIONS
-// 			for (let i = 0; i < listUsersResult.users.length; i++) {
-// 				const user = listUsersResult.users[i];
+// 		.then((listUsersResult) => {
+// 			listUsersResult.users.forEach(async (userRecord) => {
+// 				console.log('user', userRecord.toJSON());
 
 // 				// get old doc
 // 				const docs = await admin
 // 					.firestore()
 // 					.collection('users')
-// 					.where('uid', '==', user.uid)
-// 					.orderBy('subscription')
+// 					.where('uid', '==', userRecord.uid)
 // 					.get();
-
 // 				const oldDoc = (await docs.docs[0].ref.get()).data();
-// 				// // Copy content from old doc to new one
-// 				if (oldDoc && docs.docs[0].ref.id !== user.uid) {
-// 					await admin.firestore().collection('users').doc(user.uid).set(oldDoc);
-// 					// // Delete old doc
-// 					docs.docs[0].ref.delete();
-// 				}
-// 			}
-// 			// listUsersResult.users.forEach(async (userRecord) => {
-// 			// 	// Do something for each user
-// 			// });
+// 				console.log('user document');
+// 				console.log(oldDoc);
 
-// 			// thousands++;
-// 			// if (listUsersResult.pageToken && thousands < 1) {
-// 			// 	// List next batch of users.
-// 			// 	listAllUsers(listUsersResult.pageToken);
-// 			// }
+// 				// Create doc for users without main doc
+// 				if (!oldDoc) {
+// 					await admin
+// 						.firestore()
+// 						.collection('users')
+// 						.doc(userRecord.uid)
+// 						.set(userMainDocFactory(userRecord.uid));
+// 				}
+// 			});
 // 		})
 // 		.catch((error) => {
 // 			console.log('Error listing users:', error);
