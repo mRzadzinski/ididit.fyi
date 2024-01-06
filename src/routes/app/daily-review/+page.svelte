@@ -1,7 +1,6 @@
 <script lang="ts">
 	import ReviewInterface from '$components/daily-review/ReviewInterface.svelte';
 	import { getReview } from '$lib/app-logic/reviewLogic';
-	import { auth } from '$lib/firebase/firebase';
 	import { seedsData, settings } from '$lib/stores/dbStores';
 
 	let appIsEmpty = true;

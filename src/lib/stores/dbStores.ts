@@ -77,7 +77,9 @@ export const dailyReview = derived([userDocs, seedsData], ([$userDocs, $seedsDat
 				for (let j = 0; j < seedIDs.length; j++) {
 					// Find seed by ID in seedsData
 					const seed = tempDeck.seeds.filter((seed) => seed.id === seedIDs[j])[0];
-					deck.seeds.push(seed);
+					if (seed) {
+						deck.seeds.push(seed);
+					}
 				}
 				clientData.decks.push(deck);
 			}

@@ -52,9 +52,10 @@ function getReviewSeeds() {
 				reviewSeeds.push(deck.seeds[j].id);
 			}
 		}
+		const everydaySeedsCount = reviewSeeds.length;
 
-		// Get limit number of random, unique seeds
-		while (reviewSeeds.length < limit) {
+		// Get limit number of random, unique seeds. Exclude everyday seeds from limit
+		while (reviewSeeds.length < limit + everydaySeedsCount) {
 			const randomIndex = Math.floor(Math.random() * seeds.length);
 			reviewSeeds.push(seeds[randomIndex].id);
 			reviewSeeds = uniq(reviewSeeds);
