@@ -41,11 +41,6 @@ function getReviewSeeds() {
 		let reviewSeeds: string[] = [];
 		let limit = data.decks[i].dailyLimit;
 
-		// Constrain limit to seeds length
-		if (limit > seeds.length) {
-			limit = seeds.length;
-		}
-
 		// Get all showEveryday seeds
 		for (let j = 0; j < deck.seeds.length; j++) {
 			if (deck.seeds[j].showEveryday) {
@@ -54,8 +49,13 @@ function getReviewSeeds() {
 		}
 		const everydaySeedsCount = reviewSeeds.length;
 
-		// Get limit number of random, unique seeds. Exclude everyday seeds from deck's limit
-		while (reviewSeeds.length < limit + everydaySeedsCount) {
+		// Constrain deck's limit to seeds length, excluding everyday seeds
+		if (limit > seeds.length - everydaySeedsCount) {
+			limit = seeds.length - everydaySeedsCount;
+		}
+
+		// Get limit number of random, unique seeds, excluding everyday seeds
+		while (reviewSeeds.length - everydaySeedsCount < limit) {
 			const randomIndex = Math.floor(Math.random() * seeds.length);
 			reviewSeeds.push(seeds[randomIndex].id);
 			reviewSeeds = uniq(reviewSeeds);
@@ -153,7 +153,11 @@ export async function setReviewDoneStatus(bool: boolean) {
 	syncInProgress.set(false);
 }
 
-export async function refreshReview() {}
+export async function refreshReview() {
+	// Handle:
+	// deck's daily limit change: increase / decrease
+	// seed in review removal
+}
 
 function getNextReviewResetDate() {
 	const now = DateTime.now();
