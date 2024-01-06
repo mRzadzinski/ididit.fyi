@@ -4,65 +4,26 @@
 	import ButtonArrowLeft from '../common/ButtonArrowLeft.svelte';
 	import ReviewContentSeed from './ReviewContent.svelte';
 	import ReviewInstructions from './ReviewInstructions.svelte';
-	import {
-		updateCurrentReview,
-		type CurrentReview,
-		setReviewDoneStatus
-	} from '$lib/app-logic/reviewLogic';
+	import { reviewNext, setReviewDoneStatus } from '$lib/app-logic/reviewLogic';
 	import { dailyReview } from '$lib/stores/dbStores';
 
 	export let closeReview: () => void;
 
-	let current: CurrentReview;
 	let content: SeedType;
 
 	$: {
-		if ($dailyReview) {
-			current = $dailyReview.current;
-
-			if (current?.type === 'seed') {
-				content = $dailyReview.decks[current.deckIndex].seeds[current.seedIndex];
-			}
+		if ($dailyReview && $dailyReview.decks.length > 0) {
+			content = $dailyReview.decks[0].seeds[0];
 		}
 	}
 
-	function next() {
-		if (current?.type === 'seed' && $dailyReview) {
-			const decks = $dailyReview.decks;
-			const deck = decks[current.deckIndex];
+	async function next() {
+		await reviewNext();
 
-			// Next seed
-			if (current.seedIndex + 1 < deck.seeds.length) {
-				updateCurrentReview({ ...current, seedIndex: current.seedIndex + 1 });
-			}
-			// Go to first seed of next deck
-			else if (current.deckIndex + 1 < decks.length) {
-				updateCurrentReview({ ...current, deckIndex: current.deckIndex + 1, seedIndex: 0 });
-			}
-			// Review finished
-			else {
-				setReviewDoneStatus(true);
-				closeReview();
-			}
-		}
-	}
-
-	function prev() {
-		if (current?.type === 'seed' && $dailyReview) {
-			const decks = $dailyReview.decks;
-
-			// Prev seed
-			if (current.seedIndex - 1 >= 0) {
-				updateCurrentReview({ ...current, seedIndex: current.seedIndex - 1 });
-			}
-			// Go to last seed of prev deck
-			else if (current.deckIndex - 1 >= 0) {
-				updateCurrentReview({
-					...current,
-					deckIndex: current.deckIndex - 1,
-					seedIndex: decks[current.deckIndex - 1].seeds.length - 1
-				});
-			}
+		// Review finished
+		if ($dailyReview?.decks.length === 0) {
+			await setReviewDoneStatus(true);
+			closeReview();
 		}
 	}
 </script>
@@ -76,11 +37,8 @@
 		</div>
 		<!-- Content -->
 		<div class="grow flex justify-between items-center">
-			<div class="ml-4">
-				<ButtonArrowLeft handler={prev} />
-			</div>
 			<div class="px-16">
-				<ReviewContentSeed type={current.type} data={content} />
+				<ReviewContentSeed type={'seed'} data={content} />
 			</div>
 			<!-- Rotate 180 deg to get arrow right -->
 			<div class="mr-4 rotate-180">

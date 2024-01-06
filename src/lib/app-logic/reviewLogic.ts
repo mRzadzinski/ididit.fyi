@@ -11,26 +11,17 @@ import { DateTime } from 'luxon';
 
 export interface DailyReviewClient {
 	decks: DeckType[];
-	current: CurrentReview;
 }
 export interface DailyReviewDB {
 	decks: ReviewDeckType[];
-	current: CurrentReview;
 }
 export interface ReviewDeckType extends Omit<DeckType, 'seeds'> {
 	seeds: string[];
 }
-export interface CurrentSeed {
-	type: 'seed';
-	deckIndex: number;
-	seedIndex: number;
-}
-export type CurrentReview = CurrentSeed;
 
 export async function getReview() {
 	const review: DailyReviewDB = {
-		decks: [],
-		current: { type: 'seed', deckIndex: 0, seedIndex: 0 }
+		decks: []
 	};
 
 	review.decks = getReviewSeeds();
@@ -72,6 +63,7 @@ function getReviewSeeds() {
 		shuffleArray(reviewSeeds);
 		reviewData.push({ ...deck, seeds: reviewSeeds });
 	}
+	shuffleArray(reviewData);
 	return reviewData;
 }
 
@@ -117,17 +109,30 @@ async function pushNewReviewToDB(review: DailyReviewDB) {
 	syncInProgress.set(false);
 }
 
-export async function updateCurrentReview(currentReview: CurrentReview) {
+export async function reviewNext() {
 	const usrDocs = get(userDocs);
 
 	for (let i = 0; i < usrDocs.length; i++) {
 		if (usrDocs[i].doc.dailyReview) {
+			const review = usrDocs[i].doc.dailyReview;
+
+			// Remove first seed from deck
+			if (review && review.decks && review.decks[0] && review.decks[0].seeds.length > 1) {
+				review.decks[0].seeds.splice(0, 1);
+			}
+			// Remove first deck from review
+			else {
+				review?.decks.splice(0, 1);
+			}
+
 			const docID = usrDocs[i].docID;
 			const docRef = doc(db, 'users', docID);
 
 			syncInProgress.set(true);
-			await updateDoc(docRef, { 'dailyReview.current': currentReview });
+			await updateDoc(docRef, { dailyReview: review });
 			syncInProgress.set(false);
+
+			return;
 		}
 	}
 }
@@ -146,6 +151,8 @@ export async function setReviewDoneStatus(bool: boolean) {
 	await batch.commit();
 	syncInProgress.set(false);
 }
+
+export async function refreshReview() {}
 
 function getNextReviewResetDate() {
 	const now = DateTime.now();

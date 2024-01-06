@@ -63,7 +63,7 @@ export const dailyReview = derived([userDocs, seedsData], ([$userDocs, $seedsDat
 	for (let i = 0; i < $userDocs.length; i++) {
 		if ($userDocs[i].doc.dailyReview) {
 			const dbData: DailyReviewDB = $userDocs[i].doc.dailyReview;
-			const clientData: DailyReviewClient = { current: dbData.current, decks: [] };
+			const clientData: DailyReviewClient = { decks: [] };
 
 			// Get seeds from seedIDs
 			// Scan all decks in dailyReviewDB data
