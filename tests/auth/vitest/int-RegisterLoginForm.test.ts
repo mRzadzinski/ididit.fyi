@@ -1,4 +1,4 @@
-import RegisterLoginForm from '$components/auth/RegisterLoginForm.svelte';
+import AuthForm from '$components/auth/AuthForm.svelte';
 import { afterEach, describe, expect, it as test, vi } from 'vitest';
 import { render, screen } from '@testing-library/svelte';
 import '@testing-library/jest-dom';
@@ -30,7 +30,7 @@ vi.mock('$lib/firebase/auth/emailAuth', () => ({
 
 describe('Test RegisterLoginForm component', () => {
 	test('Renders correct form elements', () => {
-		const { rerender } = render(RegisterLoginForm, {
+		const { rerender } = render(AuthForm, {
 			register: false
 		});
 
@@ -53,7 +53,7 @@ describe('Test RegisterLoginForm component', () => {
 	});
 
 	test('Elements display correct text', () => {
-		const { rerender } = render(RegisterLoginForm, {
+		const { rerender } = render(AuthForm, {
 			register: false
 		});
 

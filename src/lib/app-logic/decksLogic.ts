@@ -11,7 +11,7 @@ import sizeof from 'firestore-size';
 
 export const decksOrderByOptions = [
 	{ name: 'Custom', value: 'custom' },
-	{ name: 'A - z', value: 'a-z' }
+	{ name: 'A - Z', value: 'a-z' }
 ];
 
 export async function createDeck(newDeck: DeckType) {

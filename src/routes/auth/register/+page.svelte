@@ -1,5 +1,5 @@
 <script lang="ts">
-	import RegisterLoginForm from '$components/auth/RegisterLoginForm.svelte';
+	import AuthForm from '$components/auth/AuthForm.svelte';
 	import ToggleRegister from '$components/auth/ToggleRegister.svelte';
 	import LoginProviders from '$components/auth/LoginProviders.svelte';
 	import { user } from '$lib/stores/authStores';
@@ -13,7 +13,7 @@
 </script>
 
 {#if $user === null}
-	<RegisterLoginForm {register} />
+	<AuthForm {register} />
 	<div class="divider">OR</div>
 	<LoginProviders {register} />
 	<ToggleRegister {register} />
