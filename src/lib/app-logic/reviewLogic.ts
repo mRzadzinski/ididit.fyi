@@ -5,7 +5,7 @@ import { user } from '$lib/stores/authStores';
 import { seedsData, syncInProgress, userDocs } from '$lib/stores/dbStores';
 import { collection, deleteField, doc, updateDoc, writeBatch } from 'firebase/firestore';
 import sizeof from 'firestore-size';
-import { cloneDeep, uniq } from 'lodash';
+import { cloneDeep, isEqual, uniq } from 'lodash';
 import { get } from 'svelte/store';
 import { DateTime } from 'luxon';
 
@@ -163,16 +163,41 @@ export async function refreshReview() {
 			const docRef = doc(db, 'users', docID);
 			let review = cloneDeep(usrDocs[i].doc.dailyReview);
 
+			review = updateReviewLimits(review);
 			review = clearRemovedElements(review);
 
 			// Handle Deck's daily limit change:
 			// increase (add random seed, not everyday one) / decrease (remove random seed, not everyday one)
 
-			syncInProgress.set(true);
-			await updateDoc(docRef, { dailyReview: review });
-			syncInProgress.set(false);
+			// If anything changed, push to db
+			if (!isEqual(review, usrDocs[i].doc.dailyReview)) {
+				syncInProgress.set(true);
+				await updateDoc(docRef, { dailyReview: review });
+				syncInProgress.set(false);
+			}
+			return;
 		}
 	}
+}
+
+function updateReviewLimits(review: DailyReviewDB) {
+	review = updateReviewDeckLimits(review);
+
+	return review;
+}
+
+function updateReviewDeckLimits(review: DailyReviewDB) {
+	const appData = get(seedsData);
+
+	for (let i = 0; i < review.decks.length; i++) {
+		const reviewDeck = review.decks[i];
+		const appDeck = appData.decks.filter((deck) => deck.id === reviewDeck.id)[0];
+
+		if (appDeck.dailyLimit !== reviewDeck.dailyLimit) {
+			reviewDeck.dailyLimit = appDeck.dailyLimit;
+		}
+	}
+	return review;
 }
 
 function clearRemovedElements(review: DailyReviewDB) {
@@ -189,17 +214,19 @@ function clearRemovedSeeds(review: DailyReviewDB) {
 		const reviewDeck = review.decks[i];
 		const seeds = review.decks[i].seeds;
 		const reviewed = review.decks[i].reviewed;
-		const appDeck = appData.decks.filter(deck => deck.id === reviewDeck.id)[0];
+		const appDeck = appData.decks.filter((deck) => deck.id === reviewDeck.id)[0];
 
+		// Clear nonexistent seeds
 		for (let j = 0; j < seeds.length; j++) {
-			const filtered = appDeck.seeds.filter(sd => sd.id === seeds[j])
+			const filtered = appDeck.seeds.filter((sd) => sd.id === seeds[j]);
 			const seedExists = filtered.length > 0 ? true : false;
 			if (!seedExists) {
 				seeds.splice(j, 1);
 			}
 		}
+		// Clear nonexistent reviewed seeds
 		for (let j = 0; j < reviewed.length; j++) {
-			const filtered = appDeck.seeds.filter(sd => sd.id === reviewed[j])
+			const filtered = appDeck.seeds.filter((sd) => sd.id === reviewed[j]);
 			const seedExists = filtered.length > 0 ? true : false;
 			if (!seedExists) {
 				reviewed.splice(j, 1);

@@ -6,8 +6,6 @@
 	let appIsEmpty = true;
 	let showReview = false;
 
-	refreshReview();
-
 	// Check if there is anything to review
 	for (let i = 0; i < $seedsData.decks.length; i++) {
 		if ($seedsData.decks[i].seeds.length > 0) {
@@ -18,6 +16,8 @@
 	// Check if review reset date passed
 	if ($settings.dailyReviewInfo.nextReset.toMillis() - Date.now() <= 0) {
 		getReview();
+	} else {
+		refreshReview();
 	}
 
 	function toggleShowReview(bool: boolean) {
