@@ -1,10 +1,12 @@
 <script lang="ts">
 	import ReviewInterface from '$components/daily-review/ReviewInterface.svelte';
-	import { getReview } from '$lib/app-logic/reviewLogic';
+	import { getReview, refreshReview } from '$lib/app-logic/reviewLogic';
 	import { seedsData, settings } from '$lib/stores/dbStores';
 
 	let appIsEmpty = true;
 	let showReview = false;
+
+	refreshReview();
 
 	// Check if there is anything to review
 	for (let i = 0; i < $seedsData.decks.length; i++) {
