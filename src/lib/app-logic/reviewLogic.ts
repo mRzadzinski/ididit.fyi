@@ -114,6 +114,7 @@ async function pushNewReviewToDB(review: DailyReviewDB) {
 
 export async function reviewNext() {
 	const usrDocs = get(userDocs);
+	const appData = get(seedsData);
 
 	for (let i = 0; i < usrDocs.length; i++) {
 		if (usrDocs[i].doc.dailyReview) {
@@ -122,11 +123,18 @@ export async function reviewNext() {
 			const docRef = doc(db, 'users', docID);
 
 			for (let i = 0; i < review.decks.length; i++) {
+				const reviewDeck = review.decks[i];
+				const appDeck = appData.decks.filter((deck) => deck.id === reviewDeck.id)[0];
+
 				if (review.decks[i].seeds.length > 0) {
 					// Move first seed to reviewed
 					const reviewedSeed = review.decks[i].seeds.splice(0, 1)[0];
 					review.decks[i].reviewed.push(reviewedSeed);
-					review.decks[i].reviewedCount++;
+
+					// If it's not everyday seed, increase reviewCount
+					if (appDeck.seeds.find((seed) => seed.id === reviewedSeed && !seed.showEveryday)) {
+						review.decks[i].reviewedCount++;
+					}
 					break;
 				}
 			}
@@ -163,11 +171,9 @@ export async function refreshReview() {
 			const docRef = doc(db, 'users', docID);
 			let review = cloneDeep(usrDocs[i].doc.dailyReview);
 
-			review = updateReviewLimits(review);
 			review = clearRemovedElements(review);
-
-			// Handle Deck's daily limit change:
-			// increase (add random seed, not everyday one) / decrease (remove random seed, not everyday one)
+			review = updateReviewLimits(review);
+			review = adjustReviewsCount(review);
 
 			// If anything changed, push to db
 			if (!isEqual(review, usrDocs[i].doc.dailyReview)) {
@@ -178,6 +184,77 @@ export async function refreshReview() {
 			return;
 		}
 	}
+}
+
+function adjustReviewsCount(review: DailyReviewDB) {
+	review = adjustDeckReviewsCount(review);
+
+	return review;
+}
+
+function adjustDeckReviewsCount(review: DailyReviewDB) {
+	const appData = get(seedsData);
+
+	for (let i = 0; i < review.decks.length; i++) {
+		const reviewDeck = review.decks[i];
+		const appDeck = appData.decks.filter((deck) => deck.id === reviewDeck.id)[0];
+		const limit = reviewDeck.dailyLimit;
+		const reviewedCount = reviewDeck.reviewedCount;
+		let reviewEverydayCount = 0;
+
+		// Filter available seeds (exclude reviewed and already in review)
+		let seedsPool: SeedType[] | string[] = appDeck.seeds.filter((seed) => {
+			for (let j = 0; j < reviewDeck.reviewed.length; j++) {
+				if (reviewDeck.reviewed[j] === seed.id) {
+					return false;
+				}
+			}
+			for (let j = 0; j < reviewDeck.seeds.length; j++) {
+				if (reviewDeck.seeds[j] === seed.id) {
+					return false;
+				}
+			}
+			return true;
+		});
+
+		// Add missing everyday seeds from the pool
+		const missingEveryday = seedsPool.filter((seed) => seed.showEveryday).map((seed) => seed.id);
+		reviewDeck.seeds = reviewDeck.seeds.concat(missingEveryday);
+
+		// Remove everyday seeds from the pool
+		seedsPool = seedsPool.filter((seed) => !seed.showEveryday);
+		// Convert pool to array of IDs
+		seedsPool = seedsPool.map((seed) => seed.id);
+
+		// Get everyday seeds count in review deck
+		for (let j = 0; j < reviewDeck.seeds.length; j++) {
+			const seedID = reviewDeck.seeds[j];
+			const isEveryday = appDeck.seeds.filter((seed) => seed.id === seedID && seed.showEveryday);
+			if (isEveryday.length > 0) {
+				reviewEverydayCount++;
+			}
+		}
+
+		// Add to meet the limit (random seeds, not everyday ones, skip reviewed)
+		const inReviewCount = reviewDeck.seeds.length - reviewEverydayCount;
+		let currentLimit = limit - reviewedCount - inReviewCount;
+
+		// Constrain limit to amount of available seeds in pool
+		if (currentLimit > seedsPool.length) {
+			currentLimit = seedsPool.length;
+		}
+
+		// Get limit number of random, unique seeds, excluding everyday seeds
+		while (reviewDeck.seeds.length - reviewEverydayCount < limit) {
+			const randomIndex = Math.floor(Math.random() * seedsPool.length);
+			reviewDeck.seeds.push(seedsPool[randomIndex]);
+			reviewDeck.seeds = uniq(reviewDeck.seeds);
+		}
+
+		// Remove to meet the limit (random seeds, not everyday ones)
+	}
+
+	return review;
 }
 
 function updateReviewLimits(review: DailyReviewDB) {
