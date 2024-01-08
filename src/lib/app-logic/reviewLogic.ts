@@ -17,6 +17,8 @@ export interface DailyReviewDB {
 }
 export interface ReviewDeckType extends Omit<DeckType, 'seeds'> {
 	seeds: string[];
+	reviewed: string[];
+	reviewedCount: number;
 }
 
 export async function getReview() {
@@ -62,7 +64,7 @@ function getReviewSeeds() {
 		}
 		// Shuffle seeds
 		shuffleArray(reviewSeeds);
-		reviewData.push({ ...deck, seeds: reviewSeeds });
+		reviewData.push({ ...deck, seeds: reviewSeeds, reviewed: [], reviewedCount: 0 });
 	}
 	shuffleArray(reviewData);
 	return reviewData;
@@ -116,18 +118,20 @@ export async function reviewNext() {
 	for (let i = 0; i < usrDocs.length; i++) {
 		if (usrDocs[i].doc.dailyReview) {
 			const review = usrDocs[i].doc.dailyReview;
-
-			// Remove first seed from deck
-			if (review && review.decks && review.decks[0] && review.decks[0].seeds.length > 1) {
-				review.decks[0].seeds.splice(0, 1);
-			}
-			// Remove first deck from review
-			else {
-				review?.decks.splice(0, 1);
-			}
-
 			const docID = usrDocs[i].docID;
 			const docRef = doc(db, 'users', docID);
+
+			for (let i = 0; i < review.decks.length; i++) {
+				if (review.decks[i].seeds.length > 0) {
+					// Move first seed to reviewed
+					const reviewedSeed = review.decks[i].seeds.splice(0, 1)[0];
+					review.decks[i].reviewed.push(reviewedSeed);
+					review.decks[i].reviewedCount++;
+					break;
+				}
+			}
+
+
 
 			syncInProgress.set(true);
 			await updateDoc(docRef, { dailyReview: review });
@@ -154,9 +158,22 @@ export async function setReviewDoneStatus(bool: boolean) {
 }
 
 export async function refreshReview() {
-	// Handle:
-	// deck's daily limit change: increase / decrease
-	// seed in review removal
+	const usrDocs = get(userDocs);
+	for (let i = 0; i < usrDocs.length; i++) {
+		if (usrDocs[i].doc.dailyReview) {
+			const review = usrDocs[i].doc.dailyReview;
+			const docID = usrDocs[i].docID;
+			const docRef = doc(db, 'users', docID);
+
+			// Handle Deck's daily limit change:
+			// increase (add random seed, not everyday one) / decrease (remove random seed, not everyday one)
+			// Seed added to review was removed: remove seed from review
+
+			syncInProgress.set(true);
+			await updateDoc(docRef, { dailyReview: review });
+			syncInProgress.set(false);
+		}
+	}
 }
 
 function getNextReviewResetDate() {

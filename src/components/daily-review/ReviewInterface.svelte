@@ -11,17 +11,30 @@
 
 	let content: SeedType;
 
-	$: {
-		if ($dailyReview && $dailyReview.decks.length > 0) {
-			content = $dailyReview.decks[0].seeds[0];
+	$: if ($dailyReview) {
+		for (let i = 0; i < $dailyReview.decks.length; i++) {
+			if ($dailyReview.decks[i].seeds.length > 0) {
+				content = $dailyReview.decks[i].seeds[0];
+				break;
+			}
 		}
 	}
 
 	async function next() {
 		await reviewNext();
 
-		// Review finished
-		if ($dailyReview?.decks.length === 0) {
+		// Check if review is finished
+		let finished = true;
+		if ($dailyReview) {
+			for (let i = 0; i < $dailyReview.decks.length; i++) {
+				if ($dailyReview.decks[i].seeds.length > 0) {
+					finished = false;
+					break;
+				}
+			}
+		}
+
+		if (finished) {
 			await setReviewDoneStatus(true);
 			closeReview();
 		}
