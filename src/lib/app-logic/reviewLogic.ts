@@ -245,7 +245,7 @@ function adjustDeckReviewsCount(review: DailyReviewDB) {
 		}
 
 		// Get limit number of random, unique seeds, excluding everyday seeds
-		while (reviewDeck.seeds.length - reviewEverydayCount < limit) {
+		while (reviewDeck.seeds.length - reviewEverydayCount < currentLimit) {
 			const randomIndex = Math.floor(Math.random() * seedsPool.length);
 			reviewDeck.seeds.push(seedsPool[randomIndex]);
 			reviewDeck.seeds = uniq(reviewDeck.seeds);
