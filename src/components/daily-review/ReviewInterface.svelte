@@ -4,7 +4,7 @@
 	import ButtonArrowLeft from '../common/ButtonArrowLeft.svelte';
 	import ReviewContentSeed from './ReviewContent.svelte';
 	import ReviewInstructions from './ReviewInstructions.svelte';
-	import { reviewNext, setReviewDoneStatus } from '$lib/app-logic/reviewLogic';
+	import { reviewNext, setReviewDoneStatus } from '$lib/app-logic/daily-review/reviewLogic';
 	import { dailyReview } from '$lib/stores/dbStores';
 
 	export let closeReview: () => void;

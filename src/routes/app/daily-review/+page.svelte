@@ -1,6 +1,7 @@
 <script lang="ts">
 	import ReviewInterface from '$components/daily-review/ReviewInterface.svelte';
-	import { getReview, refreshReview } from '$lib/app-logic/reviewLogic';
+	import { refreshReview } from '$lib/app-logic/daily-review/refreshReviewLogic';
+	import { getReview } from '$lib/app-logic/daily-review/reviewLogic';
 	import { dailyReview, settings } from '$lib/stores/dbStores';
 
 	let nothingToReview = true;
@@ -23,7 +24,7 @@
 	if ($settings.dailyReviewInfo.nextReset.toMillis() - Date.now() <= 0) {
 		getReview();
 	} else {
-		refreshReview();
+		refreshReview()
 	}
 
 	function toggleShowReview(bool: boolean) {

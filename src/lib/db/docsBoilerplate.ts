@@ -1,4 +1,4 @@
-import type { DailyReviewDB } from '$lib/app-logic/reviewLogic';
+import type { DailyReviewDB } from '$lib/app-logic/daily-review/reviewLogic';
 import { Timestamp } from 'firebase/firestore';
 
 interface UserMainDocFactory {

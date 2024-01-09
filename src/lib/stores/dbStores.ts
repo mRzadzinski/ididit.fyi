@@ -3,7 +3,7 @@ import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { derived, get, writable } from 'svelte/store';
 import { onAuthStateChanged, type Unsubscribe } from 'firebase/auth';
 import sizeof from 'firestore-size';
-import type { DailyReviewClient, DailyReviewDB } from '$lib/app-logic/reviewLogic';
+import type { DailyReviewClient, DailyReviewDB } from '$lib/app-logic/daily-review/reviewLogic';
 
 // Leave ~15k bytes buffer in each doc
 export const docSizeLimit = 1033576;
@@ -73,17 +73,19 @@ export const dailyReview = derived([userDocs, seedsData], ([$userDocs, $seedsDat
 				const tempDeck = $seedsData.decks.filter((deck) => deck.id === dbDeck.id)[0];
 				const deck = { ...tempDeck, seeds: [] as SeedType[] };
 
-				// Scan all seedIDs inside deck
-				for (let j = 0; j < seedIDs.length; j++) {
-					// Find seed by ID in seedsData
-					const seed = tempDeck.seeds.filter((seed) => seed.id === seedIDs[j])[0];
-					if (seed) {
-						deck.seeds.push(seed);
+				if (tempDeck) {
+					// Scan all seedIDs inside deck
+					for (let j = 0; j < seedIDs.length; j++) {
+						// Find seed by ID in seedsData
+						const seed = tempDeck.seeds.filter((seed) => seed.id === seedIDs[j])[0];
+						if (seed) {
+							deck.seeds.push(seed);
+						}
 					}
+					clientData.decks.push(deck);
 				}
-				clientData.decks.push(deck);
 			}
-			return clientData;
+			return clientData as DailyReviewClient;
 		}
 	}
 	return null;
