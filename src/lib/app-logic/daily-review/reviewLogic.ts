@@ -96,15 +96,15 @@ async function pushNewReviewToDB(review: DailyReviewDB) {
 	}
 	// If there was no space in docs, create new one and add review
 	if (!reviewCreated) {
-		let docObj;
+		let newDoc;
 		const usr = get(user);
 		if (usr && typeof usr === 'object') {
-			docObj = userDataDocFactory(usr.uid);
-			docObj.dailyReview = review;
+			newDoc = userDataDocFactory(usr.uid);
+			newDoc.dailyReview = review;
 		}
 
 		const docRef = doc(collection(db, 'users'));
-		batch.set(docRef, docObj);
+		batch.set(docRef, newDoc);
 	}
 
 	syncInProgress.set(true);

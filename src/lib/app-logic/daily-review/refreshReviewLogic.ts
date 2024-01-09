@@ -1,28 +1,71 @@
 import { db } from '$lib/firebase/firebase';
 import { seedsData, syncInProgress, userDocs } from '$lib/stores/dbStores';
-import { doc, updateDoc } from 'firebase/firestore';
+import { collection, deleteField, doc, writeBatch } from 'firebase/firestore';
 import { cloneDeep, isEqual, uniq } from 'lodash';
 import { get } from 'svelte/store';
 import type { DailyReviewDB } from './reviewLogic';
+import sizeof from 'firestore-size';
+import { userDataDocFactory } from '$lib/db/docsBoilerplate';
+import { user } from '$lib/stores/authStores';
 
 export async function refreshReview() {
+	const batch = writeBatch(db);
 	const usrDocs = get(userDocs);
+
 	for (let i = 0; i < usrDocs.length; i++) {
 		if (usrDocs[i].doc.dailyReview) {
-			const docID = usrDocs[i].docID;
-			const docRef = doc(db, 'users', docID);
-			let review = cloneDeep(usrDocs[i].doc.dailyReview);
+			const oldReview = usrDocs[i].doc.dailyReview;
+			let newReview = cloneDeep(oldReview);
+			let docID = usrDocs[i].docID;
+			let docRef = doc(db, 'users', docID);
 
-			review = clearRemovedElements(review);
-			review = updateReviewLimits(review);
-			review = adjustReviewsCount(review);
+			newReview = clearRemovedElements(newReview);
+			newReview = updateReviewLimits(newReview);
+			newReview = adjustReviewsCount(newReview);
 
 			// If anything changed, push to db
-			if (!isEqual(review, usrDocs[i].doc.dailyReview)) {
-				syncInProgress.set(true);
-				await updateDoc(docRef, { dailyReview: review });
-				syncInProgress.set(false);
+			const oldReviewSize = sizeof(oldReview);
+			const newReviewSize = sizeof(newReview);
+			if (!isEqual(newReview, oldReview)) {
+				// Manage remaining space in doc
+				if (
+					newReviewSize > oldReviewSize &&
+					usrDocs[i].remainingSpace + oldReviewSize - newReviewSize < 0
+				) {
+					// Remove from parent doc
+					batch.update(docRef, { dailyReview: deleteField() });
+
+					// Check if remaining docs can fit review
+					let reviewSaved = false;
+					for (let j = i + 1; j < usrDocs.length; j++) {
+						if (usrDocs[j].remainingSpace - newReviewSize > 0) {
+							docID = usrDocs[j].docID;
+							docRef = doc(db, 'users', docID);
+
+							batch.update(docRef, { dailyReview: newReview });
+							reviewSaved = true;
+						}
+					}
+
+					// If there was no space in docs, create new one and add review
+					if (!reviewSaved) {
+						let newDoc;
+						const usr = get(user);
+						if (usr && typeof usr === 'object') {
+							newDoc = userDataDocFactory(usr.uid);
+							newDoc.dailyReview = newReview;
+						}
+						const newDocRef = doc(collection(db, 'users'));
+						batch.set(newDocRef, newDoc);
+					}
+				} else {
+					batch.update(docRef, { dailyReview: newReview });
+				}
 			}
+			syncInProgress.set(true);
+			await batch.commit();
+			syncInProgress.set(false);
+
 			return;
 		}
 	}
@@ -104,7 +147,7 @@ function adjustDeckReviewsCount(review: DailyReviewDB) {
 		}
 	}
 
-	// Add missing seeds
+	// Add / remove seeds
 	for (let i = 0; i < review.decks.length; i++) {
 		const reviewDeck = review.decks[i];
 		const appDeck = appData.decks.filter((deck) => deck.id === reviewDeck.id)[0];
@@ -163,6 +206,7 @@ function adjustDeckReviewsCount(review: DailyReviewDB) {
 				reviewDeck.seeds = uniq(reviewDeck.seeds);
 			}
 		}
+
 		// Remove seeds above limit
 		else if (missingCount < 0) {
 			if (target < 0) {
@@ -178,6 +222,5 @@ function adjustDeckReviewsCount(review: DailyReviewDB) {
 			}
 		}
 	}
-
 	return review;
 }
