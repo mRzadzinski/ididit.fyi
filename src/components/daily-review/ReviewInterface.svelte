@@ -41,6 +41,16 @@
 	}
 </script>
 
+<svelte:window
+	on:keydown={(e) => {
+		if (e.code === 'Space' || e.code === 'ArrowRight') {
+			next();
+		} else if (e.code === 'Escape') {
+			closeReview();
+		}
+	}}
+/>
+
 <ReviewModal>
 	<div class="flex flex-col max-w-screen-xl w-full h-full">
 		<!-- Upper part -->
