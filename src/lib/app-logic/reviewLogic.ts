@@ -195,6 +195,15 @@ function adjustReviewsCount(review: DailyReviewDB) {
 function adjustDeckReviewsCount(review: DailyReviewDB) {
 	const appData = get(seedsData);
 
+	// Add missing decks
+	for (let i = 0; i < appData.decks.length; i++) {
+		const deck = appData.decks[i];
+		if (!review.decks.find(dk => dk.id === deck.id)) {
+			review.decks.push({ ...deck, seeds: [], reviewed: [], reviewedCount: 0 })
+		}
+	}
+
+	// Add missing seeds
 	for (let i = 0; i < review.decks.length; i++) {
 		const reviewDeck = review.decks[i];
 		const appDeck = appData.decks.filter((deck) => deck.id === reviewDeck.id)[0];

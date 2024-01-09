@@ -44,7 +44,7 @@
 		<h1 class="text-4xl mb-3">Daily Review</h1>
 		<!-- <button class="btn btn-sm text-xs">Options</button> -->
 	</div>
-	<div class="flex justify-center items-center mt-[20%]">
+	<div class="flex justify-center items-center mt-[20vh]">
 		{#if nothingToReview}
 			<div class="text-center text-xl">There is nothing to review.</div>
 		{:else if !$settings.dailyReviewInfo.done}
