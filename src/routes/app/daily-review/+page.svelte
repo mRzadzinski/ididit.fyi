@@ -1,16 +1,22 @@
 <script lang="ts">
 	import ReviewInterface from '$components/daily-review/ReviewInterface.svelte';
 	import { getReview, refreshReview } from '$lib/app-logic/reviewLogic';
-	import { seedsData, settings } from '$lib/stores/dbStores';
+	import { dailyReview, settings } from '$lib/stores/dbStores';
 
-	let appIsEmpty = true;
+	let nothingToReview = true;
 	let showReview = false;
 
-	// Check if there is anything to review
-	for (let i = 0; i < $seedsData.decks.length; i++) {
-		if ($seedsData.decks[i].seeds.length > 0) {
-			appIsEmpty = false;
+	// Check if daily review is empty
+	$: if ($dailyReview && !$settings.dailyReviewInfo.done) {
+		nothingToReview = true;
+		for (let i = 0; i < $dailyReview.decks.length; i++) {
+			if ($dailyReview.decks[i].seeds.length > 0) {
+				nothingToReview = false;
+				break;
+			}
 		}
+	} else if ($settings.dailyReviewInfo.done) {
+		nothingToReview = false;
 	}
 
 	// Check if review reset date passed
@@ -39,13 +45,13 @@
 		<!-- <button class="btn btn-sm text-xs">Options</button> -->
 	</div>
 	<div class="flex justify-center items-center mt-[20%]">
-		{#if appIsEmpty}
+		{#if nothingToReview}
 			<div class="text-center text-xl">There is nothing to review.</div>
 		{:else if !$settings.dailyReviewInfo.done}
 			<button class="btn btn-lg w-48 bg-[#FFCD4C]" on:click={() => (showReview = true)}>
 				START
 			</button>
-		{:else}
+		{:else if $settings.dailyReviewInfo.done}
 			<div class="flex flex-col justify-center gap-4">
 				<div class="text-center text-xl">
 					Review is done.

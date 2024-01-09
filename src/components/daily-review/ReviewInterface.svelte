@@ -50,7 +50,7 @@
 		</div>
 		<!-- Content -->
 		<div class="grow flex justify-between items-center">
-			<div class="px-16">
+			<div class="px-16 w-full">
 				<ReviewContentSeed type={'seed'} data={content} />
 			</div>
 			<!-- Rotate 180 deg to get arrow right -->
