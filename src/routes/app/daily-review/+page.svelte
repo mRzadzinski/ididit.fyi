@@ -24,7 +24,7 @@
 	if ($settings.dailyReviewInfo.nextReset.toMillis() - Date.now() <= 0) {
 		getReview();
 	} else {
-		refreshReview()
+		refreshReview();
 	}
 
 	function toggleShowReview(bool: boolean) {

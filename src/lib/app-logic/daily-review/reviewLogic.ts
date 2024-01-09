@@ -150,9 +150,18 @@ export async function reviewNext() {
 
 export async function setReviewDoneStatus(bool: boolean) {
 	const batch = writeBatch(db);
-	const docRef = doc(db, 'users', getSettingsDocID());
+	const usrDocs = get(userDocs);
+	let docID = '';
+
+	// Get ID of doc with settings
+	for (let i = 0; i < usrDocs.length; i++) {
+		if (usrDocs[i].doc.settings) {
+			docID = usrDocs[i].docID;
+		}
+	}
 
 	// Update reset date only when creating new review
+	const docRef = doc(db, 'users', docID);
 	if (!bool) {
 		batch.update(docRef, { 'settings.dailyReviewInfo.nextReset': getNextReviewResetDate() });
 	}
@@ -175,13 +184,3 @@ function getNextReviewResetDate() {
 	return resetDate.toJSDate();
 }
 
-function getSettingsDocID() {
-	const usrDocs = get(userDocs);
-
-	for (let i = 0; i < usrDocs.length; i++) {
-		if (usrDocs[i].doc.settings) {
-			return usrDocs[i].docID;
-		}
-	}
-	return '';
-}
