@@ -107,7 +107,7 @@
 				bind:value={newLimit}
 				on:change={validateDeckName}
 			/>
-			<span>seeds in Daily Review</span>
+			<span>random {newLimit === 1 ? 'seed' : 'seeds'} in Daily Review</span>
 		</div>
 		<div class="flex gap-[0.62rem] mr-[0.62rem]">
 			<button
