@@ -41,7 +41,10 @@
 			</h1>
 			<button
 				class="btn bg-[var(--main)] w-24 min-h-[2.5rem] h-11 -mt-1"
+				type="button"
 				on:click={async () => {
+					loginError.set('');
+					registerError.set('');
 					inProgress = true;
 					await signInAnonymously(auth);
 					inProgress = false;
@@ -90,11 +93,6 @@
 			</button>
 		</span>
 	</div>
-	{#if $registerError.length > 0}
-		<ErrorMessage message={$registerError} />
-	{:else if $loginError.length > 0}
-		<ErrorMessage message={$loginError} />
-	{/if}
 	<div class="form-control mt-7">
 		<!-- Submitting form with empty, display: none input doesn't work in Safari.
 			moving submit handler to on button click.  -->
@@ -106,6 +104,16 @@
 		</button>
 	</div>
 </form>
+
+{#if $registerError.length > 0}
+	<div class="absolute -bottom-8 left-0 w-[384px]">
+		<ErrorMessage message={$registerError} />
+	</div>
+{:else if $loginError.length > 0}
+	<div class="absolute -bottom-8 left-0 w-[384px]">
+		<ErrorMessage message={$loginError} />
+	</div>
+{/if}
 
 <style>
 	.btn-link {
