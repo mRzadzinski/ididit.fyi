@@ -109,7 +109,7 @@
 				on:change={validateDeckName}
 			/>
 			<span>random {newLimit === 1 ? 'seed' : 'seeds'} in Daily Review</span>
-			<div class="tooltip" data-tip="This number excludes seeds selected to be shown everyday.">
+			<div class="tooltip" data-tip="This number excludes everyday seeds.">
 				<InfoIcon style="margin-left: -0.2rem;" />
 			</div>
 		</div>
