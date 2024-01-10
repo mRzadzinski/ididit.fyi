@@ -4,5 +4,5 @@
 
 <main class="flex h-screen justify-center items-center flex-col">
 	<h1 class="text-5xl mb-6">ididit.fyi</h1>
-	<button class="btn w-36" on:click={() => goto('/app')}>Login / Demo</button>
+	<button class="btn w-36 bg-[#FFCD4C]" on:click={() => goto('/app')}>Login / Demo</button>
 </main>

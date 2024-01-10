@@ -79,7 +79,6 @@
 <ReviewModal>
 	<div class="flex flex-col max-w-screen-xl w-full h-full">
 		<!-- Upper part -->
-		<progress class="progress w-full" value={reviewedCount + 1} max={totalReviewsCount} />
 		<div class="self-end mr-4 mt-4">
 			<ButtonClose handler={closeReview} />
 		</div>
@@ -93,6 +92,11 @@
 				<ButtonArrowLeft handler={next} />
 			</div>
 		</div>
+		<progress
+			class="progress progress-warning w-full"
+			value={reviewedCount + 1}
+			max={totalReviewsCount}
+		/>
 		<ReviewInstructions />
 	</div>
 </ReviewModal>
