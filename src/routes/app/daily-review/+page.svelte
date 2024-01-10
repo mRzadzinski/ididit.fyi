@@ -49,7 +49,7 @@
 		{#if nothingToReview}
 			<div class="text-center text-xl">There is nothing to review.</div>
 		{:else if !$settings.dailyReviewInfo.done}
-			<button class="btn btn-lg w-48 bg-[#FFCD4C]" on:click={() => (showReview = true)}>
+			<button class="btn btn-lg w-48 bg-[var(--main)]" on:click={() => (showReview = true)}>
 				START
 			</button>
 		{:else if $settings.dailyReviewInfo.done}
@@ -59,7 +59,7 @@
 					<br />
 					See you tomorrow!
 				</div>
-				<button class="btn btn-sm opacity-40" on:click={getReview}>Review more</button>
+				<button class="btn btn-sm opacity-40 hover:opacity-100 hover:bg-[var(--main)]" on:click={getReview}>Review more</button>
 			</div>
 		{/if}
 	</div>

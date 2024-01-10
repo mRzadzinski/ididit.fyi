@@ -80,7 +80,7 @@
 
 <ModalBackground>
 	<div
-		class="max-w-[46.875rem] min-w-[305px] w-full min-h-[30.625rem] pt-[0.9rem] pl-[1.81rem] bg-[#FFCD4C] rounded-2xl"
+		class="max-w-[46.875rem] min-w-[305px] w-full min-h-[30.625rem] pt-[0.9rem] pl-[1.81rem] bg-[var(--main)] rounded-2xl"
 	>
 		<form
 			class="flex flex-col h-full"

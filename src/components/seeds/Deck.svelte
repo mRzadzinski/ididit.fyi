@@ -124,8 +124,8 @@
 	<div
 		class="flex justify-between items-center min-w-[559px] w-full h-10 pl-[1.87rem] pr-1 rounded-3xl custom-transitions
 	{newDeck && newDeckInitEditMode ? 'h-0' : ''} 
-	{otherDeckInEditMode ? '' : 'hover:bg-[#FFCD4C]'}
-	{editMode ? 'h-[5.625rem] overflow-hidden bg-[#FFCD4C]' : 'bg-[#FEF6DE]'}"
+	{otherDeckInEditMode ? '' : 'hover:bg-[var(--main)]'}
+	{editMode ? 'h-[5.625rem] overflow-hidden bg-[var(--main)]' : 'bg-[#FEF6DE]'}"
 		role="listitem"
 		on:mouseenter={() => {
 			if (!otherDeckInEditMode) toggleDeckOptionsVisibility(true);

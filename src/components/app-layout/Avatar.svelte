@@ -1,5 +1,5 @@
 <script lang="ts">
-	import src from '../../static/profile.jpg';
+	import src from '../../static/profile.png';
 </script>
 
 <div class="avatar p-1">

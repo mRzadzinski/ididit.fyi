@@ -57,7 +57,7 @@
 	}
 
 	.active {
-		background-color: #ffcd4c;
+		background-color: var(--main);
 		color: white;
 	}
 </style>

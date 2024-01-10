@@ -70,6 +70,6 @@
 	.checked-no-options {
 		width: 0.625rem;
 		height: 0.625rem;
-		background-color: #ffcd4c;
+		background-color: var(--main);
 	}
 </style>

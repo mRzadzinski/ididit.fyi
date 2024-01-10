@@ -25,7 +25,7 @@
 	</div>
 	<div class="max-w-none flex-1 flex justify-between">
 		<button
-			class="btn min-w-fit w-40 bg-[#ffcd4c] daily-review
+			class="btn min-w-fit w-40 bg-[var(--main)]
 				{$page.url.pathname === '/app/daily-review' ? 'invisible' : ''}"
 			on:click={() => goto('/app/daily-review')}>Daily Review</button
 		>
@@ -52,9 +52,5 @@
 		height: 2.5rem;
 		min-height: unset;
 		font-size: 0.75rem;
-	}
-
-	.daily-review {
-		background-color: #ffcd4c;
 	}
 </style>

@@ -111,7 +111,7 @@
 
 						<div class="form-control mt-6">
 							<button
-								class="btn btn-primary w-36"
+								class="btn bg-[var(--main)] w-36"
 								type="button"
 								on:click={async () => await setPassword()}
 							>

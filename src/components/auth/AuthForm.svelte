@@ -39,7 +39,7 @@
 					Login
 				{/if}
 			</h1>
-			<button class="btn bg-[#FFCD4C] w-24 min-h-[2.5rem] h-11 -mt-1" on:click={() => signInAnonymously(auth)}>DEMO</button>
+			<button class="btn bg-[var(--main)] w-24 min-h-[2.5rem] h-11 -mt-1" on:click={() => signInAnonymously(auth)}>DEMO</button>
 		</div>
 		<label for="email-input" class="label">
 			<span class="label-text">Email</span>
@@ -90,7 +90,7 @@
 	<div class="form-control mt-7">
 		<!-- Submitting form with empty, display: none input doesn't work in Safari.
 			moving submit handler to on button click.  -->
-		<button class="btn bg-[#FFCD4C] w-36 min-h-[2.5rem] h-11" on:click={onSubmit}>
+		<button class="btn bg-[var(--main)] w-36 min-h-[2.5rem] h-11" on:click={onSubmit}>
 			{#if inProgress}
 				<span class="loading loading-spinner" />
 			{/if}

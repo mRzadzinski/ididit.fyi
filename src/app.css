@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+	--main: #FFCD4C;
+  }
+
 body {
 	display: flex;
 	justify-content: center;

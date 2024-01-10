@@ -113,8 +113,8 @@
 
 <div
 	class="flex justify-between items-center min-w-[496px] w-[100%] pl-[1.81rem] mb-[0.69rem] h-12 rounded-3xl bg-[#FEF6DE] custom-transition
-	{otherSeedInExpandedMode ? '' : 'hover:bg-[#FFCD4C]'}
-	{expandedMode ? `bg-[#FFCD4C] pr-1 cursor-default overflow-hidden` : 'cursor-pointer'}"
+	{otherSeedInExpandedMode ? '' : 'hover:bg-[var(--main)]'}
+	{expandedMode ? `bg-[var(--main)] pr-1 cursor-default overflow-hidden` : 'cursor-pointer'}"
 	role="button"
 	tabindex="0"
 	bind:this={seedHtml}
