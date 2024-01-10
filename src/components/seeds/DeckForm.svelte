@@ -3,6 +3,7 @@
 	import { cloneDeep } from 'lodash';
 	import { updateDeck } from '../../lib/app-logic/decksLogic';
 	import { onMount } from 'svelte';
+	import InfoIcon from '~icons/material-symbols/info-outline';
 	import type Muuri from 'muuri';
 
 	export let deck: DeckType;
@@ -95,7 +96,7 @@
 		bind:this={nameInput}
 		on:input={validateDeckName}
 	/>
-	<div class="flex justify-between gap-1">
+	<div class="flex justify-between">
 		<div class="flex items-center gap-[0.37rem] text-sm">
 			<span>Show</span>
 			<input
@@ -108,6 +109,9 @@
 				on:change={validateDeckName}
 			/>
 			<span>random {newLimit === 1 ? 'seed' : 'seeds'} in Daily Review</span>
+			<div class="tooltip" data-tip="This number excludes seeds selected to be shown everyday.">
+				<InfoIcon style="margin-left: -0.2rem;" />
+			</div>
 		</div>
 		<div class="flex gap-[0.62rem] mr-[0.62rem]">
 			<button
