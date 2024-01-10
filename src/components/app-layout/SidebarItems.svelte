@@ -5,7 +5,7 @@
 	import SyncCompleteIcon from '~icons/material-symbols/cloud-done-outline-rounded';
 	// material-symbols:cloud-done-outline-rounded
 	import Avatar from './Avatar.svelte';
-	import DropdownMenuItems from './DropdownMenuItems.svelte';
+	import DropdownMenuItems from './AvatarMenuItems.svelte';
 
 	let currentURL = '';
 	$: currentURL = $page.url.pathname;

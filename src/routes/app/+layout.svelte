@@ -15,7 +15,7 @@
 	<div class="drawer min-h-screen bg-white max-w-screen-xl app">
 		<input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
 		<!-- Sidebar -->
-		<div class="w-60 h-full px-10 hidden md:flex flex-col justify-between">
+		<div class="sticky top-0 w-60 h-screen px-10 hidden md:flex flex-col justify-between">
 			<SidebarItems />
 		</div>
 		<div class="drawer-content flex flex-col">
