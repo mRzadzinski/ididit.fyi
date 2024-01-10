@@ -27,7 +27,7 @@
 	};
 </script>
 
-<form class="h-[21rem]" aria-label="form">
+<form class="h-[21rem]" aria-label="form" on:submit|preventDefault={onSubmit}>
 	<div class="form-control justify-center">
 		<div class="flex justify-between">
 			<h1>
@@ -98,7 +98,7 @@
 	<div class="form-control mt-7">
 		<!-- Submitting form with empty, display: none input doesn't work in Safari.
 			moving submit handler to on button click.  -->
-		<button class="btn bg-[var(--main)] w-36 min-h-[2.5rem] h-11" on:click={onSubmit}>
+		<button class="btn bg-[var(--main)] w-36 min-h-[2.5rem] h-11" type="submit">
 			{#if inProgress}
 				<span class="loading loading-spinner" />
 			{/if}
