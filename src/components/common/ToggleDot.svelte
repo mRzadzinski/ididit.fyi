@@ -18,14 +18,14 @@
 				clickHandler();
 			}}
 		>
-			<div class="dropdown dropdown-top dropdown-end w-[0.85rem] h-[0.85rem] rounded-full">
+			<div class="dropdown dropdown-top dropdown-end w-[0.875rem] h-[0.875rem] rounded-full">
 				<label
 					class="w-full h-full flex items-center justify-center z-[0]"
 					tabindex="-1"
 					for="menu-dropdown-{'toggle-dot'}"
 				>
 					<div
-						class="flex justify-center items-center w-[0.875rem] h-[0.875rem] rounded-full
+						class="flex justify-center items-center w-full h-full rounded-full
 				{enabled ? 'visible' : ''}"
 						class:ring-bright={bright}
 						class:ring-dark={enabled && !bright}
