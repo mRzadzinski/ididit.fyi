@@ -93,7 +93,7 @@
 			</div>
 		</div>
 		<progress
-			class="progress progress-warning w-full"
+			class="progress progress-warning w-full bg-[#ededed]"
 			value={reviewedCount + 1}
 			max={totalReviewsCount}
 		/>
