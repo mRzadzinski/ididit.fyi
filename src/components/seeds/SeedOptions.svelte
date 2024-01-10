@@ -32,13 +32,13 @@
 	on:keydown={(e) => e.stopImmediatePropagation()}
 >
 	<div
-		class="absolute right-0 hidden justify-center items-center text-[0.7rem] text-base-300 h-12 w-[16.5rem] bg-gray-600 rounded-full transition-all duration-200
+		class="absolute right-0 hidden justify-center items-center text-sm text-base-300 h-12 w-[19.5rem] bg-[oklch(var(--n)/1)] rounded-[0.25rem] transition-all duration-200
     {expandedMode ? 'bottom-6' : 'bottom-[1.90rem]'}
     {showTooltip && showSeedOptions ? 'opacity-100' : 'opacity-0'}"
 		bind:this={toggleTooltip}
 	>
 		Show every day in Daily Review.
-		<br>
+		<br />
 		This seed will be excluded from deck's limit.
 	</div>
 	<SeedToggleShowEveryday
