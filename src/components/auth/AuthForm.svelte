@@ -39,7 +39,15 @@
 					Login
 				{/if}
 			</h1>
-			<button class="btn bg-[var(--main)] w-24 min-h-[2.5rem] h-11 -mt-1" on:click={() => signInAnonymously(auth)}>DEMO</button>
+			<button
+				class="btn bg-[var(--main)] w-24 min-h-[2.5rem] h-11 -mt-1"
+				on:click={async () => {
+					inProgress = true;
+					await signInAnonymously(auth);
+					inProgress = false;
+				}}
+				>DEMO
+			</button>
 		</div>
 		<label for="email-input" class="label">
 			<span class="label-text">Email</span>
