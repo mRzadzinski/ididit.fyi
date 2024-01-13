@@ -25,7 +25,7 @@
 	</div>
 	<div class="max-w-none flex-1 flex justify-between">
 		<button
-			class="btn min-w-fit w-40 bg-[var(--main)]
+			class="btn min-w-fit w-40 bg-white
 				{$page.url.pathname === '/app/daily-review' ? 'invisible' : ''}"
 			on:click={() => goto('/app/daily-review')}>Daily Review</button
 		>
