@@ -173,7 +173,8 @@ export async function editSeed(editedSeed: SeedType, deckId: string) {
 					// Scan seeds
 					for (let k = 0; k < seeds.length; k++) {
 						if (seeds[k].id === editedSeed.id) {
-							const spaceLeft = usrDocs[i].remainingSpace - sizeof(editedSeed);
+							const sizeDiff = sizeof(editedSeed) - sizeof(seeds[k]);
+							const spaceLeft = usrDocs[i].remainingSpace - sizeDiff;
 							parentDocId = usrDocs[i].docID;
 							seedFound = true;
 
@@ -237,7 +238,7 @@ export async function editSeed(editedSeed: SeedType, deckId: string) {
 	// Not enough space in existing docs
 	if (deckWithSeed) {
 		// Create new doc with deck copy with edited seed inside
-		const newDoc = createDocWithDeckAndSeed(deckWithSeed, deckWithSeed?.seeds[0]);
+		const newDoc = createDocWithDeckAndSeed(deckWithSeed, deckWithSeed.seeds[0]);
 		const docRef = doc(collection(db, 'users'));
 		batch.set(docRef, newDoc);
 
