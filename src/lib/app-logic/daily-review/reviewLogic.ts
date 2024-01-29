@@ -1,13 +1,12 @@
-import { userDataDocFactory } from '$lib/db/docsBoilerplate';
 import { db } from '$lib/firebase/firebase';
 import { shuffleArray } from '$lib/helpers';
-import { user } from '$lib/stores/authStores';
 import { seedsData, syncInProgress, userDocs } from '$lib/stores/dbStores';
 import { collection, deleteField, doc, updateDoc, writeBatch } from 'firebase/firestore';
 import sizeof from 'firestore-size';
 import { cloneDeep, uniq } from 'lodash';
 import { get } from 'svelte/store';
 import { DateTime } from 'luxon';
+import { createNewDataDoc } from '../commonLogic';
 
 export interface DailyReviewClient {
 	decks: DeckType[];
@@ -96,15 +95,13 @@ async function pushNewReviewToDB(review: DailyReviewDB) {
 	}
 	// If there was no space in docs, create new one and add review
 	if (!reviewCreated) {
-		let newDoc;
-		const usr = get(user);
-		if (usr && typeof usr === 'object') {
-			newDoc = userDataDocFactory(usr.uid);
-			newDoc.dailyReview = review;
+		const docObj = createNewDataDoc();
+		if (docObj) {
+			docObj.dailyReview = review;
 		}
 
 		const docRef = doc(collection(db, 'users'));
-		batch.set(docRef, newDoc);
+		batch.set(docRef, docObj);
 	}
 
 	syncInProgress.set(true);
@@ -183,4 +180,3 @@ function getNextReviewResetDate() {
 	}
 	return resetDate.toJSDate();
 }
-

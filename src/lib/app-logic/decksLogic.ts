@@ -1,13 +1,12 @@
-import { userDataDocFactory } from '$lib/db/docsBoilerplate';
 import { db } from '$lib/firebase/firebase';
 import { generateRandomPassword, uniqueID } from '$lib/helpers';
-import { user } from '$lib/stores/authStores';
 import { syncInProgress, userDocs } from '$lib/stores/dbStores';
 import { collection, doc, updateDoc, writeBatch } from 'firebase/firestore';
 import { cloneDeep, isEqual } from 'lodash';
 import { get } from 'svelte/store';
 import type { DndReorderData } from '../dnd/verticalListLifecycle';
 import sizeof from 'firestore-size';
+import { createNewDataDoc } from './commonLogic';
 
 export const decksOrderByOptions = [
 	{ name: 'Custom', value: 'custom' },
@@ -48,11 +47,7 @@ export async function createDeck(newDeck: DeckType) {
 	}
 	// If there was no space in docs, create new one and add deck
 	if (!deckCreated) {
-		let docObj;
-		const usr = get(user);
-		if (usr && typeof usr === 'object') {
-			docObj = userDataDocFactory(usr.uid);
-		}
+		const docObj = createNewDataDoc();
 		docObj?.seedsData.decks.push(newDeck);
 
 		const docRef = doc(collection(db, 'users'));

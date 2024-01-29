@@ -1,12 +1,11 @@
-import { userDataDocFactory } from '$lib/db/docsBoilerplate';
 import { db } from '$lib/firebase/firebase';
 import { uniqueID } from '$lib/helpers';
-import { user } from '$lib/stores/authStores';
 import { settings, syncInProgress, userDocs } from '$lib/stores/dbStores';
 import { Timestamp, addDoc, collection, doc, updateDoc, writeBatch } from 'firebase/firestore';
 import sizeof from 'firestore-size';
 import { cloneDeep } from 'lodash';
 import { get, writable } from 'svelte/store';
+import { createNewDataDoc } from './commonLogic';
 
 export const expandedSeedId = writable('');
 export const seedsOrderByOptions = [
@@ -338,15 +337,11 @@ async function updateDecksDb(docId: string, updatedDecks: DeckType[]) {
 }
 
 function createDocWithDeckAndSeed(deck: DeckType, seed: SeedType) {
-	let newDoc;
-	const usr = get(user);
-	if (usr && typeof usr === 'object') {
-		newDoc = userDataDocFactory(usr.uid);
-	}
+	const docObj = createNewDataDoc();
 	// Add parent deck containing only new seed to new doc
 	const parentDeckClone = cloneDeep(deck);
 	parentDeckClone.seeds = [seed];
-	newDoc?.seedsData.decks.push(parentDeckClone);
+	docObj?.seedsData.decks.push(parentDeckClone);
 
-	return newDoc;
+	return docObj;
 }

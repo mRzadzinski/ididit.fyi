@@ -5,8 +5,7 @@ import { cloneDeep, isEqual, uniq } from 'lodash';
 import { get } from 'svelte/store';
 import type { DailyReviewDB } from './reviewLogic';
 import sizeof from 'firestore-size';
-import { userDataDocFactory } from '$lib/db/docsBoilerplate';
-import { user } from '$lib/stores/authStores';
+import { createNewDataDoc } from '../commonLogic';
 
 export async function refreshReview() {
 	const batch = writeBatch(db);
@@ -49,14 +48,13 @@ export async function refreshReview() {
 
 					// If there was no space in docs, create new one and add review
 					if (!reviewSaved) {
-						let newDoc;
-						const usr = get(user);
-						if (usr && typeof usr === 'object') {
-							newDoc = userDataDocFactory(usr.uid);
-							newDoc.dailyReview = newReview;
+						const docObj = createNewDataDoc();
+						if (docObj) {
+							docObj.dailyReview = newReview;
 						}
+
 						const newDocRef = doc(collection(db, 'users'));
-						batch.set(newDocRef, newDoc);
+						batch.set(newDocRef, docObj);
 					}
 				} else {
 					batch.update(docRef, { dailyReview: newReview });
