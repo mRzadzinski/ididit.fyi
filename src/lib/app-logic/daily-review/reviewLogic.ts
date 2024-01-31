@@ -39,16 +39,16 @@ function getReviewSeeds() {
 	for (let i = 0; i < data.decks.length; i++) {
 		const deck = data.decks[i];
 		const seeds = deck.seeds;
-		let reviewSeeds: string[] = [];
+		let reviewSeedsIDs: string[] = [];
 		let limit = data.decks[i].dailyLimit;
 
 		// Get all showEveryday seeds
 		for (let j = 0; j < deck.seeds.length; j++) {
 			if (deck.seeds[j].showEveryday) {
-				reviewSeeds.push(deck.seeds[j].id);
+				reviewSeedsIDs.push(deck.seeds[j].id);
 			}
 		}
-		const everydaySeedsCount = reviewSeeds.length;
+		const everydaySeedsCount = reviewSeedsIDs.length;
 
 		// Constrain deck's limit to seeds length, excluding everyday seeds
 		if (limit > seeds.length - everydaySeedsCount) {
@@ -56,14 +56,14 @@ function getReviewSeeds() {
 		}
 
 		// Get limit number of random, unique seeds, excluding everyday seeds
-		while (reviewSeeds.length - everydaySeedsCount < limit) {
+		while (reviewSeedsIDs.length - everydaySeedsCount < limit) {
 			const randomIndex = Math.floor(Math.random() * seeds.length);
-			reviewSeeds.push(seeds[randomIndex].id);
-			reviewSeeds = uniq(reviewSeeds);
+			reviewSeedsIDs.push(seeds[randomIndex].id);
+			reviewSeedsIDs = uniq(reviewSeedsIDs);
 		}
 		// Shuffle seeds
-		shuffleArray(reviewSeeds);
-		reviewData.push({ ...deck, seeds: reviewSeeds, reviewed: [], reviewedCount: 0 });
+		shuffleArray(reviewSeedsIDs);
+		reviewData.push({ ...deck, seeds: reviewSeedsIDs, reviewed: [], reviewedCount: 0 });
 	}
 	shuffleArray(reviewData);
 	return reviewData;
@@ -74,8 +74,7 @@ async function pushNewReviewToDB(review: DailyReviewDB) {
 	const usrDocs = get(userDocs);
 	let reviewCreated = false;
 
-	// Scan all docs to
-	// remove previous review and add new
+	// Scan all docs to remove previous review and save new
 	for (let i = 0; i < usrDocs.length; i++) {
 		const document = usrDocs[i];
 		const documentId = document.docID;
@@ -87,10 +86,16 @@ async function pushNewReviewToDB(review: DailyReviewDB) {
 		}
 
 		// Add if there's enough space in doc
-		const spaceLeft = document.remainingSpace - sizeof(review);
+		let reviewSize = sizeof(review);
+		if (document.doc.dailyReview) {
+			reviewSize = sizeof(review) - sizeof(document.doc.dailyReview);
+		}
+
+		const spaceLeft = document.remainingSpace - reviewSize;
 		if (spaceLeft > 0) {
 			batch.update(docRef, { dailyReview: review });
 			reviewCreated = true;
+			break;
 		}
 	}
 	// If there was no space in docs, create new one and add review
@@ -121,7 +126,7 @@ export async function reviewNext() {
 
 			for (let i = 0; i < review.decks.length; i++) {
 				const reviewDeck = review.decks[i];
-				const appDeck = appData.decks.filter((deck) => deck.id === reviewDeck.id)[0];
+				const appDeck = appData.decks.find((deck) => deck.id === reviewDeck.id);
 
 				if (review.decks[i].seeds.length > 0) {
 					// Move first seed to reviewed
@@ -129,7 +134,10 @@ export async function reviewNext() {
 					review.decks[i].reviewed.push(reviewedSeed);
 
 					// If it's not everyday seed, increase reviewCount
-					if (appDeck.seeds.find((seed) => seed.id === reviewedSeed && !seed.showEveryday)) {
+					if (
+						appDeck &&
+						appDeck.seeds.find((seed) => seed.id === reviewedSeed && !seed.showEveryday)
+					) {
 						review.decks[i].reviewedCount++;
 					}
 					break;

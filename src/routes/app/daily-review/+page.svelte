@@ -21,7 +21,8 @@
 	}
 
 	// Check if review reset date passed
-	if ($settings.dailyReviewInfo.nextReset.toMillis() - Date.now() <= 0) {
+	// Put guard (!showReview) to get new review when user finished previous one just after reset date
+	$: if (!showReview && $settings.dailyReviewInfo.nextReset.toMillis() - Date.now() <= 0) {
 		getReview();
 	} else {
 		refreshReview();
@@ -59,7 +60,10 @@
 					<br />
 					See you tomorrow!
 				</div>
-				<button class="btn btn-sm opacity-40 hover:opacity-100 hover:bg-[var(--main)]" on:click={getReview}>Review more</button>
+				<button
+					class="btn btn-sm opacity-40 hover:opacity-100 hover:bg-[var(--main)]"
+					on:click={getReview}>Review more</button
+				>
 			</div>
 		{/if}
 	</div>

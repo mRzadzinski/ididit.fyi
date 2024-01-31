@@ -37,8 +37,8 @@
 
 				for (let j = 0; j < review.decks.length; j++) {
 					const deck = review.decks[j];
-					totalReviewsCount = totalReviewsCount + deck.seeds.length + deck.reviewed.length;
-					reviewedCount = reviewedCount + deck.reviewed.length;
+					totalReviewsCount += deck.seeds.length + deck.reviewed.length;
+					reviewedCount += deck.reviewed.length;
 				}
 			}
 			break;
