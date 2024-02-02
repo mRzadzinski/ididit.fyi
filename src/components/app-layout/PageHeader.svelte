@@ -3,6 +3,7 @@
 	import { updateSortMethod } from '$lib/app-logic/commonLogic';
 	import SearchBtn from '$components/app-layout/SearchBtn.svelte';
 	import SearchInput from '$components/app-layout/SearchInput.svelte';
+	import AuthorsSourcesModal from '$components/seeds/AuthorsSourcesModal.svelte';
 
 	export let pageName: string;
 	export let orderBy: string;
@@ -12,11 +13,18 @@
 
 	let selectOrderInput: HTMLSelectElement;
 	let expandedSearch = false;
+	let showOptions = true;
 
 	afterUpdate(() => {
 		selectOrderInput.value = orderBy;
 	});
 </script>
+
+{#if showOptions}
+	{#if pageName === 'Decks'}
+		<AuthorsSourcesModal />
+	{/if}
+{/if}
 
 <div class="flex justify-between mb-10">
 	<div class="flex items-end gap-[1.13rem]">
@@ -37,7 +45,9 @@
 			<SearchInput collapseInput={() => (expandedSearch = false)} />
 		{/if}
 		{#if pageName === 'Decks'}
-			<button class="btn btn-xs bg-white w-[65px]">Options</button>
+			<button class="btn btn-xs bg-white w-[65px]" on:click={() => (showOptions = true)}
+				>Options</button
+			>
 		{/if}
 		<div class="flex items-center">
 			<select

@@ -30,7 +30,7 @@
 		"@typescript-eslint/parser": "^6.0.0",
 		"@vitest/ui": "^0.34.5",
 		"autoprefixer": "^10.4.16",
-		"daisyui": "^4.4.10",
+		"daisyui": "^4.6.1",
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte": "^2.30.0",
