@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { afterUpdate } from 'svelte';
 	import { updateSortMethod } from '$lib/app-logic/commonLogic';
+	import SearchBtn from '$components/common/SearchBtn.svelte';
 
 	export let pageName: string;
 	export let orderBy: string;
@@ -9,6 +10,7 @@
 	export let breadcrumbs = false;
 
 	let selectOrderInput: HTMLSelectElement;
+	let expandedSearch = false;
 
 	afterUpdate(() => {
 		selectOrderInput.value = orderBy;
@@ -27,9 +29,25 @@
 			</div>
 		{/if}
 	</div>
-	<div class="flex items-end">
+	<div class="flex items-end gap-[0.4rem]">
+		{#if !expandedSearch}
+			<SearchBtn
+				clickHandler={() => {
+					expandedSearch = true;
+				}}
+			/>
+		{:else}
+			<input
+				type="text"
+				placeholder="Type here"
+				class="input input-bordered input-xs w-full max-w-xs"
+			/>
+		{/if}
+
+		{#if pageName === 'Decks'}
+			<button class="btn btn-xs bg-white w-[65px]">Options</button>
+		{/if}
 		<div class="flex items-center">
-			<!-- <span class="text-xs mr-2">Order by:</span> -->
 			<select
 				class="select select-bordered select-xs max-w-xs self-end pl-3 pr-6 mb-[0.2rem] bg-white"
 				bind:this={selectOrderInput}
@@ -50,5 +68,15 @@
 		height: 1.25rem;
 		min-height: 1.25rem;
 		line-height: 0.9rem;
+	}
+
+	.btn-xs {
+		height: 1.25rem;
+		min-height: 1.25rem;
+		margin-bottom: 0.2rem;
+
+		text-transform: none;
+		font-weight: 400;
+		border-color: var(--fallback-bc, oklch(var(--bc) / 0.2));
 	}
 </style>
