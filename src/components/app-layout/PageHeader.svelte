@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { afterUpdate } from 'svelte';
 	import { updateSortMethod } from '$lib/app-logic/commonLogic';
-	import SearchBtn from '$components/common/SearchBtn.svelte';
-	import SearchInput from '$components/common/SearchInput.svelte';
+	import SearchBtn from '$components/app-layout/SearchBtn.svelte';
+	import SearchInput from '$components/app-layout/SearchInput.svelte';
 
 	export let pageName: string;
 	export let orderBy: string;
