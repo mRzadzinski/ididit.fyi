@@ -24,7 +24,7 @@
 					tabindex="-1"
 					for="search"
 				>
-					<SearchIcon style="font-size: 0.77rem; margin-right: 0.05rem;" />
+					<SearchIcon style="font-size: 0.75rem; margin-right: 0.05rem;" />
 				</label>
 			</div>
 		</div>

@@ -2,6 +2,7 @@
 	import { afterUpdate } from 'svelte';
 	import { updateSortMethod } from '$lib/app-logic/commonLogic';
 	import SearchBtn from '$components/common/SearchBtn.svelte';
+	import SearchInput from '$components/common/SearchInput.svelte';
 
 	export let pageName: string;
 	export let orderBy: string;
@@ -31,19 +32,10 @@
 	</div>
 	<div class="flex items-end gap-[0.4rem]">
 		{#if !expandedSearch}
-			<SearchBtn
-				clickHandler={() => {
-					expandedSearch = true;
-				}}
-			/>
+			<SearchBtn clickHandler={() => (expandedSearch = true)} />
 		{:else}
-			<input
-				type="text"
-				placeholder="Type here"
-				class="input input-bordered input-xs w-full max-w-xs"
-			/>
+			<SearchInput collapseInput={() => (expandedSearch = false)} />
 		{/if}
-
 		{#if pageName === 'Decks'}
 			<button class="btn btn-xs bg-white w-[65px]">Options</button>
 		{/if}
