@@ -4,6 +4,7 @@
 	import { SeedFactory, createSeed, editSeed } from '../../lib/app-logic/seedsLogic';
 	import { cloneDeep } from 'lodash';
 	import ModalBackground from '$components/common/ModalBackground.svelte';
+	import InfoIcon from '~icons/material-symbols/info-outline';
 
 	export let seedCreator = false;
 	export let seed: null | SeedType;
@@ -143,7 +144,7 @@
 						/>
 					</label>
 					<div
-						class="flex items-center gap-[0.68rem] w-64 mt-[0.94rem] cursor-pointer"
+						class="flex items-center gap-[0.68rem] w-72 mt-[0.94rem] cursor-pointer"
 						role="button"
 						tabindex="0"
 						on:click={() => toggleShowEveryday()}
@@ -152,7 +153,12 @@
 						<div class="scale-105">
 							<ToggleDot enabled={showEveryday} bright={true} clickHandler={toggleShowEveryday} />
 						</div>
-						<span class="text-sm">Show every day in Daily Review</span>
+						<span class="text-sm"
+							>Show every day in Daily Review
+						</span>
+						<div class="tooltip" data-tip="This seed will be excluded from deck's limit.">
+							<InfoIcon style="margin-left: -0.35rem;" />
+						</div>
 					</div>
 				</div>
 				<div class="flex justify-end items-end gap-2 w-full sm:w-[45%] mb-3 pr-4 mt-4 sm:mt-0">
