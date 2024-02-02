@@ -23,7 +23,10 @@
 		// Handle transition animation
 		input.style.maxWidth = '0';
 		input.style.opacity = '0';
-		setTimeout(() => collapseInput(), 300);
+		setTimeout(() => {
+			searchPhrase.set('');
+			collapseInput();
+		}, 300);
 	}}
 	type="text"
 	placeholder="Find..."
