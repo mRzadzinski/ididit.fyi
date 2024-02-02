@@ -8,9 +8,9 @@
 </script>
 
 <ModalBackground>
-	<div class="flex flex-col justify-between w-80 h-52 p-4 bg-[var(--main)] rounded-lg">
-		<div>
-			<div class="text-lg font-bold mb-1">Delete deck</div>
+	<div class="flex flex-col justify-between w-[30rem] h-52 p-4 bg-[var(--main)] rounded-lg">
+		<div class="text-sm">
+			<div class="text-base font-bold mb-1">Delete deck</div>
 			Seeds inside will be deleted.
 		</div>
 
@@ -30,7 +30,9 @@
 			<div class="flex justify-end gap-1">
 				<button class="btn btn-sm" type="reset" on:click={hideModal}>Cancel</button>
 				{#if inputValue && inputValue.toLowerCase() === 'yes'}
-					<button class="btn btn-neutral btn-sm" type="submit" on:click={deleteHandler}>Delete</button>
+					<button class="btn btn-neutral btn-sm" type="submit" on:click={deleteHandler}
+						>Delete</button
+					>
 				{:else}
 					<button class="btn btn-sm btn-disabled" tabindex="-1" aria-disabled="true">Delete</button>
 				{/if}
