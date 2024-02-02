@@ -1,7 +1,7 @@
 import { db } from '$lib/firebase/firebase';
 import { seedsData, syncInProgress, userDocs } from '$lib/stores/dbStores';
 import { collection, deleteField, doc, writeBatch } from 'firebase/firestore';
-import { cloneDeep, isEqual } from 'lodash';
+import { cloneDeep, isEqual, shuffle } from 'lodash';
 import { get } from 'svelte/store';
 import type { DailyReviewDB } from './reviewLogic';
 import sizeof from 'firestore-size';
@@ -222,6 +222,7 @@ function adjustDeckReviewsCount(review: DailyReviewDB) {
 					}
 				}
 			}
+			shuffle(reviewDeck.seeds);
 		}
 	}
 	return review;
