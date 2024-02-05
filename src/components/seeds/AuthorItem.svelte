@@ -3,22 +3,38 @@
 
 	export let author: string;
 	export let container: HTMLElement;
+
+	let showOptions = false;
 </script>
-<!-- Dropdown height 107px -->
-<div class="flex justify-between items-center w-full min-h-[1.875rem] hover:bg-[var(--main)]">
+
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<div
+	class="flex justify-between items-center w-full min-h-[1.875rem] custom-transition bg-white hover:bg-[var(--main)]"
+	on:mouseenter={() => (showOptions = true)}
+	on:mouseleave={() => (showOptions = false)}
+>
 	<span>{author}</span>
-	<ThreeDotsDropdown
-		{container}
-		itemId="author-item"
-		options={[
-			{
-				name: 'Edit',
-				handler: () => {}
-			},
-			{
-				name: 'Delete',
-				handler: () => {}
-			}
-		]}
-	/>
+	<div class={showOptions ? '' : 'invisible'}>
+		<ThreeDotsDropdown
+			{container}
+			scale={0.8}
+			itemId="author-item"
+			options={[
+				{
+					name: 'Edit',
+					handler: () => {}
+				},
+				{
+					name: 'Delete',
+					handler: () => {}
+				}
+			]}
+		/>
+	</div>
 </div>
+
+<style>
+	.custom-transition {
+		transition: background-color 75ms ease-in;
+	}
+</style>

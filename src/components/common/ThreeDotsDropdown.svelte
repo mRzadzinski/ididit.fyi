@@ -8,12 +8,15 @@
 <script lang="ts">
 	import VerticalDots from '~icons/heroicons-outline/dots-vertical';
 
+	export let scale = 1;
 	export let itemId: string;
 	export let options: ThreeDotsDropdownOptions[];
 	export let container: HTMLElement | null = null;
 
 	let dropdownHTML: HTMLElement;
 	let dropdownTopPosition = true;
+	let btnRadius = Math.round(scale * 1.75 * 100) / 100;
+
 
 	function calcDistFromEdge() {
 		const dropdownHeight = dropdownHTML.offsetHeight;
@@ -21,7 +24,7 @@
 		const viewportHeight = window.innerHeight;
 		let containerEdge = container ? container.getBoundingClientRect().bottom : viewportHeight;
 
-		if (dropdownTopPosition && containerEdge - dropdownBottom - dropdownHeight < 30) {
+		if (dropdownTopPosition && containerEdge - dropdownBottom - dropdownHeight < 35) {
 			dropdownTopPosition = true;
 		} else {
 			dropdownTopPosition = false;
@@ -40,7 +43,8 @@
 	<ul class="menu min-w-fit flex p-0">
 		<li class="flex items-center">
 			<div
-				class="p-0 w-7 h-7 flex justify-center items-center rounded-full"
+				class="p-0 flex justify-center items-center rounded-full w-7 h-7"
+				style="width: {scale !== 1 ? btnRadius : null}rem; height: {scale !== 1 ? btnRadius : null}rem;"
 				id="menu-dropdown-{itemId}"
 			>
 				<div
@@ -55,10 +59,12 @@
 							calcDistFromEdge();
 						}}
 					>
-						<VerticalDots style="font-size: 0.85rem; color: white" />
+						<div>
+							<VerticalDots style="font-size: {0.85 * scale}rem; color: white" />
+						</div>
 					</label>
 					<ul
-						class="dropdown-content z-[1] menu p-2 shadow bg-white rounded-box w-28"
+						class="dropdown-content menu p-2 shadow bg-white rounded-box w-28"
 						bind:this={dropdownHTML}
 					>
 						{#each options as option (option.name)}

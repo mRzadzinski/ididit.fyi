@@ -12,7 +12,6 @@
 	let seedContentHtml: HTMLElement;
 	let heightTimeout: NodeJS.Timeout;
 	let otherSeedInExpandedMode: boolean;
-	let initialHeight: number;
 	let fullHeight: number;
 	let showSeedEditor = false;
 	let showSeedOptions = false;

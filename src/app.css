@@ -24,6 +24,10 @@ body {
 	background-color: white;
 }
 
+.custom-transition {
+	transition: all 250ms ease-out;
+}
+
 .firebase-emulator-warning {
 	display: none;
 }
