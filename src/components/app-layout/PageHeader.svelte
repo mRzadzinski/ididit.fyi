@@ -13,7 +13,7 @@
 
 	let selectOrderInput: HTMLSelectElement;
 	let expandedSearch = false;
-	let showOptions = false;
+	let showOptions = true;
 
 	afterUpdate(() => {
 		selectOrderInput.value = orderBy;
@@ -22,7 +22,7 @@
 
 {#if showOptions}
 	{#if pageName === 'Decks'}
-		<AuthorsSourcesModal />
+		<AuthorsSourcesModal closeModal={() => showOptions = false} />
 	{/if}
 {/if}
 
