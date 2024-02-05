@@ -83,10 +83,6 @@
 		}
 	}
 
-	onMount(() => {
-		initialHeight = seedHtml.scrollHeight;
-	});
-
 	afterUpdate(() => {
 		// Manage seed height to handle animation
 		if (expandedMode) {
@@ -95,7 +91,7 @@
 				setFullHeight();
 			}, 0);
 		} else {
-			seedHtml.style.height = initialHeight.toString() + 'px';
+			seedHtml.style.height = '3rem';
 		}
 	});
 
