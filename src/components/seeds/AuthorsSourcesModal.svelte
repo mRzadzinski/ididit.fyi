@@ -3,11 +3,14 @@
 	import AuthorItem from './AuthorItem.svelte';
 
 	export let closeModal: Function;
+
+	let container: HTMLElement;
 </script>
 
 <ModalBackground>
 	<div
 		class="flex flex-col w-[46rem] h-[30.3rem] py-[1.07rem] px-[1.57rem] rounded-2xl bg-white border-[3px] border-[var(--main)]"
+		bind:this={container}
 	>
 		<div class="flex">
 			<div role="tablist" class="grow tabs tabs-lifted">
@@ -25,26 +28,26 @@
 				/>
 			</div>
 			<div class="flex flex-col w-1/2 h-[21.25rem] pr-[0.625rem] overflow-y-auto">
-				<AuthorItem author="Brzechwa" />
-				<AuthorItem author="Cyprian Norwid" />
-				<AuthorItem author="Dawid Jean" />
-				<AuthorItem author="Eiffen" />
-				<AuthorItem author="Franz" />
-				<AuthorItem author="Grzegorz" />
-				<AuthorItem author="Adam" />
-				<AuthorItem author="Aniela" />
-				<AuthorItem author="Buchman" />
-				<AuthorItem author="Tokarczuk" />
-				<AuthorItem author="Jobs" />
-				<AuthorItem author="Tuwim" />
-				<AuthorItem author="Slavoy" />
-				<AuthorItem author="Zaz Reno" />
-				<AuthorItem author="Neo" />
-				<AuthorItem author="Trinity" />
-				<AuthorItem author="Exodus" />
-				<AuthorItem author="Bob Marley" />
-				<AuthorItem author="Jolie" />
-				<AuthorItem author="Brad Pitt" />
+				<AuthorItem {container} author="Brzechwa" />
+				<AuthorItem {container} author="Cyprian Norwid" />
+				<AuthorItem {container} author="Dawid Jean" />
+				<AuthorItem {container} author="Eiffen" />
+				<AuthorItem {container} author="Franz" />
+				<AuthorItem {container} author="Grzegorz" />
+				<AuthorItem {container} author="Adam" />
+				<AuthorItem {container} author="Aniela" />
+				<AuthorItem {container} author="Buchman" />
+				<AuthorItem {container} author="Tokarczuk" />
+				<AuthorItem {container} author="Jobs" />
+				<AuthorItem {container} author="Tuwim" />
+				<AuthorItem {container} author="Slavoy" />
+				<AuthorItem {container} author="Zaz Reno" />
+				<AuthorItem {container} author="Neo" />
+				<AuthorItem {container} author="Trinity" />
+				<AuthorItem {container} author="Exodus" />
+				<AuthorItem {container} author="Bob Marley" />
+				<AuthorItem {container} author="Jolie" />
+				<AuthorItem {container} author="Brad Pitt" />
 			</div>
 		</div>
 	</div>

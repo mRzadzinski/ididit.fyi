@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-	--main: #FFCD4C;
-  }
+	--main: #ffcd4c;
+}
 
 body {
 	display: flex;
