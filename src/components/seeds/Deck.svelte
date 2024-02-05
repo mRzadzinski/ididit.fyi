@@ -129,8 +129,13 @@
 		role="listitem"
 		on:mouseenter={() => {
 			if (!otherDeckInEditMode) toggleDeckOptionsVisibility(true);
+			// Handle dropdown visibility (to stay above decks)
+			dndItem.style.zIndex = '1';
 		}}
-		on:mouseleave={() => toggleDeckOptionsVisibility(false)}
+		on:mouseleave={() => {
+			toggleDeckOptionsVisibility(false);
+			dndItem.style.zIndex = '0';
+		}}
 	>
 		{#if !editMode}
 			<span class="text-sm max-w-full whitespace-nowrap text-ellipsis truncate mr-8">{newName}</span
