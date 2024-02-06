@@ -13,7 +13,7 @@
 		class="flex flex-col w-[46rem] h-[30.3rem] py-[1.07rem] px-[1.57rem] rounded-2xl bg-white border-[3px] border-[var(--main)]"
 		bind:this={container}
 	>
-		<div class="flex pl-[0.6rem]">
+		<div class="flex pl-[0.5rem]">
 			<div role="tablist" class="grow tabs tabs-lifted">
 				<input type="radio" name="my_tabs_2" role="tab" class="tab" aria-label="Authors" checked />
 				<input type="radio" name="my_tabs_2" role="tab" class="tab" aria-label="Sources" />
@@ -22,7 +22,7 @@
 		</div>
 		<div class="flex gap-4 grow justify-center w-full mt-7">
 			<div class="w-1/2">
-				<div class="relative pl-[0.6rem]">
+				<div class="relative pl-[0.5rem]">
 					<input
 						class="input input-bordered input-sm w-full mb-5 pr-10 rounded-lg"
 						type="text"
