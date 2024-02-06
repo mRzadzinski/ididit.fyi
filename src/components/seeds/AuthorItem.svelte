@@ -17,7 +17,7 @@
 	<div class={showOptions ? '' : 'invisible'}>
 		<ThreeDotsDropdown
 			{container}
-			scale={0.8}
+			scale={0.85}
 			itemId="author-item"
 			options={[
 				{
