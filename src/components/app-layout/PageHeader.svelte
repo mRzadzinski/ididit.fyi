@@ -3,7 +3,7 @@
 	import { updateSortMethod } from '$lib/app-logic/commonLogic';
 	import SearchBtn from '$components/app-layout/SearchBtn.svelte';
 	import SearchInput from '$components/app-layout/SearchInput.svelte';
-	import AuthorsSourcesModal from '$components/seeds/AuthorsSourcesModal.svelte';
+	import AuthorsSourcesModal from '$components/seeds/AuthorSrcModal.svelte';
 
 	export let pageName: string;
 	export let orderBy: string;

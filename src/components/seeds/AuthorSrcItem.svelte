@@ -1,19 +1,22 @@
 <script lang="ts">
 	import ThreeDotsDropdown from '$components/common/ThreeDotsDropdown.svelte';
 
-	export let author: string;
+	export let name: string;
 	export let container: HTMLElement;
+	export let isButton = true;
 
 	let showOptions = false;
+	let editMode = false;
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
-	class="flex justify-between items-center w-full min-h-[1.875rem] custom-transition bg-white hover:bg-[var(--main)]"
+	class="flex justify-between items-center w-full min-h-[1.875rem] pl-[0.75rem] pr-1 custom-transition bg-white rounded-full hover:bg-[var(--main)]
+	{isButton ? 'cursor-pointer' : 'cursor-default'}"
 	on:mouseenter={() => (showOptions = true)}
 	on:mouseleave={() => (showOptions = false)}
 >
-	<span>{author}</span>
+	<span class="text-sm">{name}</span>
 	<div class={showOptions ? '' : 'invisible'}>
 		<ThreeDotsDropdown
 			{container}
@@ -22,7 +25,7 @@
 			options={[
 				{
 					name: 'Edit',
-					handler: () => {}
+					handler: () => (editMode = true)
 				},
 				{
 					name: 'Delete',
