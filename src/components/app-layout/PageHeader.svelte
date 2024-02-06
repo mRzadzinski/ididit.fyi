@@ -13,7 +13,7 @@
 
 	let selectOrderInput: HTMLSelectElement;
 	let expandedSearch = false;
-	let showOptions = true;
+	let showOptions = false;
 
 	afterUpdate(() => {
 		selectOrderInput.value = orderBy;

@@ -56,7 +56,7 @@
 				</div>
 			</div>
 			<div class="w-1/2">
-				<div class="flex items-center h-8 mb-5 pl-[0.8rem] text-sm">Author's sources:</div>
+				<div class="flex items-center h-8 mb-5 pl-[0.8rem] text-sm text-gray-400">Sources:</div>
 				<div class="flex flex-col w-full h-[20.5rem] pr-[0.625rem] overflow-y-auto">
 					<AuthorItem {container} isButton={false} name="Grzegorz" />
 					<AuthorItem {container} isButton={false} name="Cyprian Norwid" />
